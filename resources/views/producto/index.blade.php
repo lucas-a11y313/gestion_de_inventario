@@ -29,196 +29,211 @@
             });
         </script>
     @endif
-    <div class="container-fluid px-4">
-        <h1 class="mt-4 text-center">Productos</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
-            <li class="breadcrumb-item active">Productos</li>
-        </ol>
+    <div class="px-4 py-6 ml-60">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Productos</h1>
+            <nav class="breadcrumb mb-6">
+                <div class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></div>
+                <div class="breadcrumb-item active">Productos</div>
+            </nav>
 
-        @can('crear-producto')
-            <div class="row">
-                <div class="col-md-9">
-                    <div class="mb-4">
-                        <a href="{{ route('productos.create') }}">
-                            <button type="button" class="btn btn-primary">Añadir nuevo registro</button>
+            @can('crear-producto')
+                <div class="flex flex-col lg:flex-row gap-4 mb-6">
+                    <div class="flex-1">
+                        <a href="{{ route('productos.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus mr-2"></i>
+                            Añadir nuevo registro
+                        </a>
+                    </div>
+
+                    <div>
+                        <a href="{{ route('productos.inventario.pdf') }}" target="_blank" class="btn btn-success">
+                            <i class="fas fa-trash-restore mr-2"></i>
+                            Insumos eliminados
                         </a>
                     </div>
                 </div>
-                
-                <div class="col-md-3">
-                    <div class="mb-4">
-                        <a href="{{ route('productos.inventario.pdf') }}" target="_blank">
-                            <button type="button" class="btn btn-primary">Insumos eliminados</button>
-                        </a>
-                    </div>
+            @endcan
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-table mr-2"></i>
+                    Tabla productos
                 </div>
-                <!--
-                <div class="col-md-3">
-                    <div class="mb-4">
-                        <a href="{{ route('productos.inventario.pdf') }}" target="_blank">
-                            <button type="button" class="btn btn-primary">Generar informe del inventario</button>
-                        </a>
-                    </div>
-                </div>
-                -->
-            </div>
-        @endcan
-        
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                Tabla productos
-            </div>
-            <div class="card-body">
-                <table id="datatablesSimple" class="table table-striped">{{-- class="table table-striped" hace que tu tabla tenga un estilo zebra(blanco y negro) una fila es gris y la otra blanca, de forma sucesiva van cambiando el color de las filas --}}
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Nombre</th>
-                            <th>Marca</th>
-                            <th>Categorías</th>
-                            <th>Modelo</th>
-                            <th>Sugerencia de destino del bien</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($productos as $producto)
-                            <tr>
-                                <td>{{ $producto->codigo }}</td>
-                                <td>{{ $producto->nombre }}</td>
-                                <td>{{ $producto->marca->caracteristica->nombre }}</td>
-                                <td>
-                                    @foreach ($producto->categorias as $categoria)
-                                        <div class="container">
-                                            <div class="row">
-                                                <span class="m-1 p-1 bg-secondary text-white text-center rounded-pill">
+                <div class="card-body">
+                    <div class="overflow-x-auto">
+                        <table id="datatablesSimple" class="table table-striped">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Código</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marca</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categorías</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modelo</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sugerencia</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach ($productos as $producto)
+                                <tr class="hover:bg-gray-50" x-data="{
+                                    showViewModal: false,
+                                    showConfirmModal: false
+                                }">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $producto->codigo }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $producto->nombre }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $producto->marca->caracteristica->nombre }}</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-wrap gap-1">
+                                            @foreach ($producto->categorias as $categoria)
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                                                     {{ $categoria->caracteristica->nombre }}
                                                 </span>
-                                            </div>
+                                            @endforeach
                                         </div>
-                                    @endforeach
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    @if ($producto->estado == 1)
-                                        <div class="container">
-                                            <div class="row">
-                                                <span class="fw-bolder p-1 bg-success rounded-pill text-white text-center">Activo</span>
-                                            </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if ($producto->estado == 1)
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Activo
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                Eliminado
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            @can('editar-producto')
+                                                <a href="{{ route('productos.edit', ['producto' => $producto]) }}" class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-edit mr-1"></i>Editar
+                                                </a>
+                                            @endcan
+
+                                            <button @click="showViewModal = true" class="btn btn-success btn-sm">
+                                                <i class="fas fa-eye mr-1"></i>Ver
+                                            </button>
+
+                                            @can('eliminar-producto')
+                                                @if ($producto->estado == 1)
+                                                    <button @click="showConfirmModal = true" class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-trash mr-1"></i>Eliminar
+                                                    </button>
+                                                @else
+                                                    <button @click="showConfirmModal = true" class="btn btn-primary btn-sm">
+                                                        <i class="fas fa-undo mr-1"></i>Restaurar
+                                                    </button>
+                                                @endif
+                                            @endcan
                                         </div>
-                                    @else
-                                        <div class="container">
-                                            <div class="row">
-                                                <span class="fw-bolder p-1 bg-danger rounded-pill text-white text-center">Eliminado</span>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                    </td>
+                                </tr>
+                                    <!-- Modal Ver Producto -->
+                                    <div x-show="showViewModal"
+                                         x-transition:enter="ease-out duration-300"
+                                         x-transition:enter-start="opacity-0"
+                                         x-transition:enter-end="opacity-100"
+                                         x-transition:leave="ease-in duration-200"
+                                         x-transition:leave-start="opacity-100"
+                                         x-transition:leave-end="opacity-0"
+                                         class="fixed inset-0 z-50 overflow-y-auto"
+                                         style="display: none;">
+                                        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="showViewModal = false"></div>
 
-                                        @can('editar-producto')
-                                            <form action="{{ route('productos.edit', ['producto' => $producto]) }}" method="get">
-                                                <button type="submit" class="btn btn-warning">Editar</button>
-                                            </form>
-                                        @endcan
-
-                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#verModal-{{ $producto->id }}">Ver
-                                        </button>
-
-                                        @can('eliminar-producto')
-                                            @if ($producto->estado == 1)
-                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#confirmModal-{{ $producto->id }}">Eliminar</button>
-                                            @else
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#confirmModal-{{ $producto->id }}">Restaurar</button>
-                                            @endif
-                                        @endcan
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            <!--Un modal en Bootstrap es una ventana emergente que se utiliza para mostrar contenido adicional sin salir de la página actual. Los modales son muy útiles para mostrar información importante, formularios, imágenes o cualquier otro contenido que necesite la atención del usuario.-->
-                            <div class="modal fade" id="verModal-{{ $producto->id }}" tabindex="-1"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                {{-- verModal-{{ $producto->id }}: acá estamos nombrando al modal que vamos a utilizar y le estamos enviando una variable que contiene el id que se utilizara para localizar el registro a mostrar --}}
-                                <div class="modal-dialog modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Detalles del producto:</h1>
-                                            <button type="button" class="btn-close"
-                                                data-bs-dismiss="modal"aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row mb-3">
-                                                <label><span class="fw-bolder">Descripción:</span>  {{ $producto->descripcion }}</label>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <label><span class="fw-bolder">Fecha de vencimiento:</span>  {{ $producto->fecha_vencimiento == '' ? 'No tiene' : $producto->fecha_vencimiento }}</label>
-                                            </div>
-                                            <!--
-                                            <div class="row mb-3">
-                                                <label><span class="fw-bolder">Stock:</span>  {{ $producto->stock }}</label>
-                                            </div>
-                                            -->
-                                            <div class="row mb-3">
-                                                {{--HAY QUE SACAR ESTO DEBIDO A LA SOLICITUD DEL CLIENTE--}}
-                                                <label><span class="fw-bolder">Imagen:</span></label>
-                                                <div>
-                                                    @if ($producto->img_path != null)
-                                                        <img src="{{ Storage::url('productos/' . $producto->img_path) }}" alt="{{ $producto->nombre }}" class="img-fluid img-thumbnail border border-4 rounded">
-
-                                                    @else
-                                                        <img src="" alt="{{ $producto->nombre }}">{{-- esta parte me aparece raro cuando el producto no tiene imagen --}}
-                                                    @endif
+                                            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                                    <div class="flex justify-between items-center mb-4">
+                                                        <h3 class="text-lg font-medium text-gray-900">Detalles del producto</h3>
+                                                        <button @click="showViewModal = false" class="text-gray-400 hover:text-gray-600">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="space-y-4">
+                                                        <div>
+                                                            <label class="block text-sm font-medium text-gray-700">Descripción:</label>
+                                                            <p class="mt-1 text-sm text-gray-900">{{ $producto->descripcion }}</p>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-sm font-medium text-gray-700">Fecha de vencimiento:</label>
+                                                            <p class="mt-1 text-sm text-gray-900">{{ $producto->fecha_vencimiento == '' ? 'No tiene' : $producto->fecha_vencimiento }}</p>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-sm font-medium text-gray-700">Imagen:</label>
+                                                            <div class="mt-2">
+                                                                @if ($producto->img_path != null)
+                                                                    <img src="{{ Storage::url('productos/' . $producto->img_path) }}"
+                                                                         alt="{{ $producto->nombre }}"
+                                                                         class="max-w-full h-auto rounded-lg border">
+                                                                @else
+                                                                    <p class="text-sm text-gray-500">Sin imagen</p>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                                    <button @click="showViewModal = false" class="btn btn-secondary">
+                                                        Cerrar
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Cerrar</button>
-                                        </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <!-- Modal de confirmación -->
-                            <div class="modal fade" id="confirmModal-{{ $producto->id }}" tabindex="-1"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Mensaje de confirmación:</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            {{$producto->estado == 1 ? '¿Seguro que quieres eliminar el producto?' : '¿Seguro que quieres restaurar el producto?'}}
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">
-                                                Cerrar
-                                            </button>
-                                            
-                                            <form action="{{ route('productos.destroy',['producto' => $producto->id]) }}" method="post">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="submit" class="btn btn-primary">Confirmar</button>
-                                            </form>
+                                    <!-- Modal Confirmación -->
+                                    <div x-show="showConfirmModal"
+                                         x-transition:enter="ease-out duration-300"
+                                         x-transition:enter-start="opacity-0"
+                                         x-transition:enter-end="opacity-100"
+                                         x-transition:leave="ease-in duration-200"
+                                         x-transition:leave-start="opacity-100"
+                                         x-transition:leave-end="opacity-0"
+                                         class="fixed inset-0 z-50 overflow-y-auto"
+                                         style="display: none;">
+                                        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="showConfirmModal = false"></div>
+
+                                            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                                    <div class="flex items-center">
+                                                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                                            <i class="fas fa-exclamation-triangle text-red-600"></i>
+                                                        </div>
+                                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                                            <h3 class="text-lg font-medium text-gray-900">Mensaje de confirmación</h3>
+                                                            <div class="mt-2">
+                                                                <p class="text-sm text-gray-500">
+                                                                    {{ $producto->estado == 1 ? '¿Seguro que quieres eliminar el producto?' : '¿Seguro que quieres restaurar el producto?' }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                                    <form action="{{ route('productos.destroy', ['producto' => $producto->id]) }}" method="post" class="inline">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger mr-2">
+                                                            Confirmar
+                                                        </button>
+                                                    </form>
+                                                    <button @click="showConfirmModal = false" class="btn btn-secondary">
+                                                        Cerrar
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </tbody>
-                </table>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
