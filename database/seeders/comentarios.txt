@@ -1,0 +1,13 @@
+
+--  Los seeder(semilla) nos permite que nuestras tablas ya tengan datos ya desde un inicio
+Un seeder es una herramienta utilizada para llenar las tablas de tu base de datos con datos de prueba o iniciales. Es especialmente útil en el desarrollo y las pruebas de aplicaciones.
+
+Ventajas de los seeders:
+*   Automatización: Rellenar tablas rápidamente con datos iniciales o de prueba.
+*   Consistencia: Aseguras que todos los desarrolladores tengan los mismos datos en sus entornos locales.
+*   Reutilización: Puedes correr los seeders cada vez que reinicias la base de datos.
+
+--  Comando para ejecutar el seeder:  php artisan db:seed
+
+-- 'password' => bcrypt('password')
+La funcion bcrypt se utiliza para encriptar nuestra contraseña

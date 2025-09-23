@@ -1,0 +1,54 @@
+*                           return $this->hasOne(Persona::class);
+-Qué hace:
+Define una relación "uno a uno" (hasOne) entre el modelo Documento y el modelo Persona.
+-Cómo funciona:
+Indica que cada registro de la tabla documentos está relacionado con un único registro de la tabla personas.
+Laravel asume, por convención, que la tabla personas tiene una columna documento_id que actúa como clave foránea para vincularse con la tabla documentos.
+-Parámetro:
+Persona::class: Especifica que la relación está con el modelo Persona.
+
+
+*                           return $this->belongsTo(Documento::class);
+-Qué hace:
+Define una relación "pertenece a" (belongsTo) entre Persona y Documento.
+-Cómo funciona:
+Indica que cada registro de la tabla personas está relacionado con un único registro de la tabla documentos.
+Laravel asume que la tabla personas contiene una columna documento_id, que actúa como clave foránea para vincularse con la tabla documentos.
+-Parámetro:
+Documento::class: Especifica que la relación es con el modelo Documento.
+
+
+*                           ¿Qué es una relación "uno a muchos inversa"?
+En el contexto de bases de datos y Eloquent ORM de Laravel, una relación "uno a muchos inversa" (belongsTo) define el vínculo entre un modelo hijo y su modelo padre en una relación "uno a muchos".
+
+Mientras que la relación "uno a muchos" (hasMany) se define desde el modelo padre para acceder a todos los hijos, la relación inversa (belongsTo) permite que el modelo hijo identifique a su modelo padre.
+
+
+*  return $this->belongsToMany(Compra::class)->withTimestamps()->withPivot('cantidad','precio_compra','precio_venta');
+
+1-  return $this->belongsToMany(Compra::class)
+Establece una relación "muchos a muchos" entre los modelos Producto y Compra.
+-Cómo funciona:
+Supone la existencia de una tabla intermedia (pivot table) que conecta las tablas productos y compras. Por convención, Laravel buscará una tabla llamada compra_producto (orden alfabético de los nombres de las tablas).
+La tabla intermedia debe contener al menos dos columnas: producto_id y compra_id como claves foráneas.
+
+2-  withTimestamps()
+Indica que la tabla intermedia incluye columnas created_at y updated_at, y Laravel actualizará automáticamente estos valores cuando se modifiquen los registros.
+
+3- withPivot('cantidad', 'precio_compra', 'precio_venta')
+Especifica columnas adicionales en la tabla intermedia que se deben incluir al acceder a la relación.
+-En este caso:
+cantidad: Representa la cantidad de productos en una compra.
+precio_compra: El precio al que se compró el producto.
+precio_venta: El precio al que se planea vender el producto.
+Estas columnas estarán disponibles como atributos adicionales al interactuar con la relación.
+
+
+
+----------------------------------------Propiedades de los modelos o clases-------------------------------------
+
+*                                       Diferencia entre protected y private
+
+1-  protected: Las propiedades o métodos declarados como protected solo pueden ser accedidos dentro de la clase en la que se definen y por las clases que heredan de esa clase.
+
+2-  private: Las propiedades o métodos declarados como private solo pueden ser accedidos dentro de la clase en la que se definen. No pueden ser accedidos ni siquiera por las clases que heredan de esa clase.

@@ -1,0 +1,28 @@
+
+
+--------------------------Caracteristicas aplicables dentro de Schema::create-------------------------
+
+.                      Diferencia entre onDelete('cascade') y onDelete('setNull'):
+1-  onDelete('cascade'):
+
+Si se elimina un registro de la tabla relacionada (personas), también se eliminan automáticamente todos los registros en la tabla actual que dependan de ese registro.
+Ejemplo:
+Si eliminas un registro en la tabla personas con id = 1, todos los registros en la tabla actual que tengan persona_id = 1 serán eliminados automáticamente.
+
+2-  onDelete('setNull') y nullable():
+
+Si se elimina un registro de la tabla relacionada (personas), los registros en la tabla actual que dependan de ese registro no se eliminan, pero la columna persona_id de esos registros se establece como NULL. ""onDelete('setNull') debe ir acompañado del metodo nullable()""
+
+Esto requiere que la columna persona_id permita valores nulos (nullable()). En Laravel, la regla de validación nullable se utiliza para indicar que un campo puede ser nulo. Esto significa que si el campo está presente en la solicitud pero no tiene ningún valor (es decir, es null), las demás reglas de validación no se aplicarán a ese campo
+
+.                                   $table->timestamps();
+Dentro del timestamps() están los create_at y update_at, 
+1- created_at: Registra cuándo se creó el registro por primera vez.
+2- updated_at: Registra cuándo se modificó el registro por última vez. Si el registro no ha sido modificado, este campo será igual al valor de created_at.
+
+.                                   constrained('personas'): 
+Crea una restricción de clave foránea en persona_id que apunta a la tabla personas. Por defecto, se vincula al campo id de la tabla personas.
+
+.                                   unique():
+
+Indica que los valores en la columna persona_id deben ser únicos, es decir, no se pueden repetir.Hace que la relación entre tablas sea de 1-1, si no lleva unique() entonces la relación es de 1-N

@@ -1,0 +1,48 @@
+$(document).ready(function(){
+            //cuando mi select "tipo_persona" cambie(haga un change) se ejecutará una función
+            $('#tipo_persona').on('change',function(){
+
+                //recuperar una variable llamada  "selectValue"
+                let selectValue = $(this).val();
+
+                //"selectValue" puede ser natural o juridica
+                if (selectValue == 'natural') {
+                    //se oculta el label con id = "label-juridica" con la función hide()
+                    $('#label-juridica').hide();
+                    $('#label-natural').show();
+                }else{
+                    //se oculta el label con id = "label-natural" con la función hide()
+                    $('#label-natural').hide();
+                    $('#label-juridica').show();
+                }
+
+                $('#box-razon-social').show();
+
+            });
+        });
+
+Explicación del codigo anterior:
+1- $(document).ready(function(){}): Esta línea indica que el código dentro de la función se ejecutará una vez que el documento HTML esté completamente cargado y listo. Es un evento de jQuery que asegura que los elementos del DOM están disponibles antes de intentar manipularlos.
+
+2- $('#tipo_persona').on('change',function(){}): 
+   - $('#tipo_persona'): Selecciona el elemento con el ID tipo_persona (el <select> en el formulario).
+   
+   -.on('change', function() {}): Asocia un evento change al <select>. Este evento se dispara cada vez que el usuario cambia la selección en el menú desplegable.
+   
+   -function(): Es la función que se ejecutará cuando ocurra el evento change.
+
+
+3- let selectValue = $(this).val();
+    - let selectValue: Declara una variable local llamada selectValue.
+    - $(this).val(): Obtiene el valor seleccionado del elemento que disparó el evento (en este caso, el <select> con ID tipo_persona).
+
+
+----------------------------------------------------------------
+
+-   strtoupper($cliente->persona->tipo_persona)
+La función strtoupper() sirve para convertir todo el texto en mayúscula
+-----------------------------------------------------------------------
+-   span: 
+También en HTML, span es una etiqueta genérica en línea que se utiliza para agrupar elementos en línea para aplicar estilos o manipulación con JavaScript. En Laravel, span se usa comúnmente en las vistas Blade para aplicar estilos o scripts a partes específicas del contenido.
+
+<span class="highlight">Este es un texto destacado</span>
