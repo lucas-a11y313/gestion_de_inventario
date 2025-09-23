@@ -1,12 +1,7 @@
-<footer class="py-4 bg-light mt-auto">
-    <div class="container-fluid px-4">
-        <div class="d-flex align-items-center justify-content-center small">
-            <div class="text-muted">&copy; {{ config('app.name') }} {{ date('Y') }}</div>
-            <div>
-                {{--<a href="#">Privacy Policy</a>
-                &middot;
-                <a href="#">Terms &amp; Conditions</a>--}}
-            </div>
+<footer class="bg-gray-100 py-4 mt-auto border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-center">
+            <div class="text-sm text-gray-600">&copy; {{ config('app.name') }} {{ date('Y') }}</div>
         </div>
     </div>
 </footer>

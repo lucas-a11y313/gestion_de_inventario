@@ -3,10 +3,10 @@
         <div class="flex justify-between items-center h-16">
             <!-- Navbar Brand-->
             <div class="flex items-center">
-                <button class="text-gray-300 hover:text-white mr-4 lg:hidden" id="sidebarToggle">
+                <a class="text-white font-bold text-lg" href="{{ route('panel') }}">Gestión de Inventario</a>
+                <button @click="sidebarOpen = !sidebarOpen" class="text-gray-300 hover:text-white mr-4 transition-colors">
                     <i class="fas fa-bars"></i>
                 </button>
-                <a class="text-white font-bold text-lg" href="{{ route('panel') }}">Gestión de Inventario</a>
             </div>
 
             <!-- Search Bar (hidden on mobile) -->

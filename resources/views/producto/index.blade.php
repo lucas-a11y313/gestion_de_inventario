@@ -29,7 +29,8 @@
             });
         </script>
     @endif
-    <div class="px-4 py-6 ml-60">
+
+    <div class="px-4 py-6" x-data="productsModal()">
         <div class="max-w-7xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Productos</h1>
             <nav class="breadcrumb mb-6">
@@ -77,10 +78,7 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($productos as $producto)
-                                <tr class="hover:bg-gray-50" x-data="{
-                                    showViewModal: false,
-                                    showConfirmModal: false
-                                }">
+                                <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $producto->codigo }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $producto->nombre }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $producto->marca->caracteristica->nombre }}</td>
@@ -114,17 +112,17 @@
                                                 </a>
                                             @endcan
 
-                                            <button @click="showViewModal = true" class="btn btn-success btn-sm">
+                                            <button @click="openViewModal({{ $producto->id }})" class="btn btn-success btn-sm">
                                                 <i class="fas fa-eye mr-1"></i>Ver
                                             </button>
 
                                             @can('eliminar-producto')
                                                 @if ($producto->estado == 1)
-                                                    <button @click="showConfirmModal = true" class="btn btn-danger btn-sm">
+                                                    <button @click="openConfirmModal({{ $producto->id }})" class="btn btn-danger btn-sm">
                                                         <i class="fas fa-trash mr-1"></i>Eliminar
                                                     </button>
                                                 @else
-                                                    <button @click="showConfirmModal = true" class="btn btn-primary btn-sm">
+                                                    <button @click="openConfirmModal({{ $producto->id }})" class="btn btn-primary btn-sm">
                                                         <i class="fas fa-undo mr-1"></i>Restaurar
                                                     </button>
                                                 @endif
@@ -132,106 +130,117 @@
                                         </div>
                                     </td>
                                 </tr>
-                                    <!-- Modal Ver Producto -->
-                                    <div x-show="showViewModal"
-                                         x-transition:enter="ease-out duration-300"
-                                         x-transition:enter-start="opacity-0"
-                                         x-transition:enter-end="opacity-100"
-                                         x-transition:leave="ease-in duration-200"
-                                         x-transition:leave-start="opacity-100"
-                                         x-transition:leave-end="opacity-0"
-                                         class="fixed inset-0 z-50 overflow-y-auto"
-                                         style="display: none;">
-                                        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="showViewModal = false"></div>
-
-                                            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                                    <div class="flex justify-between items-center mb-4">
-                                                        <h3 class="text-lg font-medium text-gray-900">Detalles del producto</h3>
-                                                        <button @click="showViewModal = false" class="text-gray-400 hover:text-gray-600">
-                                                            <i class="fas fa-times"></i>
-                                                        </button>
-                                                    </div>
-                                                    <div class="space-y-4">
-                                                        <div>
-                                                            <label class="block text-sm font-medium text-gray-700">Descripción:</label>
-                                                            <p class="mt-1 text-sm text-gray-900">{{ $producto->descripcion }}</p>
-                                                        </div>
-                                                        <div>
-                                                            <label class="block text-sm font-medium text-gray-700">Fecha de vencimiento:</label>
-                                                            <p class="mt-1 text-sm text-gray-900">{{ $producto->fecha_vencimiento == '' ? 'No tiene' : $producto->fecha_vencimiento }}</p>
-                                                        </div>
-                                                        <div>
-                                                            <label class="block text-sm font-medium text-gray-700">Imagen:</label>
-                                                            <div class="mt-2">
-                                                                @if ($producto->img_path != null)
-                                                                    <img src="{{ Storage::url('productos/' . $producto->img_path) }}"
-                                                                         alt="{{ $producto->nombre }}"
-                                                                         class="max-w-full h-auto rounded-lg border">
-                                                                @else
-                                                                    <p class="text-sm text-gray-500">Sin imagen</p>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                                    <button @click="showViewModal = false" class="btn btn-secondary">
-                                                        Cerrar
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Modal Confirmación -->
-                                    <div x-show="showConfirmModal"
-                                         x-transition:enter="ease-out duration-300"
-                                         x-transition:enter-start="opacity-0"
-                                         x-transition:enter-end="opacity-100"
-                                         x-transition:leave="ease-in duration-200"
-                                         x-transition:leave-start="opacity-100"
-                                         x-transition:leave-end="opacity-0"
-                                         class="fixed inset-0 z-50 overflow-y-auto"
-                                         style="display: none;">
-                                        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="showConfirmModal = false"></div>
-
-                                            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                                    <div class="flex items-center">
-                                                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                                            <i class="fas fa-exclamation-triangle text-red-600"></i>
-                                                        </div>
-                                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                                            <h3 class="text-lg font-medium text-gray-900">Mensaje de confirmación</h3>
-                                                            <div class="mt-2">
-                                                                <p class="text-sm text-gray-500">
-                                                                    {{ $producto->estado == 1 ? '¿Seguro que quieres eliminar el producto?' : '¿Seguro que quieres restaurar el producto?' }}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                                    <form action="{{ route('productos.destroy', ['producto' => $producto->id]) }}" method="post" class="inline">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-danger mr-2">
-                                                            Confirmar
-                                                        </button>
-                                                    </form>
-                                                    <button @click="showConfirmModal = false" class="btn btn-secondary">
-                                                        Cerrar
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                             @endforeach
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Ver Producto -->
+            <div x-show="showViewModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 z-[60] overflow-y-auto"
+                 style="display: none;">
+                <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="closeViewModal()"></div>
+
+                    <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-medium text-gray-900">Detalles del producto</h3>
+                                <button @click="closeViewModal()" class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Código:</label>
+                                    <p class="mt-1 text-sm text-gray-900" x-text="selectedProduct?.codigo"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Nombre:</label>
+                                    <p class="mt-1 text-sm text-gray-900" x-text="selectedProduct?.nombre"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Marca:</label>
+                                    <p class="mt-1 text-sm text-gray-900" x-text="selectedProduct?.marca"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Descripción:</label>
+                                    <p class="mt-1 text-sm text-gray-900" x-text="selectedProduct?.descripcion || 'Sin descripción'"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Fecha de vencimiento:</label>
+                                    <p class="mt-1 text-sm text-gray-900" x-text="selectedProduct?.fecha_vencimiento || 'No tiene'"></p>
+                                </div>
+                                <div x-show="selectedProduct?.img_path">
+                                    <label class="block text-sm font-medium text-gray-700">Imagen:</label>
+                                    <div class="mt-2">
+                                        <img :src="selectedProduct?.img_url"
+                                             :alt="selectedProduct?.nombre"
+                                             class="max-w-full h-auto rounded-lg border max-h-64">
+                                    </div>
+                                </div>
+                                <div x-show="!selectedProduct?.img_path">
+                                    <label class="block text-sm font-medium text-gray-700">Imagen:</label>
+                                    <p class="mt-1 text-sm text-gray-500">Sin imagen</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <button @click="closeViewModal()" class="btn btn-secondary">
+                                Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Confirmación -->
+            <div x-show="showConfirmModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 z-[60] overflow-y-auto"
+                 style="display: none;">
+                <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="closeConfirmModal()"></div>
+
+                    <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div class="flex items-center">
+                                <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                    <i class="fas fa-exclamation-triangle text-red-600"></i>
+                                </div>
+                                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                    <h3 class="text-lg font-medium text-gray-900">Mensaje de confirmación</h3>
+                                    <div class="mt-2">
+                                        <p class="text-sm text-gray-500" x-text="confirmMessage"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <form :action="confirmAction" method="post" class="inline">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger mr-2">
+                                    Confirmar
+                                </button>
+                            </form>
+                            <button @click="closeConfirmModal()" class="btn btn-secondary">
+                                Cerrar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -242,4 +251,64 @@
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
     <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+
+    <script>
+        function productsModal() {
+            return {
+                showViewModal: false,
+                showConfirmModal: false,
+                selectedProduct: null,
+                confirmMessage: '',
+                confirmAction: '',
+
+                // Datos de productos desde el backend
+                products: {
+                    @foreach ($productos as $producto)
+                    {{ $producto->id }}: {
+                        id: {{ $producto->id }},
+                        codigo: '{{ $producto->codigo }}',
+                        nombre: '{{ $producto->nombre }}',
+                        marca: '{{ $producto->marca->caracteristica->nombre }}',
+                        descripcion: `{{ $producto->descripcion ?? '' }}`,
+                        fecha_vencimiento: '{{ $producto->fecha_vencimiento ?? '' }}',
+                        img_path: '{{ $producto->img_path ?? '' }}',
+                        img_url: '{{ $producto->img_path ? Storage::url("productos/" . $producto->img_path) : "" }}',
+                        estado: {{ $producto->estado }}
+                    },
+                    @endforeach
+                },
+
+                openViewModal(productId) {
+                    this.selectedProduct = this.products[productId];
+                    this.showViewModal = true;
+                    document.body.style.overflow = 'hidden';
+                },
+
+                closeViewModal() {
+                    this.showViewModal = false;
+                    this.selectedProduct = null;
+                    document.body.style.overflow = '';
+                },
+
+                openConfirmModal(productId) {
+                    const product = this.products[productId];
+                    this.selectedProduct = product;
+                    this.confirmMessage = product.estado == 1 ?
+                        '¿Seguro que quieres eliminar el producto?' :
+                        '¿Seguro que quieres restaurar el producto?';
+                    this.confirmAction = `/productos/${productId}`;
+                    this.showConfirmModal = true;
+                    document.body.style.overflow = 'hidden';
+                },
+
+                closeConfirmModal() {
+                    this.showConfirmModal = false;
+                    this.selectedProduct = null;
+                    this.confirmMessage = '';
+                    this.confirmAction = '';
+                    document.body.style.overflow = '';
+                }
+            }
+        }
+    </script>
 @endpush

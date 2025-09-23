@@ -1,4 +1,6 @@
-<div id="layoutSidenav_nav" class="sb-sidenav bg-gray-800 w-60 min-h-screen fixed left-0 top-16 z-40">
+<div id="layoutSidenav_nav"
+     class="sb-sidenav bg-gray-800 w-60 min-h-screen fixed left-0 top-16 z-40 transition-transform duration-300"
+     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
     <nav class="h-full flex flex-col">
         <div class="flex-1 pt-4">
             <div class="space-y-1">

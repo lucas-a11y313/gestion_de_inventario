@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    <div class="px-4 py-6 ml-60">
+    <div class="px-4 py-6">
         <div class="max-w-7xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Inventario de BP</h1>
 

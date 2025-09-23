@@ -149,10 +149,19 @@
     @apply bg-green-500;
   }
 
+  /* Mobile sidebar overlay */
+  .sidebar-overlay {
+    @apply fixed inset-0 bg-black bg-opacity-50 z-30;
+  }
+
   /* Responsive adjustments */
-  @media (min-width: 768px) {
-    #layoutSidenav_content {
-      @apply ml-60;
+  @media (max-width: 767px) {
+    .sb-sidenav {
+      @apply -translate-x-full;
+    }
+
+    .sb-sidenav.open {
+      @apply translate-x-0;
     }
   }
 }

@@ -16,28 +16,30 @@
     </head>
 
     @auth<!--Esta directiva hace que muestre el body solo a los usuarios autenticados-->
-        <body class="sb-nav-fixed pt-16">
+        <body class="sb-nav-fixed bg-gray-50 min-h-screen flex flex-col" x-data="{ sidebarOpen: true }">
 
             <x-navigation-header></x-navigation-header>
 
-            <div id="layoutSidenav">
+            <!-- Mobile sidebar overlay -->
+            <div x-show="sidebarOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="sidebarOpen = false" class="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden" style="display: none;"></div>
 
+            <div class="flex flex-1 pt-16">
                 <x-navigation-menu></x-navigation-menu>
 
-                <div id="layoutSidenav_content">
-                    
-                    <main>
+                <div class="flex-1 flex flex-col transition-all duration-300 md:ml-0"
+                     :class="sidebarOpen ? 'md:ml-60' : 'md:ml-0'">
+
+                    <main class="flex-1 p-0">
                         @yield('content')<!--- content o contenido--->
                     </main>
-                    
+
                     <x-footer></x-footer>
 
                 </div>
             </div>
             @vite(['resources/js/app.js'])
-            <script src="{{ asset('js/scripts.js') }}"></script>
             @stack('js')
-            
+
         </body>
     @endauth
 
