@@ -1,10 +1,14 @@
-<div id="layoutSidenav_nav"><!---ayoutSidenav significa Diseño de navegación lateral--->
-    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-        <div class="sb-sidenav-menu">
-            <div class="nav">
-                <div class="sb-sidenav-menu-heading">Inicio</div>
-                <a class="nav-link" href="{{ route('panel') }}">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+<div id="layoutSidenav_nav" class="sb-sidenav bg-gray-800 w-60 min-h-screen fixed left-0 top-16 z-40">
+    <nav class="h-full flex flex-col">
+        <div class="flex-1 pt-4">
+            <div class="space-y-1">
+                <!-- Inicio Section -->
+                <div class="px-4 py-2 text-gray-400 text-xs font-semibold uppercase tracking-wider">
+                    Inicio
+                </div>
+                <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                   href="{{ route('panel') }}">
+                    <i class="fas fa-tachometer-alt mr-3 w-4"></i>
                     Panel
                 </a>
 
@@ -51,48 +55,58 @@
                         </div>
                     </nav>
                 </div--->
-                <div class="sb-sidenav-menu-heading">Modulos</div>
-                
+                <!-- Módulos Section -->
+                <div class="px-4 py-2 mt-6 text-gray-400 text-xs font-semibold uppercase tracking-wider">
+                    Módulos
+                </div>
+
                 @can('ver-cliente')
-                    <a class="nav-link" href="{{ route('clientes.index') }}">
-                        <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
+                    <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                       href="{{ route('clientes.index') }}">
+                        <i class="fa-solid fa-users mr-3 w-4"></i>
                         Funcionarios
                     </a>
                 @endcan
-                
+
                 @can('ver-producto')
-                    <a class="nav-link" href="{{ route('productos.index') }}">
-                        <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-plus"></i></div>
+                    <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                       href="{{ route('productos.index') }}">
+                        <i class="fa-solid fa-cart-plus mr-3 w-4"></i>
                         Productos
                     </a>
                 @endcan
-                
+
                 @can('ver-categoria')
-                    <a class="nav-link" href="{{ route('categorias.index') }}">{{--route('categorias.index'): Este helper genera automáticamente la URL asociada con el nombre de la ruta categorias.index. Este nombre (categorias.index) es generado por Route::resource y se refiere a la ruta GET /categorias que llama al método index. Resultado: El enlace lleva al usuario a la URL /categorias, donde se ejecutará el método index del controlador.--}}
-                        <div class="sb-nav-link-icon"><i class="fa-solid fa-tag"></i></div>
+                    <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                       href="{{ route('categorias.index') }}">
+                        <i class="fa-solid fa-tag mr-3 w-4"></i>
                         Categorías
                     </a>
                 @endcan
 
                 @can('ver-marca')
-                    <a class="nav-link" href="{{ route('marcas.index') }}">
-                        <div class="sb-nav-link-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                    <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                       href="{{ route('marcas.index') }}">
+                        <i class="fa-solid fa-bullhorn mr-3 w-4"></i>
                         Marcas
                     </a>
                 @endcan
-                
-                <a class="nav-link" href="#">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+
+                <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                   href="#">
+                    <i class="fa-solid fa-clipboard-list mr-3 w-4"></i>
                     Modelos
                 </a>
 
-                <a class="nav-link" href="{{ route('inventarioBP') }}">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                   href="{{ route('inventarioBP') }}">
+                    <i class="fa-solid fa-clipboard-list mr-3 w-4"></i>
                     Inventario de BP
                 </a>
 
-                <a class="nav-link" href="{{ route('inventarioIN') }}">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                   href="{{ route('inventarioIN') }}">
+                    <i class="fa-solid fa-clipboard-list mr-3 w-4"></i>
                     Inventario de Insumos
                 </a>
                 
@@ -140,28 +154,34 @@
                 @endcan
 
                 @canany(['ver-user','ver-role'])
-                    <div class="sb-sidenav-menu-heading">OTROS</div>
+                    <!-- Otros Section -->
+                    <div class="px-4 py-2 mt-6 text-gray-400 text-xs font-semibold uppercase tracking-wider">
+                        Otros
+                    </div>
                 @endcanany
 
                 @can('ver-user')
-                    <a class="nav-link" href="{{ route('users.index') }}">
-                        <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
+                    <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                       href="{{ route('users.index') }}">
+                        <i class="fa-solid fa-user mr-3 w-4"></i>
                         Usuarios
                     </a>
                 @endcan
-                
+
                 @can('ver-role')
-                    <a class="nav-link" href="{{ route('roles.index') }}">
-                        <div class="sb-nav-link-icon"><i class="fa-solid fa-person-circle-plus"></i></div>
+                    <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                       href="{{ route('roles.index') }}">
+                        <i class="fa-solid fa-person-circle-plus mr-3 w-4"></i>
                         Roles
                     </a>
                 @endcan
-
             </div>
         </div>
-        <div class="sb-sidenav-footer">
-            <div class="small">Bienvenido:</div>
-            {{ auth()->user()->name }} <!-- Acá te trae el nombre del usuario con el que actualmente hiciste sesión-->
+
+        <!-- Footer -->
+        <div class="border-t border-gray-700 p-4">
+            <div class="text-xs text-gray-400 mb-1">Bienvenido:</div>
+            <div class="text-sm text-white font-medium">{{ auth()->user()->name }}</div>
         </div>
     </nav>
 </div>
