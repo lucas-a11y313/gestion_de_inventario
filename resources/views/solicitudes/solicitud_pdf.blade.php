@@ -173,15 +173,15 @@
         <tr>
           <td>{{ $producto->nombre }}</td>
           <td class="text-center">{{ $producto->pivot->cantidad }}</td>
-          <td class="text-right">${{ number_format($producto->pivot->precio_compra, 2) }}</td>
-          <td class="text-right">${{ number_format($subtotal, 2) }}</td>
+          <td class="text-right">{{ number_format($producto->pivot->precio_compra, 2) }}</td>
+          <td class="text-right">{{ number_format($subtotal, 2) }}</td>
         </tr>
       @endforeach
     </tbody>
     <tfoot>
       <tr style="background-color: #f3f4f6; font-weight: bold;">
         <td colspan="3" class="text-right">TOTAL:</td>
-        <td class="text-right">${{ number_format($total, 2) }}</td>
+        <td class="text-right">{{ number_format($total, 2) }}</td>
       </tr>
     </tfoot>
   </table>
