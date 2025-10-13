@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Controller;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SolicitudController extends Controller
 {
@@ -151,5 +152,24 @@ class SolicitudController extends Controller
         Solicitud::where('id', $id)->update(['estado' => 1]);
 
         return redirect()->route('solicitudes.eliminadas')->with('success', 'Solicitud restaurada exitosamente');
+    }
+
+    /**
+     * Generate PDF for solicitud
+     */
+    public function print(Solicitud $solicitude)
+    {
+        // Cargar las relaciones necesarias
+        $solicitude->load('user', 'productos');
+
+        // Generar el PDF
+        $pdf = Pdf::loadView('solicitudes.solicitud_pdf', ['solicitud' => $solicitude])
+            ->setPaper('a4', 'portrait');
+
+        // Retornar el PDF para visualización en el navegador
+        return $pdf->stream('solicitud_' . $solicitude->id . '_' . now()->format('Ymd') . '.pdf');
+
+        // Alternativa: descarga directa
+        // return $pdf->download('solicitud_' . $solicitude->id . '_' . now()->format('Ymd') . '.pdf');
     }
 }

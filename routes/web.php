@@ -72,6 +72,7 @@ Route::resource('proyectos', ProyectoController::class, ['parameters' => ['proye
 
 // al final de routes/web.php
 Route::get('ventas/{venta}/print', [App\Http\Controllers\ventaController::class, 'print'])->name('ventas.print')->middleware('permission:mostrar-venta');
+Route::get('solicitudes/{solicitude}/print', [SolicitudController::class, 'print'])->name('solicitudes.print')->middleware('permission:mostrar-solicitud');
 
 
 Route::get('/ticket',function (){

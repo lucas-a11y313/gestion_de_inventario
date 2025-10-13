@@ -16,6 +16,21 @@
                 <div class="breadcrumb-item active">Ver solicitud</div>
             </nav>
 
+            <!-- Botones de acción -->
+            <div class="flex gap-4 mb-6">
+                <a href="{{ route('solicitudes.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver
+                </a>
+
+                @can('mostrar-solicitud')
+                    <a href="{{ route('solicitudes.print', ['solicitude' => $solicitud]) }}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2">
+                        <i class="fas fa-print"></i>
+                        Imprimir
+                    </a>
+                @endcan
+            </div>
+
             <div class="w-full">
                 <div class="card p-4 mb-6">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">

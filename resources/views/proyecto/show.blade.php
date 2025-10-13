@@ -24,25 +24,13 @@
                         <h2 class="text-2xl font-bold mb-4">{{ $proyecto->nombre }}</h2>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            @if($proyecto->fecha_inicio)
                             <div class="flex items-center gap-2">
-                                <i class="fas fa-calendar-start"></i>
+                                <i class="fas fa-calendar"></i>
                                 <div>
-                                    <p class="text-xs text-purple-200">Fecha de inicio</p>
-                                    <p class="font-semibold">{{ \Carbon\Carbon::parse($proyecto->fecha_inicio)->format('d/m/Y') }}</p>
+                                    <p class="text-xs text-purple-200">Fecha de ejecución</p>
+                                    <p class="font-semibold">{{ \Carbon\Carbon::parse($proyecto->created_at)->format('d/m/Y') }}</p>
                                 </div>
                             </div>
-                            @endif
-
-                            @if($proyecto->fecha_fin)
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-calendar-check"></i>
-                                <div>
-                                    <p class="text-xs text-purple-200">Fecha de fin</p>
-                                    <p class="font-semibold">{{ \Carbon\Carbon::parse($proyecto->fecha_fin)->format('d/m/Y') }}</p>
-                                </div>
-                            </div>
-                            @endif
 
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-box"></i>
@@ -51,21 +39,6 @@
                                     <p class="font-semibold">{{ $proyecto->productos->count() }} {{ $proyecto->productos->count() == 1 ? 'producto' : 'productos' }}</p>
                                 </div>
                             </div>
-
-                            @if($proyecto->fecha_inicio && $proyecto->fecha_fin)
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-hourglass-half"></i>
-                                <div>
-                                    <p class="text-xs text-purple-200">Duración estimada</p>
-                                    @php
-                                        $inicio = \Carbon\Carbon::parse($proyecto->fecha_inicio);
-                                        $fin = \Carbon\Carbon::parse($proyecto->fecha_fin);
-                                        $dias = $inicio->diffInDays($fin);
-                                    @endphp
-                                    <p class="font-semibold">{{ $dias }} {{ $dias == 1 ? 'día' : 'días' }}</p>
-                                </div>
-                            </div>
-                            @endif
                         </div>
                     </div>
 
@@ -108,7 +81,6 @@
                                     <th class="text-white">Código</th>
                                     <th class="text-white">Producto</th>
                                     <th class="text-white">Cantidad Requerida</th>
-                                    <th class="text-white">Stock Disponible</th>
                                     <th class="text-white">Valor Unitario</th>
                                     <th class="text-white">Subtotal</th>
                                 </tr>
@@ -120,14 +92,6 @@
                                         <td>{{ $producto->codigo }}</td>
                                         <td>{{ $producto->nombre }}</td>
                                         <td>{{ $producto->pivot->cantidad }}</td>
-                                        <td>
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                @if($producto->stock >= $producto->pivot->cantidad) bg-green-100 text-green-800
-                                                @else bg-red-100 text-red-800
-                                                @endif">
-                                                {{ $producto->stock }}
-                                            </span>
-                                        </td>
                                         <td>{{ number_format($producto->precio_unitario, 2) }}</td>
                                         <td>{{ number_format($producto->subtotal, 2) }}</td>
                                     </tr>
@@ -136,14 +100,14 @@
                             <tfoot class="bg-gray-50">
                                 <tr>
                                     <th colspan="3" class="text-right">Total de productos diferentes:</th>
-                                    <th colspan="4">{{ $proyecto->productos->count() }}</th>
+                                    <th colspan="3">{{ $proyecto->productos->count() }}</th>
                                 </tr>
                                 <tr>
                                     <th colspan="3" class="text-right">Cantidad total de items:</th>
-                                    <th colspan="4" id="th_total_cantidad">{{ $proyecto->productos->sum('pivot.cantidad') }}</th>
+                                    <th colspan="3" id="th_total_cantidad">{{ $proyecto->productos->sum('pivot.cantidad') }}</th>
                                 </tr>
                                 <tr class="bg-indigo-100">
-                                    <th colspan="6" class="text-right text-lg">TOTAL DEL PROYECTO:</th>
+                                    <th colspan="5" class="text-right text-lg">TOTAL DEL PROYECTO:</th>
                                     <th class="text-lg">{{ number_format($total, 2) }}</th>
                                 </tr>
                             </tfoot>
