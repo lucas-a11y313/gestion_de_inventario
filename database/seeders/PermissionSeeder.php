@@ -25,7 +25,13 @@ class PermissionSeeder extends Seeder
             'crear-marca',
             'editar-marca',
             'eliminar-marca',
-            
+
+            //modelo
+            'ver-modelo',
+            'crear-modelo',
+            'editar-modelo',
+            'eliminar-modelo',
+
             //cliente
             'ver-cliente',
             'crear-cliente',
@@ -38,6 +44,25 @@ class PermissionSeeder extends Seeder
             'mostrar-compra',
             'eliminar-compra',
 
+            //adquisicion
+            'ver-adquisicion',
+            'crear-adquisicion',
+            'mostrar-adquisicion',
+            'eliminar-adquisicion',
+
+            //solicitud
+            'ver-solicitud',
+            'crear-solicitud',
+            'mostrar-solicitud',
+            'eliminar-solicitud',
+
+            //proyecto
+            'ver-proyecto',
+            'crear-proyecto',
+            'editar-proyecto',
+            'mostrar-proyecto',
+            'eliminar-proyecto',
+
             //venta
             'ver-venta',
             'crear-venta',
@@ -49,6 +74,12 @@ class PermissionSeeder extends Seeder
             'crear-producto',
             'editar-producto',
             'eliminar-producto',
+
+            //inventarioBP
+            'ver-inventarioBP',
+            'crear-inventarioBP',
+            'editar-inventarioBP',
+            'mostrar-inventarioBP',
 
             //proveedor
             'ver-proveedor',
@@ -70,7 +101,7 @@ class PermissionSeeder extends Seeder
         ];
 
         foreach($permisos as $permiso) {
-            Permission::create(['name' => $permiso]);
+            Permission::firstOrCreate(['name' => $permiso]);
         }
     }
 }

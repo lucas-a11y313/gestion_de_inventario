@@ -135,4 +135,14 @@ class compraCrontroller extends Controller
 
         return redirect()->route('compras.index')->with('success','Compra eliminada');
     }
+
+    public function eliminadas()
+    {
+        $compras = Compra::with(['comprobante','proveedore.persona'])
+            ->where('estado', 0)
+            ->latest()
+            ->get();
+
+        return view('compra.compras_eliminadas', compact('compras'));
+    }
 }

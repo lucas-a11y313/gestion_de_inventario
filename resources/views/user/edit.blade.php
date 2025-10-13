@@ -1,132 +1,109 @@
 @extends('template')
 
-@section('title', 'Editar usuarios')
+@section('title', 'Editar Usuario')
 
 @push('css')
 @endpush
 
 @section('content')
-    <div class="container-fluid px-4">
-        <h1 class="mt-4 text-center">Editar Usuario</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Usuarios</a></li>
-            <li class="breadcrumb-item active">Editar usuario</li>
-        </ol>
-    </div>
+    <div class="px-4 py-6">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Editar Usuario</h1>
+            <nav class="breadcrumb mb-6">
+                <div class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('users.index') }}">Usuarios</a></div>
+                <div class="breadcrumb-item active">Editar usuario</div>
+            </nav>
 
-    <div class="container w-100 border border-3 border-primary rounded p-4 smt-3">
-        <form action=" {{ route('users.update', ['user' => $user]) }}" method="post">
-            @method('PATCH')
-            @csrf
-            <div class="row g-3">
-                    
-                <!--Nombre del rol-->
-                <div class="row mb-4 mt-4">
-                    <label for="name" class="col-sm-2 col-form-label">Nombres:</label>
-                    <div class="col-sm-4">
-                        <input type="text" name="name" id="name" class="form-control" value="{{old('name',$user->name)}}">
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-text">
-                            Escriba un solo nombre.
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        @error('name')
-                            <small class="text-danger">{{'*'.$message}}</small>
-                        @enderror
-                    </div>
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-edit mr-2"></i>
+                    Editar Usuario
                 </div>
+                <div class="card-body">
+                    <form action="{{ route('users.update', ['user' => $user]) }}" method="post">
+                        @method('PATCH')
+                        @csrf
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <!--Email-->
-                <div class="row mb-4">
-                    <label for="email" class="col-sm-2 col-form-label">Email:</label>
-                    <div class="col-sm-4">
-                        <input type="email" name="email" id="email" class="form-control" value="{{old('email',$user->email)}}">
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-text">
-                            Dirección de correo electrónico.
+                            <!-- Nombre -->
+                            <div class="form-group">
+                                <label for="name" class="form-label">Nombre:</label>
+                                <input type="text" name="name" id="name" class="form-input"
+                                    value="{{ old('name', $user->name) }}" placeholder="Ej: Juan Pérez">
+                                <p class="text-sm text-gray-500 mt-1">Ingrese el nombre completo del usuario</p>
+                                @error('name')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" name="email" id="email" class="form-input"
+                                    value="{{ old('email', $user->email) }}" placeholder="usuario@ejemplo.com">
+                                <p class="text-sm text-gray-500 mt-1">Dirección de correo electrónico</p>
+                                @error('email')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Contraseña -->
+                            <div class="form-group">
+                                <label for="password" class="form-label">Nueva Contraseña:</label>
+                                <input type="password" name="password" id="password" class="form-input"
+                                    placeholder="Dejar en blanco si no desea cambiarla">
+                                <p class="text-sm text-gray-500 mt-1">Solo complete si desea cambiar la contraseña</p>
+                                @error('password')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Confirmar Contraseña -->
+                            <div class="form-group">
+                                <label for="password_confirm" class="form-label">Confirmar Contraseña:</label>
+                                <input type="password" name="password_confirm" id="password_confirm" class="form-input"
+                                    placeholder="Repita la nueva contraseña">
+                                <p class="text-sm text-gray-500 mt-1">Debe coincidir con la nueva contraseña</p>
+                                @error('password_confirm')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Rol -->
+                            <div class="form-group md:col-span-2">
+                                <label for="role" class="form-label">Seleccionar Rol:</label>
+                                <select name="role" id="role" class="form-select">
+                                    <option value="">Seleccione un rol</option>
+                                    @foreach ($roles as $item)
+                                        <option value="{{ $item->name }}"
+                                            {{ (in_array($item->name, $user->roles->pluck('name')->toArray()) || old('role') == $item->name) ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <p class="text-sm text-gray-500 mt-1">Rol actual: <strong>{{ $user->roles->first()->name ?? 'Sin rol' }}</strong></p>
+                                @error('role')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-2">
-                        @error('email')
-                            <small class="text-danger">{{'*'.$message}}</small>
-                        @enderror
-                    </div>
-                </div>
 
-                <!--Password-->
-                <div class="row mb-4">
-                    <label for="password" class="col-sm-2 col-form-label">Contraseña:</label>
-                    <div class="col-sm-4">
-                        <input type="password" name="password" id="password" class="form-control">
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-text">
-                            Escriba una contraseña segura. Debe de incluir números. 
+                        <!-- Botones -->
+                        <div class="flex justify-center mt-6 space-x-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save mr-2"></i>
+                                Actualizar
+                            </button>
+                            <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-times mr-2"></i>
+                                Cancelar
+                            </a>
                         </div>
-                    </div>
-                    <div class="col-sm-2">
-                        @error('password')
-                            <small class="text-danger">{{'*'.$message}}</small>
-                        @enderror
-                    </div>
-                </div>
-
-                <!--Confirm_Password-->
-                <div class="row mb-4">
-                    <label for="password_confirm" class="col-sm-2 col-form-label">Confirmar contraseña:</label>
-                    <div class="col-sm-4">
-                        <input type="password" name="password_confirm" id="password_confirm" class="form-control">
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-text">
-                            Vuelva a escribir su contraseña. 
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        @error('password_confirm')
-                            <small class="text-danger">{{'*'.$message}}</small>
-                        @enderror
-                    </div>
-                </div>
-
-                <!--Roles-->
-                <div class="row mb-4">
-                    <label for="role" class="col-sm-2 col-form-label">Seleccionar rol:</label>
-                    <div class="col-sm-4">
-                        <select name="role" id="role" class="form-select">
-                            <option value="" selected disabled>Seleccione:</option>
-                            @foreach ($roles as $item)
-
-                                @if ( in_array($item->name, $user->roles->pluck('name')->toArray()) )
-                                    <option selected value="{{ $item->name }}" @selected(old('role') == $item->name)>{{ $item->name }}</option>{{--a la directiva @selected Laravel la convierte automáticamente en selected="selected" si la condición es verdadera, o no imprime nada si es falsa.  --}}
-                                @else
-                                    <option value="{{ $item->name }}" @selected(old('role') == $item->name)>{{ $item->name }}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-text">
-                            Escoja un rol para el usuario.
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        @error('password')
-                            <small class="text-danger">{{'*'.$message}}</small>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                    <button type="reset" class="btn btn-secondary">Reiniciar</button>
+                    </form>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 @endsection
 

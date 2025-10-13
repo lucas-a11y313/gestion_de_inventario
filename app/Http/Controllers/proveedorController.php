@@ -118,4 +118,16 @@ class proveedorController extends Controller
         
         return redirect()->route('proveedores.index')->with('success',$message);
     }
+
+    public function eliminados()
+    {
+        $proveedores = Proveedore::with('persona.documento')
+            ->whereHas('persona', function($query) {
+                $query->where('estado', 0);
+            })
+            ->latest()
+            ->get();
+
+        return view('proveedor.proveedores_eliminados', compact('proveedores'));
+    }
 }

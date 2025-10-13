@@ -1,9 +1,0 @@
---                  @if (in_array($categoria->id, $producto->categorias->pluck('id')->toArray()))
-1-  in_array($categoria->id, ...):
-La función in_array() verifica si el valor de $categoria->id (la categoría actual en el bucle) existe dentro del array proporcionado como segundo parámetro.
-
-2-  $producto->categorias->pluck('id'):
-Aquí se obtiene una colección con todas las IDs de las categorías asociadas al producto, utilizando el método pluck('id'), que extrae únicamente los valores del campo id de cada categoría
-
-3-  toArray():
-Convierte la colección resultante del pluck() en un array de PHP. Esto es necesario porque la función in_array() espera un array como segundo argumento.

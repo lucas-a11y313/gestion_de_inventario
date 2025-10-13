@@ -8,141 +8,173 @@
             resize: none;
         }
     </style>
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>{{-- Importar la libreria para utilizar el bootstrap select --}}
 @endpush
 
 @section('content')
-    <div class="container-fluid px-4">
-        <h1 class="mt-4 text-center">Crear Producto</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('productos.index') }}">Productos</a></li>
-            <li class="breadcrumb-item active">Crear producto</li>
-        </ol>
+    <div class="px-4 py-6">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Crear Producto</h1>
+            <nav class="breadcrumb mb-6">
+                <div class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('productos.index') }}">Productos</a></div>
+                <div class="breadcrumb-item active">Crear producto</div>
+            </nav>
 
-        <div class="container w-100 border border-3 border-primary rounded p-4 mt-3">
-            <form action="{{ route('productos.store') }}" method="post" enctype="multipart/form-data">
-                {{-- enctype="multipart/form-data": te permite enviar los archivos de tipo file a través del formulario --}}
-                @csrf
-                <div class="row g-3">
-
-                    <!--Codigo-->
-                    <div class="col-md-6 mb-2">
-                        <label for="codigo" class="form-label">Código:</label>
-                        <input type="text" name="codigo" id="codigo" class="form-control"
-                            value="{{ old('codigo') }}">
-                        @error('codigo')
-                            <small class="text-danger">{{ '*' . $message }}</small>
-                        @enderror
-                    </div>
-
-                    <!--Nombre-->
-                    <div class="col-md-6 mb-2">
-                        <label for="nombre" class="form-label">Nombre:</label>
-                        <input type="text" name="nombre" id="nombre" class="form-control"
-                            value="{{ old('nombre') }}">
-                        @error('nombre')
-                            <small class="text-danger">{{ '*' . $message }}</small>
-                        @enderror
-                    </div>
-
-                    <!--Descripcion-->
-                    <div class="col-md-12">
-                        <label for="descripcion" class="form-label">Descripción:</label>
-                        <textarea name="descripcion" id="descripcion" rows="3" class="form-control">{{ old('descripcion') }}</textarea>
-                        @error('descripcion')
-                            <small class="text-danger">{{ '*' . $message }}</small>
-                        @enderror
-                    </div>
-
-                    <!--Fecha de vencimiento-->
-                    <div class="col-md-6 mb-2">
-                        <label for="fecha_vencimiento" class="form-label">Fecha de vencimiento:</label>
-                        <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" class="form-control"
-                            value="{{ old('fecha_vencimiento') }}">
-                        @error('fecha_vencimiento')
-                            <small class="text-danger">{{ '*' . $message }}</small>
-                        @enderror
-                    </div>
-
-                    <!--Imagen-->
-                    <div class="col-md-6 mb-2">
-                        <label for="img_path" class="form-label">Imagen:</label>
-                        <input type="file" name="img_path" id="img_path" class="form-control" accept="Image/*"
-                            value="{{ old('img_path') }}">{{-- accept="Image/*" hace que el input (de tipo file) acepte todo tipo de imagenes --}}
-                        @error('img_path')
-                            <small class="text-danger">{{ '*' . $message }}</small>
-                        @enderror
-                    </div>
-
-                    <!--Marcas-->
-                    <div class="col-md-6 mb-2">
-                        <label for="marca_id" class="form-label">Marca:</label>
-                        <select data-size="4" title="Seleccione una marca" data-live-search="true" name="marca_id"
-                            id="marca_id" class="form-control selectpicker show-tick">
-                            @foreach ($marcas as $marca)
-                                <option value="{{ $marca->id }}" {{ old('marca_id') == $marca->id ? 'selected' : '' }}>
-                                    {{ $marca->nombre }}</option>
-                            @endforeach
-                        </select>{{-- Dentro del select vamos a poder poner un listado de todas nuestras marcas --}}
-                        @error('marca_id')
-                            <small class="text-danger">{{ '*' . $message }}</small>
-                        @enderror
-                    </div>
-
-                    <!--Categorías-->
-                    <div class="col-md-6 mb-2">
-                        <label for="categorias" class="form-label">Categorías:</label>
-                        <select data-size="4" title="Seleccione las categorías" data-live-search="true" name="categorias[]"
-                            id="categorias" class="form-control selectpicker show-tick" multiple>
-                            @foreach ($categorias as $categoria)
-                                <option value="{{ $categoria->id }}"
-                                    {{ in_array($categoria->id, old('categorias', [])) ? 'selected' : '' }}>{{ $categoria->nombre }}
-                                </option>
-                            @endforeach
-                        </select>{{-- Dentro del select vamos a poder poner un listado de todas nuestras marcas --}}
-                        @error('categorias')
-                            <small class="text-danger">{{ '*' . $message }}</small>
-                        @enderror
-                    </div>
-
-                    <!--Modelos-->
-                    <div class="col-md-6 mb-2">
-                        <label for="modelos" class="form-label">Modelo:</label>
-                        <select data-size="4" title="Seleccione los modelos" data-live-search="true" name="modelos[]"
-                            id="modelos" class="form-control selectpicker show-tick" multiple>
-                            
-                        </select>{{-- Dentro del select vamos a poder poner un listado de todas nuestras marcas --}}
-                        @error('modelos')
-                            <small class="text-danger">{{ '*' . $message }}</small>
-                        @enderror
-                    </div>
-
-                    <!--Destino del bien-->
-                    <div class="col-md-6 mb-2">
-                        <label for="" class="form-label">Destino del bien:</label>
-                        <select data-size="4" title="Seleccione del destino" data-live-search="true" name=""
-                            id="" class="form-control selectpicker show-tick" multiple>
-                        </select>{{-- Dentro del select vamos a poder poner un listado de todas nuestras marcas --}}
-                        @error('')
-                            <small class="text-danger">{{ '*' . $message }}</small>
-                        @enderror
-                    </div>
-                    
-                    <!--Botones-->
-                    <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </div>
-
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-plus mr-2"></i>
+                    Crear Producto
                 </div>
-            </form>
+                <div class="card-body">
+                    <form action="{{ route('productos.store') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                            <!-- Código -->
+                            <div class="form-group">
+                                <label for="codigo" class="form-label">Código:</label>
+                                <input type="text" name="codigo" id="codigo" class="form-input"
+                                    value="{{ old('codigo') }}">
+                                @error('codigo')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Nombre -->
+                            <div class="form-group">
+                                <label for="nombre" class="form-label">Nombre:</label>
+                                <input type="text" name="nombre" id="nombre" class="form-input"
+                                    value="{{ old('nombre') }}">
+                                @error('nombre')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="form-group md:col-span-2">
+                                <label for="descripcion" class="form-label">Descripción:</label>
+                                <textarea name="descripcion" id="descripcion" rows="3" class="form-input">{{ old('descripcion') }}</textarea>
+                                @error('descripcion')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Fecha de vencimiento -->
+                            <div class="form-group">
+                                <label for="fecha_vencimiento" class="form-label">Fecha de vencimiento:</label>
+                                <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" class="form-input"
+                                    value="{{ old('fecha_vencimiento') }}">
+                                @error('fecha_vencimiento')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Imagen -->
+                            <div class="form-group">
+                                <label for="img_path" class="form-label">Imagen:</label>
+                                <input type="file" name="img_path" id="img_path" class="form-input" accept="image/*"
+                                    value="{{ old('img_path') }}">
+                                @error('img_path')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Tipo -->
+                            <div class="form-group">
+                                <label for="tipo" class="form-label">Tipo:</label>
+                                <select name="tipo" id="tipo" class="form-select" required>
+                                    <option value="">Seleccione el tipo</option>
+                                    <option value="BP" {{ old('tipo') == 'BP' ? 'selected' : '' }}>BP</option>
+                                    <option value="Insumo" {{ old('tipo') == 'Insumo' ? 'selected' : '' }}>Insumo</option>
+                                </select>
+                                @error('tipo')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Marca -->
+                            <div class="form-group">
+                                <label for="marca_id" class="form-label">Marca:</label>
+                                <select name="marca_id" id="marca_id" class="form-select">
+                                    <option value="">Seleccione una marca</option>
+                                    @foreach ($marcas as $marca)
+                                        <option value="{{ $marca->id }}" {{ old('marca_id') == $marca->id ? 'selected' : '' }}>
+                                            {{ $marca->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('marca_id')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Categorías -->
+                            <div class="form-group">
+                                <label for="categorias" class="form-label">Categorías:</label>
+                                <select name="categorias[]" id="categorias" class="form-select" multiple>
+                                    @foreach ($categorias as $categoria)
+                                        <option value="{{ $categoria->id }}"
+                                            {{ in_array($categoria->id, old('categorias', [])) ? 'selected' : '' }}>
+                                            {{ $categoria->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('categorias')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Modelo -->
+                            <div class="form-group">
+                                <label for="modelo_id" class="form-label">Modelo:</label>
+                                <select name="modelo_id" id="modelo_id" class="form-select">
+                                    <option value="">Seleccione un modelo</option>
+                                    @foreach ($modelos as $modelo)
+                                        <option value="{{ $modelo->id }}" {{ old('modelo_id') == $modelo->id ? 'selected' : '' }}>
+                                            {{ $modelo->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('modelo_id')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Sugerencia -->
+                            <div class="form-group">
+                                <label for="sugerencia" class="form-label">Sugerencia:</label>
+                                <textarea name="sugerencia" id="sugerencia" class="form-input" rows="3" placeholder="Ej: Desechar, Donar, Uso en el laboratorio">{{ old('sugerencia') }}</textarea>
+                                @error('sugerencia')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Ubicación -->
+                            <div class="form-group">
+                                <label for="ubicacion" class="form-label">Ubicación:</label>
+                                <input type="text" name="ubicacion" id="ubicacion" class="form-input"
+                                    placeholder="Ej: Laboratorio, Depósito, Tacuru Pucu" value="{{ old('ubicacion') }}">
+                                @error('ubicacion')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="flex justify-center mt-6 space-x-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save mr-2"></i>
+                                Guardar
+                            </button>
+                            <a href="{{ route('productos.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-times mr-2"></i>
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
         </div>
     </div>
 
 @endsection
-
-@push('js')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
-@endpush

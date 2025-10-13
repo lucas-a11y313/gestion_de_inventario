@@ -1,53 +1,69 @@
 @extends('template')
 
-@section('title', 'Editar categorías')
+@section('title', 'Editar Categoría')
 
 @push('css')
-    <style>
-        #descripcion{
-            resize: none;
-        }
-    </style>
 @endpush
 
 @section('content')
-    <div class="container-fluid px-4">
-        <h1 class="mt-4 text-center">Editar Categoría</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('categorias.index') }}">Categorías</a></li>
-            <li class="breadcrumb-item active">Editar categoría</li>
-        </ol>
-    </div>
+    <div class="px-4 py-6">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Editar Categoría</h1>
+            <nav class="breadcrumb mb-6">
+                <div class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('categorias.index') }}">Categorías</a></div>
+                <div class="breadcrumb-item active">Editar categoría</div>
+            </nav>
 
-    <div class="container w-100 border border-3 border-primary rounded p-4 mt-3">
-        <form action="{{ route('categorias.update', ['categoria' => $categoria])}}" method="post">
-            @method('PATCH')
-            @csrf{{-- la directiva @csrf sirve para poder enviar formularios --}}
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" name="nombre" id="nombre" class="form-control" value="{{old('nombre',$categoria->caracteristica->nombre)}}">{{--value va a tener por defecto el valor que esta en $categoria->caracteristica->nombre--}}
-                    @error('nombre')
-                        <small class="text-danger">{{'*'.$message}}</small>
-                    @enderror
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-edit mr-2"></i>
+                    Editar Categoría
                 </div>
+                <div class="card-body">
+                    <form action="{{ route('categorias.update', ['categoria' => $categoria]) }}" method="post">
+                        @method('PATCH')
+                        @csrf
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <div class="col-md-12">
-                    <label for="descripcion" class="form-label">Descripcion</label>
-                    <textarea name="descripcion" id="descripcion" rows="3" class="form-control">{{old('descripcion',$categoria->caracteristica->descripcion)}}</textarea>
-                    @error('descripcion')
-                        <small class="text-danger">{{'*'.$message}}</small>
-                    @enderror
+                            <!-- Nombre -->
+                            <div class="form-group">
+                                <label for="nombre" class="form-label">Nombre:</label>
+                                <input type="text" name="nombre" id="nombre" class="form-input"
+                                    value="{{ old('nombre', $categoria->caracteristica->nombre) }}" placeholder="Ej: Herramientas">
+                                <p class="text-sm text-gray-500 mt-1">Nombre actual: <strong>{{ $categoria->caracteristica->nombre }}</strong></p>
+                                @error('nombre')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="form-group md:col-span-2">
+                                <label for="descripcion" class="form-label">Descripción:</label>
+                                <textarea name="descripcion" id="descripcion" rows="3" class="form-input resize-none"
+                                    placeholder="Ingrese una descripción para la categoría">{{ old('descripcion', $categoria->caracteristica->descripcion) }}</textarea>
+                                <p class="text-sm text-gray-500 mt-1">Descripción actual: <strong>{{ $categoria->caracteristica->descripcion ?? 'Sin descripción' }}</strong></p>
+                                @error('descripcion')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="flex justify-center mt-6 space-x-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save mr-2"></i>
+                                Actualizar
+                            </button>
+                            <a href="{{ route('categorias.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-times mr-2"></i>
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                    <button type="reset" class="btn btn-secondary">Reiniciar</button>
-                </div>
-
             </div>
-        </form>
+        </div>
     </div>
 @endsection
 

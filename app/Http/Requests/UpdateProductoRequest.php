@@ -20,7 +20,7 @@ class UpdateProductoRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {   
+    {
         $producto = $this->route('producto');
         return [
             'codigo' => 'required|max:50|unique:productos,codigo,'.$producto->id,
@@ -28,8 +28,12 @@ class UpdateProductoRequest extends FormRequest
             'descripcion' => 'nullable|max:255',
             'fecha_vencimiento' => 'nullable|date',
             'img_path' => 'nullable|max:2048|image|mimes:png,jpg,jpeg',
+            'tipo' => 'required|in:BP,Insumo',
             'marca_id' => 'required|integer|exists:marcas,id',
-            'categorias' => 'required'
+            'categorias' => 'required',
+            'ubicacion' => 'nullable|string|max:100',
+            'origen' => 'nullable|string|max:100',
+            'sugerencia' => 'nullable|string'
         ];
     }
 

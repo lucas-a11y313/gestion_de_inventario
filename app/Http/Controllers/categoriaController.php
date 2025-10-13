@@ -25,10 +25,15 @@ class categoriaController extends Controller
      */
     public function index()
     {
-        $categorias = Categoria::with('caracteristica')->latest()->get();//Traer o recuperar el modelo categoria con el modelo caracteristica a traves de la relacion que nos da la funcion 'caracteristica' que está en el modelo Categoria, la relacion es de uno a uno. latest() Nos permite ordenar los registros de la tabla segun su fecha de creación, se estará aplicando un "order by"
-        
+        $categorias = Categoria::with('caracteristica')
+            ->whereHas('caracteristica', function($query) {
+                $query->where('estado', 1);
+            })
+            ->latest()
+            ->get();//Traer o recuperar el modelo categoria con el modelo caracteristica a traves de la relacion que nos da la funcion 'caracteristica' que está en el modelo Categoria, la relacion es de uno a uno. latest() Nos permite ordenar los registros de la tabla segun su fecha de creación, se estará aplicando un "order by"
+
         //dd($categorias);
-        
+
         return view('categoria.index',['categorias' => $categorias]);//['categorias' => $categorias]:se va a enviar una variable categorias y que esa variable sea igual a $categorias, eso nos permite mostrar los valores que contiene $categorias en la vista.
     }
 
@@ -117,5 +122,17 @@ class categoriaController extends Controller
         }
 
         return redirect()->route('categorias.index')->with('success',$message);
+    }
+
+    public function eliminadas()
+    {
+        $categorias = Categoria::with('caracteristica')
+            ->whereHas('caracteristica', function($query) {
+                $query->where('estado', 0);
+            })
+            ->latest()
+            ->get();
+
+        return view('categoria.categorias_eliminadas', compact('categorias'));
     }
 }

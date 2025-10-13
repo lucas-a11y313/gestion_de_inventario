@@ -35,16 +35,24 @@
 
     <div class="container-fluid px-4">
 
-        <h1 class="mt-4 text-center">Funcionarios</h1>
+        {{-- <h1 class="mt-4 text-center">Funcionarios</h1> --}}
+        <h1 class="mt-4 text-center">Clientes</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
-            <li class="breadcrumb-item active">Funcionarios</li>
+            {{-- <li class="breadcrumb-item active">Funcionarios</li> --}}
+            <li class="breadcrumb-item active">Clientes</li>
         </ol>
 
         @can('crear-cliente')
-            <div class="mb-4">
-                <a href="{{ route('clientes.create') }}">
-                    <button type="button" class="btn btn-primary">Añadir nuevo registro</button>
+            <div class="mb-4 flex gap-4">
+                <a href="{{ route('clientes.create') }}" class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2">
+                    <i class="fas fa-plus"></i>
+                    Añadir nuevo registro
+                </a>
+
+                <a href="{{ route('clientes.eliminados') }}" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2">
+                    <i class="fas fa-archive"></i>
+                    Clientes eliminados
                 </a>
             </div>
         @endcan
@@ -109,8 +117,6 @@
                                         @can('eliminar-cliente')
                                             @if ($cliente->persona->estado == 1)
                                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $cliente->id }}">Eliminar</button>
-                                            @else
-                                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ $cliente->id }}">Restaurar</button>
                                             @endif
                                         @endcan
                                     </div>

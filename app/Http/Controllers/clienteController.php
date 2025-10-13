@@ -119,6 +119,18 @@ class clienteController extends Controller
         }
 
         return redirect()->route('clientes.index')->with('success',$message);
-        
+
+    }
+
+    public function eliminados()
+    {
+        $clientes = Cliente::with('persona.documento')
+            ->whereHas('persona', function($query) {
+                $query->where('estado', 0);
+            })
+            ->latest()
+            ->get();
+
+        return view('cliente.clientes_eliminados', compact('clientes'));
     }
 }

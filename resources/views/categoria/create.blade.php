@@ -1,54 +1,67 @@
 @extends('template')
 
-@section('title', 'Crear categorías')
+@section('title', 'Crear Categoría')
 
 @push('css')
-    <style>
-        #descripcion{
-            resize: none;/*desactivar la propiedad que te permite cambiar el tamaño del textarea con el id:descripcion*/
-        }
-    </style>
 @endpush
 
 @section('content')
-    <div class="container-fluid px-4">
-        <h1 class="mt-4 text-center">Crear Categoría</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('categorias.index') }}">Categorías</a></li>
-            <li class="breadcrumb-item active">Crear categoría</li>
-        </ol>
+    <div class="px-4 py-6">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Crear Categoría</h1>
+            <nav class="breadcrumb mb-6">
+                <div class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('categorias.index') }}">Categorías</a></div>
+                <div class="breadcrumb-item active">Crear categoría</div>
+            </nav>
 
-        <div class="container w-100 border border-3 border-primary rounded p-4 mt-3">
-            {{--  w-100: Aplica un ancho del 100% al contenedor o elemento al que se asigna.--}}
-            <form action="{{ route('categorias.store') }}" method="post">
-                @csrf{{-- la directiva @csrf sirve para poder enviar formularios --}}
-                <div class="row g-3">
-                    {{--g-3: Define un gap (espaciado) de 3 entre las columnas y filas dentro de la fila.--}}
-                    <div class="col-md-6">
-                        {{--col-md-6 define que el campo "Nombre" (o lo que pongas en esa columna) ocupará la mitad del espacio en pantallas medianas o mayores.--}}
-                        <label for="nombre" class="form-label">Nombre:</label>
-                        <input type="text" name="nombre" id="nombre" class="form-control" value="{{old('nombre')}}">
-                        {{--La directiva @old sirve para mantener los campos que se envían cuando falla una validación--}}
-                        @error('nombre'){{--si encuentra un error en el campo nombre, pues que me muestre el error--}}
-                            <small class="text-danger">{{'*'.$message}}</small>{{--text-danger hace que este en rojo el texto--}}
-                        @enderror
-                    </div>
-
-                    <div class="col-md-12">
-                        <label for="descripcion" class="form-label">Descripcion:</label>
-                        <textarea name="descripcion" id="descripcion" rows="3" class="form-control">{{old('descripcion')}}</textarea>{{--el metodo old('descripcion') permite que lo que esta escrito en descripcion no se borre al seleccionar guardar--}}
-                        @error('descripcion')
-                            <small class="text-danger">{{'*'.$message}}</small>
-                        @enderror
-                    </div>
-
-                    <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </div>
-
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-plus mr-2"></i>
+                    Crear Categoría
                 </div>
-            </form>
+                <div class="card-body">
+                    <form action="{{ route('categorias.store') }}" method="post">
+                        @csrf
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                            <!-- Nombre -->
+                            <div class="form-group">
+                                <label for="nombre" class="form-label">Nombre:</label>
+                                <input type="text" name="nombre" id="nombre" class="form-input"
+                                    value="{{ old('nombre') }}" placeholder="Ej: Herramientas">
+                                <p class="text-sm text-gray-500 mt-1">Ingrese el nombre de la categoría</p>
+                                @error('nombre')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="form-group md:col-span-2">
+                                <label for="descripcion" class="form-label">Descripción:</label>
+                                <textarea name="descripcion" id="descripcion" rows="3" class="form-input resize-none"
+                                    placeholder="Ingrese una descripción para la categoría">{{ old('descripcion') }}</textarea>
+                                <p class="text-sm text-gray-500 mt-1">Descripción detallada de la categoría</p>
+                                @error('descripcion')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="flex justify-center mt-6 space-x-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save mr-2"></i>
+                                Guardar
+                            </button>
+                            <a href="{{ route('categorias.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-times mr-2"></i>
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

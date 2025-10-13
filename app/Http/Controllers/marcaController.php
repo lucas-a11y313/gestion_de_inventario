@@ -24,8 +24,13 @@ class marcaController extends Controller
      */
     public function index()
     {
-        $marcas = Marca::with('caracteristica')->latest()->get();//latest() Nos permite ordenar los registros de la tabla segun su fecha de creación, se estará aplicando un "order by"
-        //dd($marcas);    
+        $marcas = Marca::with('caracteristica')
+            ->whereHas('caracteristica', function($query) {
+                $query->where('estado', 1);
+            })
+            ->latest()
+            ->get();//latest() Nos permite ordenar los registros de la tabla segun su fecha de creación, se estará aplicando un "order by"
+        //dd($marcas);
         return view("marca.index", ['marcas' => $marcas]);
     }
 
@@ -98,5 +103,17 @@ class marcaController extends Controller
         }
 
         return redirect()->route('marcas.index')->with('success',$message);
+    }
+
+    public function eliminadas()
+    {
+        $marcas = Marca::with('caracteristica')
+            ->whereHas('caracteristica', function($query) {
+                $query->where('estado', 0);
+            })
+            ->latest()
+            ->get();
+
+        return view('marca.marcas_eliminadas', compact('marcas'));
     }
 }

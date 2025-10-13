@@ -27,8 +27,12 @@ class StoreProductoRequest extends FormRequest
             'descripcion' => 'nullable|max:255',
             'fecha_vencimiento' => 'nullable|date',
             'img_path' => 'nullable|max:2048|image|mimes:png,jpg,jpeg',
+            'tipo' => 'required|in:BP,Insumo',
             'marca_id' => 'required|integer|exists:marcas,id',
-            'categorias' => 'required'
+            'categorias' => 'required',
+            'ubicacion' => 'nullable|string|max:100',
+            'origen' => 'nullable|string|max:100',
+            'sugerencia' => 'nullable|string'
         ];
     }
 

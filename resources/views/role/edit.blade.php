@@ -1,65 +1,85 @@
 @extends('template')
 
-@section('title', 'Editar roles')
+@section('title', 'Editar Rol')
 
 @push('css')
 @endpush
 
 @section('content')
-    <div class="container-fluid px-4">
-        <h1 class="mt-4 text-center">Editar Rol</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Roles</a></li>
-            <li class="breadcrumb-item active">Editar rol</li>
-        </ol>
-    </div>
+    <div class="px-4 py-6">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Editar Rol</h1>
+            <nav class="breadcrumb mb-6">
+                <div class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('roles.index') }}">Roles</a></div>
+                <div class="breadcrumb-item active">Editar rol</div>
+            </nav>
 
-    <div class="container w-100 border border-3 border-primary rounded p-4 smt-3">
-        <form action=" {{ route('roles.update', ['role' => $role]) }}" method="post">
-            @method('PATCH')
-            @csrf
-            <div class="row g-3">
-                <!--Nombre del rol-->
-                <div class="row mb-4 mt-4">
-                    <label for="name" class="col-sm-2 col-form-label">Nombre del rol:</label>
-                    <div class="col-sm-4">
-                        <input type="text" name="name" id="name" class="form-control" value="{{old('name', $role->name)}}">
-                    </div>
-                    <div class="col-sm-6">
-                        @error('name')
-                            <small class="text-danger">{{'*'.$message}}</small>
-                        @enderror
-                    </div>
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-edit mr-2"></i>
+                    Editar Rol
                 </div>
+                <div class="card-body">
+                    <form action="{{ route('roles.update', ['role' => $role]) }}" method="post">
+                        @method('PATCH')
+                        @csrf
+                        <div class="grid grid-cols-1 gap-6">
 
-                <!--Permisos-->
-                <div class="col-12 mb-4">
-                    <label for="" class="form-label">Permisos para el rol:</label>
-                    @foreach ($permisos as $item)
-                        @if ( in_array($item->id, $role->permissions->pluck('id')->toArray() ) )
-                            <div class="form-check mb-2">
-                                <input checked type="checkbox" name="permission[]" id="{{ $item->id }}" class="form-check-input" value="{{ $item->id }}">
-                                <label for="{{$item->id}}" class="form-check-label">{{$item->name}}</label>
+                            <!-- Nombre del Rol -->
+                            <div class="form-group">
+                                <label for="name" class="form-label">Nombre del Rol:</label>
+                                <input type="text" name="name" id="name" class="form-input"
+                                    value="{{ old('name', $role->name) }}" placeholder="Ej: Administrador">
+                                <p class="text-sm text-gray-500 mt-1">Rol actual: <strong>{{ $role->name }}</strong></p>
+                                @error('name')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
                             </div>
-                        @else
-                            <div class="form-check mb-2">
-                                <input type="checkbox" name="permission[]" id="{{ $item->id }}" class="form-check-input" value="{{ $item->id }}">
-                                <label for="{{$item->id}}" class="form-check-label">{{$item->name}}</label>
-                            </div>
-                        @endif
-                    @endforeach
-                </div>
-                @error('permission')
-                    <small class="text-danger">{{'*'.$message}}</small>
-                @enderror
 
-                <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                    <button type="reset" class="btn btn-secondary">Reiniciar</button>
+                            <!-- Permisos -->
+                            <div class="form-group">
+                                <label class="form-label">Permisos para el rol:</label>
+                                <p class="text-sm text-gray-500 mb-4">
+                                    Permisos actuales: <strong>{{ $role->permissions->count() }}</strong> de {{ $permisos->count() }} disponibles
+                                </p>
+
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                        @foreach ($permisos as $item)
+                                            <div class="flex items-center">
+                                                <input type="checkbox" name="permission[]" id="{{ $item->id }}"
+                                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                                    value="{{ $item->id }}"
+                                                    {{ (in_array($item->id, old('permission', $role->permissions->pluck('id')->toArray()))) ? 'checked' : '' }}>
+                                                <label for="{{ $item->id }}" class="ml-3 text-sm font-medium text-gray-700">
+                                                    {{ $item->name }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @error('permission')
+                                    <small class="form-error">{{ '*' . $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="flex justify-center mt-8 space-x-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save mr-2"></i>
+                                Actualizar
+                            </button>
+                            <a href="{{ route('roles.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-times mr-2"></i>
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 @endsection
 

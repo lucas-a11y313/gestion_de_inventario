@@ -50,4 +50,25 @@ class User extends Authenticatable
     public function ventas(){
         return $this->hasMany(Venta::class);
     }
+
+    /**
+     * BPs que actualmente tiene asignados este usuario
+     */
+    public function inventarioBPs()
+    {
+        return $this->belongsToMany(InventarioBP::class, 'inventariobp_user', 'user_id', 'inventariobp_id')
+                    ->withPivot('asignado_por', 'fecha_desasignacion')
+                    ->withTimestamps();
+    }
+
+    /**
+     * BPs activos (sin fecha de desasignación)
+     */
+    public function inventarioBPsActivos()
+    {
+        return $this->belongsToMany(InventarioBP::class, 'inventariobp_user', 'user_id', 'inventariobp_id')
+                    ->whereNull('inventariobp_user.fecha_desasignacion')
+                    ->withPivot('asignado_por', 'fecha_desasignacion')
+                    ->withTimestamps();
+    }
 }

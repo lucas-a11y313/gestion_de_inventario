@@ -3,21 +3,21 @@
     use App\Models\Categoria;
     use App\Models\Compra;
     use App\Models\Marca;
+    use App\Models\Modelo;
     use App\Models\Producto;
     use App\Models\Proveedore;
     use App\Models\User;
     use App\Models\Venta;
+    use Spatie\Permission\Models\Role;
 @endphp
 
-@extends('template')<!---index es una vista que va a heredar de template, Indica que una vista hija hereda de una plantilla base(en este caso, template). Permite reutilizar el diseño definido en la plantilla base.--->
+@extends('template')
 
-@section('title','Panel')<!--- Define el contenido de una sección que será mostrada en un yield o stack en la plantilla base, en este caso es de un yield llamado title. --->
+@section('title','Panel')
 
 @push('css')
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-@endpush<!---Añade más contenido a una sección o pila. Añade contenido a una "pila" definida con stack.Se usa en las vistas hijas o incluso en subcomponentes para insertar contenido acumulativamente. En este caso estaremos añadiendo contenido en la pila css que esta en stack--->
+@endpush
 
 @section('content')
     @if (session('success'))
@@ -43,214 +43,275 @@
     </script>
     @endif
 
+    <div class="px-4 py-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="mb-12">
+                <h1 class="text-3xl font-bold text-gray-900">Panel de Control</h1>
+            </div>
 
-    <div class="container-fluid px-4">
-        <h1 class="mt-4">Panel</h1>
-        
-        <ol class="breadcrumb mb-4">
-            <!--<li class="breadcrumb-item active">Panel</li>-->
-        </ol>
-        <div class="row">
-            <!--Clientes-->
-            @can('ver-cliente')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-8">
-                                <i class="fa-solid fa-people-group"></i><span class="m-1">Funcionarios</span>
-                                </div>
-                                <div class="col-4">
-                                    @php
-                                        $cliente = count(Cliente::all());//Me cuenta cuantos clientes tengo
-                                    @endphp
-                                    <p class="text-center fw-bold fs-4">{{$cliente}}</p>
-                                </div>
-                            </div>
+            <!-- Modules Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8">Módulos del Sistema</h2>
+            </div>
+
+            <!-- Module Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                {{-- <!-- Funcionarios -->
+                @can('ver-cliente')
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-users text-xl text-blue-600"></i>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{{ route('clientes.index') }}">Ver más</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Funcionarios</h3>
+                                <span class="text-lg font-bold text-blue-600">{{ count(Cliente::all()) }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de funcionarios y personal del sistema</p>
                         </div>
                     </div>
                 </div>
-            @endcan
-            <!--Productos-->
-            @can('ver-producto')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-white mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-8">
-                                <i class="fa-solid fa-cart-plus"></i><span class="m-1">Productos</span>
-                                </div>
-                                <div class="col-4">
-                                    @php
-                                        $producto = count(Producto::all()); 
-                                    @endphp
-                                    <p class="text-center fw-bold fs-4">{{$producto}}</p>
-                                </div>
-                            </div>
+                @endcan --}}
+
+                <!-- Productos -->
+                @can('ver-producto')
+                <a href="{{ route('productos.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-cube text-xl text-teal-600"></i>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{{ route('productos.index') }}">Ver más</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Productos</h3>
+                                <span class="text-lg font-bold text-teal-600">{{ count(Producto::all()) }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Administración completa del catálogo de productos</p>
                         </div>
                     </div>
-                </div>
-            @endcan
-            <!--Categorías-->
-            @can('ver-categoria')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-success text-white mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-8">
-                                <i class="fa-solid fa-tag"></i><span class="m-1">Categorías</span>
-                                </div>
-                                <div class="col-4">
-                                    @php
-                                        $categoria = count(Categoria::all());//Me cuenta cuantas categorías tengo
-                                    @endphp
-                                    <p class="text-center fw-bold fs-4">{{$categoria}}</p>
-                                </div>
-                            </div>
+                </a>
+                @endcan
+
+                <!-- Categorías -->
+                @can('ver-categoria')
+                <a href="{{ route('categorias.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-tag text-xl text-purple-600"></i>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{{ route('categorias.index') }}">Ver más</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Categorías</h3>
+                                <span class="text-lg font-bold text-purple-600">{{ count(Categoria::all()) }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Organización y clasificación de productos por categorías</p>
                         </div>
                     </div>
-                </div>
-            @endcan
-            <!--Marcas-->
-            @can('ver-marca')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-danger text-white mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-8">
-                                <i class="fa-solid fa-bullhorn"></i><span class="m-1">Marcas</span>
-                                </div>
-                                <div class="col-4">
-                                    @php
-                                        $marca = count(Marca::all());//Me cuenta cuantas marcas tengo
-                                    @endphp
-                                    <p class="text-center fw-bold fs-4">{{$marca}}</p>
-                                </div>
-                            </div>
+                </a>
+                @endcan
+
+                <!-- Marcas -->
+                @can('ver-marca')
+                <a href="{{ route('marcas.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-bookmark text-xl text-orange-600"></i>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{{ route('marcas.index') }}">Ver más</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Marcas</h3>
+                                <span class="text-lg font-bold text-orange-600">{{ count(Marca::all()) }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de marcas y fabricantes de productos</p>
                         </div>
                     </div>
-                </div>
-            @endcan
-            <!--Compras-->
-            @can('ver-compra')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-danger text-white mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-8">
-                                <i class="fa-solid fa-store"></i><span class="m-1">Compras</span>
-                                </div>
-                                <div class="col-4">
-                                    @php
-                                        $compra = count(Compra::all());//Me cuenta cuantas compras tengo
-                                    @endphp
-                                    <p class="text-center fw-bold fs-4">{{$compra}}</p>
-                                </div>
-                            </div>
+                </a>
+                @endcan
+
+                <!-- Modelos -->
+                @can('ver-modelo')
+                <a href="{{ route('modelos.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-cog text-xl text-cyan-600"></i>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{{ route('compras.index') }}">Ver más</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Modelos</h3>
+                                <span class="text-lg font-bold text-cyan-600">{{ count(Modelo::all()) }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Control de modelos y variantes de productos</p>
                         </div>
                     </div>
-                </div>
-            @endcan
-            <!--Proveedores-->
-            @can('ver-proveedor')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-8">
-                                <i class="fa-solid fa-truck-field"></i><span class="m-1">Proveedores</span>
-                                </div>
-                                <div class="col-4">
-                                    @php
-                                        $proveedore = count(Proveedore::all());
-                                    @endphp
-                                    <p class="text-center fw-bold fs-4">{{$proveedore}}</p>
-                                </div>
-                            </div>
+                </a>
+                @endcan
+
+                <!-- Proveedores -->
+                @can('ver-proveedore')
+                <a href="{{ route('proveedores.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-truck text-xl text-indigo-600"></i>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{{ route('proveedores.index') }}">Ver más</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Proveedores</h3>
+                                <span class="text-lg font-bold text-indigo-600">{{ count(Proveedore::all()) }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de proveedores y contactos de suministro</p>
                         </div>
                     </div>
-                </div>
-            @endcan
-            <!--Users-->
-            @can('ver-user')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-white mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-8">
-                                <i class="fa-solid fa-user"></i><span class="m-1">Usuarios</span>
-                                </div>
-                                <div class="col-4">
-                                    @php
-                                        $user = count(User::all());
-                                    @endphp
-                                    <p class="text-center fw-bold fs-4">{{$user}}</p>
-                                </div>
-                            </div>
+                </a>
+                @endcan
+
+                <!-- Adquisiciones -->
+                @can('ver-adquisicion')
+                <a href="{{ route('adquisiciones.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-shopping-cart text-xl text-blue-600"></i>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{{ route('users.index') }}">Ver más</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Adquisiciones</h3>
+                                <span class="text-lg font-bold text-blue-600">{{ \App\Models\Adquisicion::count() }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Registro de adquisiciones de productos</p>
                         </div>
                     </div>
-                </div>
-            @endcan
-            <!--Ventas-->
-            @can('ver-venta')
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-8">
-                                <i class="fa-solid fa-user"></i><span class="m-1">Ventas</span>
-                                </div>
-                                <div class="col-4">
-                                    @php
-                                        $venta = count(Venta::all());
-                                    @endphp
-                                    <p class="text-center fw-bold fs-4">{{$venta}}</p>
-                                </div>
-                            </div>
+                </a>
+                @endcan
+
+                <!-- Solicitudes -->
+                @can('ver-solicitud')
+                <a href="{{ route('solicitudes.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-clipboard-list text-xl text-yellow-600"></i>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{{ route('ventas.index') }}">Ver más</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Solicitudes</h3>
+                                <span class="text-lg font-bold text-yellow-600">{{ \App\Models\Solicitud::count() }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de solicitudes de retiro y préstamo</p>
                         </div>
                     </div>
-                </div>
-            @endcan
+                </a>
+                @endcan
+
+                <!-- Proyectos -->
+                @can('ver-proyecto')
+                <a href="{{ route('proyectos.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-project-diagram text-xl text-green-600"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Proyectos</h3>
+                                <span class="text-lg font-bold text-green-600">{{ \App\Models\Proyecto::count() }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Administración de proyectos y asignación de recursos</p>
+                        </div>
+                    </div>
+                </a>
+                @endcan
+
+                <!-- Clientes -->
+                @can('ver-cliente')
+                <a href="{{ route('clientes.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-lime-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-user-friends text-xl text-lime-600"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Clientes</h3>
+                                <span class="text-lg font-bold text-lime-600">{{ count(Cliente::all()) }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de clientes y contactos comerciales</p>
+                        </div>
+                    </div>
+                </a>
+                @endcan
+
+                <!-- Inventario de BP -->
+                @can('ver-inventarioBP')
+                <a href="{{ route('inventariobp.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-database text-xl text-orange-600"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Inventario de BP</h3>
+                                <span class="text-lg font-bold text-orange-600">{{ \App\Models\InventarioBP::count() }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestiona el inventario de productos BP con códigos, nombres y cantidades</p>
+                        </div>
+                    </div>
+                </a>
+                @endcan
+
+                <!-- Inventario de Insumos -->
+                <a href="{{ route('inventarioinsumos.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-cube text-xl text-teal-600"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Inventario de Insumos</h3>
+                                <span class="text-lg font-bold text-teal-600">{{ 852 }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Control completo de insumos con estados, retiros y razones</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Usuarios -->
+                @can('ver-user')
+                <a href="{{ route('users.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-user text-xl text-pink-600"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Usuarios</h3>
+                                <span class="text-lg font-bold text-pink-600">{{ count(User::all()) }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Administración de usuarios del sistema</p>
+                        </div>
+                    </div>
+                </a>
+                @endcan
+
+                <!-- Roles -->
+                @can('ver-role')
+                <a href="{{ route('roles.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-shield-alt text-xl text-red-600"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Roles</h3>
+                                <span class="text-lg font-bold text-red-600">{{ count(Role::all()) }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de roles y permisos de usuario</p>
+                        </div>
+                    </div>
+                </a>
+                @endcan
+            </div>
         </div>
     </div>
 @endsection
 
 @push('js')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+    <!-- No scripts needed for this dashboard -->
 @endpush

@@ -5,7 +5,6 @@
 @push('css')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
-    {{-- hay problema con este estilo de css, por eso sale todo encimado en la vista la tabla --}}
 @endpush
 
 @section('content')
@@ -30,36 +29,47 @@
         </script>
     @endif
 
-    <div class="px-4 py-6" x-data="productsModal()">
+    <div class="px-4 py-6">
         <div class="max-w-7xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Productos</h1>
             <nav class="breadcrumb mb-6">
                 <div class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></div>
                 <div class="breadcrumb-item active">Productos</div>
             </nav>
+            
 
             @can('crear-producto')
+            
+                <!-- Buttons and Search Section -->
                 <div class="flex flex-col lg:flex-row gap-4 mb-6">
-                    <div class="flex-1">
-                        <a href="{{ route('productos.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus mr-2"></i>
+                    <div class="flex gap-4">
+                        <a href="{{ route('productos.create') }}" class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2">
+                            <i class="fas fa-plus"></i>
                             Añadir nuevo registro
                         </a>
+
+                        <a href="{{ route('productos.eliminados') }}" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2">
+                            <i class="fas fa-archive"></i>
+                            Productos eliminados
+                        </a>
+                        <!--
+                        <a href="{{ route('productos.inventario.pdf') }}" target="_blank" class="btn btn-success">
+                            <i class="fas fa-file-pdf mr-2"></i>
+                            Generar informe completo
+                        </a>
+                        -->
+                        
                     </div>
 
-                    <div>
-                        <a href="{{ route('productos.inventario.pdf') }}" target="_blank" class="btn btn-success">
-                            <i class="fas fa-trash-restore mr-2"></i>
-                            Insumos eliminados
-                        </a>
-                    </div>
+                    
                 </div>
+            
             @endcan
 
             <div class="card">
                 <div class="card-header">
                     <i class="fas fa-table mr-2"></i>
-                    Tabla productos
+                    Tabla productos ({{ $productos->count() }} registros)
                 </div>
                 <div class="card-body">
                     <div class="overflow-x-auto">
@@ -68,31 +78,48 @@
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Código</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marca</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categorías</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modelo</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sugerencia</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categorías</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ubicación</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($productos as $producto)
+                            @forelse ($productos as $producto)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $producto->codigo }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $producto->nombre }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $producto->marca->caracteristica->nombre }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                            {{ $producto->tipo === 'BP' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
+                                            {{ $producto->tipo }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $producto->marca?->caracteristica?->nombre ?? 'Sin marca' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $producto->modelo?->caracteristica?->nombre ?? 'Sin modelo' }}
+                                    </td>
                                     <td class="px-6 py-4">
                                         <div class="flex flex-wrap gap-1">
-                                            @foreach ($producto->categorias as $categoria)
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                    {{ $categoria->caracteristica->nombre }}
-                                                </span>
-                                            @endforeach
+                                            @if($producto->categorias && $producto->categorias->count() > 0)
+                                                @foreach ($producto->categorias as $categoria)
+                                                    @if($categoria->caracteristica)
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                            {{ $categoria->caracteristica->nombre }}
+                                                        </span>
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                <span class="text-xs text-gray-400">Sin categorías</span>
+                                            @endif
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $producto->ubicacion ?? '-' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if ($producto->estado == 1)
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -112,25 +139,27 @@
                                                 </a>
                                             @endcan
 
-                                            <button @click="openViewModal({{ $producto->id }})" class="btn btn-success btn-sm">
+                                            <button onclick="window.productModal.openViewModal({{ $producto->id }})" class="btn btn-success btn-sm">
                                                 <i class="fas fa-eye mr-1"></i>Ver
                                             </button>
 
                                             @can('eliminar-producto')
                                                 @if ($producto->estado == 1)
-                                                    <button @click="openConfirmModal({{ $producto->id }})" class="btn btn-danger btn-sm">
+                                                    <button onclick="window.productModal.openConfirmModal({{ $producto->id }})" class="btn btn-danger btn-sm">
                                                         <i class="fas fa-trash mr-1"></i>Eliminar
-                                                    </button>
-                                                @else
-                                                    <button @click="openConfirmModal({{ $producto->id }})" class="btn btn-primary btn-sm">
-                                                        <i class="fas fa-undo mr-1"></i>Restaurar
                                                     </button>
                                                 @endif
                                             @endcan
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="8" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                        No hay productos registrados
+                                    </td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -138,63 +167,41 @@
             </div>
 
             <!-- Modal Ver Producto -->
-            <div x-show="showViewModal"
-                 x-transition:enter="ease-out duration-300"
-                 x-transition:enter-start="opacity-0"
-                 x-transition:enter-end="opacity-100"
-                 x-transition:leave="ease-in duration-200"
-                 x-transition:leave-start="opacity-100"
-                 x-transition:leave-end="opacity-0"
-                 class="fixed inset-0 z-[60] overflow-y-auto"
-                 style="display: none;">
+            <div id="viewModal" class="fixed inset-0 z-[60] overflow-y-auto" style="display: none;">
                 <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="closeViewModal()"></div>
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="window.productModal.closeViewModal()"></div>
 
                     <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
                         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-lg font-medium text-gray-900">Detalles del producto</h3>
-                                <button @click="closeViewModal()" class="text-gray-400 hover:text-gray-600">
+                                <button onclick="window.productModal.closeViewModal()" class="text-gray-400 hover:text-gray-600">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700">Código:</label>
-                                    <p class="mt-1 text-sm text-gray-900" x-text="selectedProduct?.codigo"></p>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Nombre:</label>
-                                    <p class="mt-1 text-sm text-gray-900" x-text="selectedProduct?.nombre"></p>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Marca:</label>
-                                    <p class="mt-1 text-sm text-gray-900" x-text="selectedProduct?.marca"></p>
-                                </div>
-                                <div>
                                     <label class="block text-sm font-medium text-gray-700">Descripción:</label>
-                                    <p class="mt-1 text-sm text-gray-900" x-text="selectedProduct?.descripcion || 'Sin descripción'"></p>
+                                    <p class="mt-1 text-sm text-gray-900" id="modal-descripcion"></p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Fecha de vencimiento:</label>
-                                    <p class="mt-1 text-sm text-gray-900" x-text="selectedProduct?.fecha_vencimiento || 'No tiene'"></p>
+                                    <p class="mt-1 text-sm text-gray-900" id="modal-fecha"></p>
                                 </div>
-                                <div x-show="selectedProduct?.img_path">
+                                <div id="modal-image-container" style="display: none;">
                                     <label class="block text-sm font-medium text-gray-700">Imagen:</label>
                                     <div class="mt-2">
-                                        <img :src="selectedProduct?.img_url"
-                                             :alt="selectedProduct?.nombre"
-                                             class="max-w-full h-auto rounded-lg border max-h-64">
+                                        <img id="modal-image" class="max-w-full h-auto rounded-lg border max-h-64">
                                     </div>
                                 </div>
-                                <div x-show="!selectedProduct?.img_path">
+                                <div id="modal-no-image" style="display: none;">
                                     <label class="block text-sm font-medium text-gray-700">Imagen:</label>
                                     <p class="mt-1 text-sm text-gray-500">Sin imagen</p>
                                 </div>
                             </div>
                         </div>
                         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                            <button @click="closeViewModal()" class="btn btn-secondary">
+                            <button onclick="window.productModal.closeViewModal()" class="btn btn-secondary">
                                 Cerrar
                             </button>
                         </div>
@@ -203,17 +210,9 @@
             </div>
 
             <!-- Modal Confirmación -->
-            <div x-show="showConfirmModal"
-                 x-transition:enter="ease-out duration-300"
-                 x-transition:enter-start="opacity-0"
-                 x-transition:enter-end="opacity-100"
-                 x-transition:leave="ease-in duration-200"
-                 x-transition:leave-start="opacity-100"
-                 x-transition:leave-end="opacity-0"
-                 class="fixed inset-0 z-[60] overflow-y-auto"
-                 style="display: none;">
+            <div id="confirmModal" class="fixed inset-0 z-[60] overflow-y-auto" style="display: none;">
                 <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="closeConfirmModal()"></div>
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="window.productModal.closeConfirmModal()"></div>
 
                     <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
                         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -224,20 +223,20 @@
                                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                     <h3 class="text-lg font-medium text-gray-900">Mensaje de confirmación</h3>
                                     <div class="mt-2">
-                                        <p class="text-sm text-gray-500" x-text="confirmMessage"></p>
+                                        <p class="text-sm text-gray-500" id="confirm-message"></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                            <form :action="confirmAction" method="post" class="inline">
+                            <form id="confirm-form" method="post" class="inline">
                                 @method('DELETE')
                                 @csrf
                                 <button type="submit" class="btn btn-danger mr-2">
                                     Confirmar
                                 </button>
                             </form>
-                            <button @click="closeConfirmModal()" class="btn btn-secondary">
+                            <button onclick="window.productModal.closeConfirmModal()" class="btn btn-secondary">
                                 Cerrar
                             </button>
                         </div>
@@ -250,65 +249,108 @@
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
-    <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
 
     <script>
-        function productsModal() {
-            return {
-                showViewModal: false,
-                showConfirmModal: false,
-                selectedProduct: null,
-                confirmMessage: '',
-                confirmAction: '',
+        console.log('Simple DataTables script loaded');
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded - checking for table');
+            const table = document.getElementById('datatablesSimple');
+            console.log('Table found:', table);
 
-                // Datos de productos desde el backend
-                products: {
-                    @foreach ($productos as $producto)
-                    {{ $producto->id }}: {
-                        id: {{ $producto->id }},
-                        codigo: '{{ $producto->codigo }}',
-                        nombre: '{{ $producto->nombre }}',
-                        marca: '{{ $producto->marca->caracteristica->nombre }}',
-                        descripcion: `{{ $producto->descripcion ?? '' }}`,
-                        fecha_vencimiento: '{{ $producto->fecha_vencimiento ?? '' }}',
-                        img_path: '{{ $producto->img_path ?? '' }}',
-                        img_url: '{{ $producto->img_path ? Storage::url("productos/" . $producto->img_path) : "" }}',
-                        estado: {{ $producto->estado }}
-                    },
-                    @endforeach
-                },
+            if (table) {
+                const tbody = table.querySelector('tbody');
+                const rows = tbody ? tbody.querySelectorAll('tr') : [];
+                console.log('Table rows found:', rows.length);
 
-                openViewModal(productId) {
-                    this.selectedProduct = this.products[productId];
-                    this.showViewModal = true;
-                    document.body.style.overflow = 'hidden';
-                },
-
-                closeViewModal() {
-                    this.showViewModal = false;
-                    this.selectedProduct = null;
-                    document.body.style.overflow = '';
-                },
-
-                openConfirmModal(productId) {
-                    const product = this.products[productId];
-                    this.selectedProduct = product;
-                    this.confirmMessage = product.estado == 1 ?
-                        '¿Seguro que quieres eliminar el producto?' :
-                        '¿Seguro que quieres restaurar el producto?';
-                    this.confirmAction = `/productos/${productId}`;
-                    this.showConfirmModal = true;
-                    document.body.style.overflow = 'hidden';
-                },
-
-                closeConfirmModal() {
-                    this.showConfirmModal = false;
-                    this.selectedProduct = null;
-                    this.confirmMessage = '';
-                    this.confirmAction = '';
-                    document.body.style.overflow = '';
+                try {
+                    const dataTable = new simpleDatatables.DataTable(table, {
+                        searchable: true,
+                        sortable: true,
+                        paging: true,
+                        perPage: 10,
+                        labels: {
+                            placeholder: "Buscar...",
+                            noRows: "No se encontraron registros"
+                        }
+                    });
+                    console.log('DataTable initialized successfully', dataTable);
+                } catch (error) {
+                    console.error('Error initializing DataTable:', error);
                 }
+            } else {
+                console.error('Table with ID "datatablesSimple" not found');
             }
-        }
+        });
+    </script>
+
+    <script>
+        // Global product modal object
+        window.productModal = {
+            // Datos de productos desde el backend
+            products: {
+                @foreach ($productos as $producto)
+                {{ $producto->id }}: {
+                    id: {{ $producto->id }},
+                    codigo: '{{ $producto->codigo }}',
+                    nombre: '{{ $producto->nombre }}',
+                    marca: '{{ $producto->marca && $producto->marca->caracteristica ? $producto->marca->caracteristica->nombre : "Sin marca" }}',
+                    descripcion: `{{ $producto->descripcion ?? '' }}`,
+                    fecha_vencimiento: '{{ $producto->fecha_vencimiento ?? '' }}',
+                    img_path: '{{ $producto->img_path ?? '' }}',
+                    img_url: '{{ $producto->img_path ? Storage::url("productos/" . $producto->img_path) : "" }}',
+                    estado: {{ $producto->estado }}
+                },
+                @endforeach
+            },
+
+            openViewModal(productId) {
+                const product = this.products[productId];
+                if (!product) return;
+
+                // Fill modal content
+                document.getElementById('modal-descripcion').textContent = product.descripcion || 'Sin descripción';
+                document.getElementById('modal-fecha').textContent = product.fecha_vencimiento || 'No tiene';
+
+                // Handle image
+                if (product.img_path && product.img_url) {
+                    document.getElementById('modal-image').src = product.img_url;
+                    document.getElementById('modal-image').alt = product.nombre;
+                    document.getElementById('modal-image-container').style.display = 'block';
+                    document.getElementById('modal-no-image').style.display = 'none';
+                } else {
+                    document.getElementById('modal-image-container').style.display = 'none';
+                    document.getElementById('modal-no-image').style.display = 'block';
+                }
+
+                // Show modal
+                document.getElementById('viewModal').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            },
+
+            closeViewModal() {
+                document.getElementById('viewModal').style.display = 'none';
+                document.body.style.overflow = '';
+            },
+
+            openConfirmModal(productId) {
+                const product = this.products[productId];
+                if (!product) return;
+
+                const message = product.estado == 1 ?
+                    '¿Seguro que quieres eliminar el producto?' :
+                    '¿Seguro que quieres restaurar el producto?';
+
+                document.getElementById('confirm-message').textContent = message;
+                document.getElementById('confirm-form').action = `/productos/${productId}`;
+
+                document.getElementById('confirmModal').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            },
+
+            closeConfirmModal() {
+                document.getElementById('confirmModal').style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        };
     </script>
 @endpush

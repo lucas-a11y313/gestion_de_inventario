@@ -11,6 +11,10 @@ class Producto extends Model
         return $this->belongsToMany(Compra::class)->withTimestamps()->withPivot('cantidad','precio_compra','precio_venta');
     }
 
+    public function adquisiciones(){
+        return $this->belongsToMany(Adquisicion::class, 'adquisicion_producto')->withTimestamps()->withPivot('cantidad','precio_compra');
+    }
+
     public function ventas(){
         return $this->belongsToMany(Venta::class)->withTimestamps()->withPivot('cantidad','precio_venta','descuento');
     }
@@ -23,7 +27,15 @@ class Producto extends Model
         return $this->belongsTo(Marca::class);
     }
 
-    protected $fillable = ['codigo','nombre','descripcion','fecha_vencimiento','marca_id','img_path'];
+    public function modelo(){
+        return $this->belongsTo(Modelo::class);
+    }
+
+    public function inventarioBPs(){
+        return $this->hasMany(InventarioBP::class);
+    }
+
+    protected $fillable = ['codigo','nombre','descripcion','fecha_vencimiento','marca_id','modelo_id','img_path','tipo','ubicacion','sugerencia'];
 
     public function hanbleUploadImage($image){//Esta función va a gestionar todo lo que tenga ver con el guardado de la imagen
         

@@ -3,14 +3,14 @@
         <div class="flex justify-between items-center h-16">
             <!-- Navbar Brand-->
             <div class="flex items-center">
-                <a class="text-white font-bold text-lg" href="{{ route('panel') }}">Gestión de Inventario</a>
-                <button @click="sidebarOpen = !sidebarOpen" class="text-gray-300 hover:text-white mr-4 transition-colors">
+                <a class="text-white font-bold text-lg mr-8" href="{{ route('panel') }}">Gestión de Inventario</a>
+                <button @click="sidebarOpen = !sidebarOpen" class="text-gray-300 hover:text-white ml-8 transition-colors">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
 
             <!-- Search Bar (hidden on mobile) -->
-            <form class="hidden md:flex items-center space-x-2">
+            <!--<form class="hidden md:flex items-center space-x-2">
                 <div class="relative">
                     <input class="bg-gray-700 text-white placeholder-gray-400 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                            type="text" placeholder="Buscar..." />
@@ -19,7 +19,8 @@
                     </button>
                 </div>
             </form>
-
+            -->
+            
             <!-- User Menu -->
             <div class="relative" x-data="{ open: false }">
                 <button @click="open = !open" class="flex items-center text-gray-300 hover:text-white focus:outline-none">

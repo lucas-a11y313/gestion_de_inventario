@@ -6,7 +6,7 @@ use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
 use App\Models\Categoria;
 use App\Models\Marca;
-
+use App\Models\Modelo;
 use App\Models\Producto;
 use Exception;
 use Illuminate\Http\Request;
@@ -30,7 +30,10 @@ class productoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::with(['categorias.caracteristica','marca.caracteristica'])->latest()->get();
+        $productos = Producto::with(['categorias.caracteristica','marca.caracteristica','modelo.caracteristica'])
+            ->where('estado', 1)
+            ->latest()
+            ->get();
 
         return view('producto.index',compact('productos'));//compact('productos'): Este método convierte la variable $productos en un array asociativo, usar compact('productos') es lo mismo que ['productos' => $productos]
     }
@@ -45,13 +48,17 @@ class productoController extends Controller
         ->where('c.estado',1)
         ->get();//Solo se incluirán en el resultado las marcas que estén relacionadas con características cuyo estado sea activo (1).
 
+        $modelos = Modelo::join('caracteristicas as c','modelos.caracteristica_id','=','c.id')
+        ->select('modelos.id as id','c.nombre as nombre')
+        ->where('c.estado',1)
+        ->get();
 
         $categorias = Categoria::join('caracteristicas as c','categorias.caracteristica_id','=','c.id')
         ->select('categorias.id as id','c.nombre as nombre')
-        ->where('estado',1)
+        ->where('c.estado',1)
         ->get();
 
-        return view('producto.create', compact('marcas', 'categorias'));//compact('marcas'): Este método convierte la variable $marcas en un array asociativo, usar compact('marcas') es lo mismo que ['marcas' => $marcas]
+        return view('producto.create', compact('marcas', 'modelos', 'categorias'));//compact('marcas'): Este método convierte la variable $marcas en un array asociativo, usar compact('marcas') es lo mismo que ['marcas' => $marcas]
     }
 
     /**
@@ -78,7 +85,11 @@ class productoController extends Controller
                 'descripcion' => $request->descripcion,
                 'fecha_vencimiento' => $request->fecha_vencimiento,
                 'img_path' => $name,
-                'marca_id' => $request->marca_id
+                'marca_id' => $request->marca_id,
+                'modelo_id' => $request->modelo_id,
+                'tipo' => $request->tipo,
+                'ubicacion' => $request->ubicacion,
+                'sugerencia' => $request->sugerencia
             ]);
 
             $producto->save();
@@ -108,17 +119,25 @@ class productoController extends Controller
      */
     public function edit(Producto $producto)
     {
+        // Cargar las relaciones del producto para asegurar que están disponibles
+        $producto->load(['marca.caracteristica', 'modelo.caracteristica', 'categorias.caracteristica']);
+
         $marcas = Marca::join('caracteristicas as c','marcas.caracteristica_id','=','c.id')
         ->select('marcas.id as id','c.nombre as nombre')
         ->where('c.estado',1)
         ->get();//Solo se incluirán en el resultado las marcas que estén relacionadas con características cuyo estado sea activo (1).
 
-        $categorias = Categoria::join('caracteristicas as c','categorias.caracteristica_id','=','c.id')
-        ->select('categorias.id as id','c.nombre as nombre')
-        ->where('estado',1)
+        $modelos = Modelo::join('caracteristicas as c','modelos.caracteristica_id','=','c.id')
+        ->select('modelos.id as id','c.nombre as nombre')
+        ->where('c.estado',1)
         ->get();
 
-        return view('producto.edit',compact('producto','marcas','categorias'));
+        $categorias = Categoria::join('caracteristicas as c','categorias.caracteristica_id','=','c.id')
+        ->select('categorias.id as id','c.nombre as nombre')
+        ->where('c.estado',1)
+        ->get();
+
+        return view('producto.edit',compact('producto','marcas','modelos','categorias'));
     }
 
     /**
@@ -150,7 +169,11 @@ class productoController extends Controller
                 'descripcion' => $request->descripcion,
                 'fecha_vencimiento' => $request->fecha_vencimiento,
                 'img_path' => $name,
-                'marca_id' => $request->marca_id
+                'marca_id' => $request->marca_id,
+                'modelo_id' => $request->modelo_id,
+                'tipo' => $request->tipo,
+                'ubicacion' => $request->ubicacion,
+                'sugerencia' => $request->sugerencia
             ]);
 
             $producto->save();
@@ -243,5 +266,15 @@ class productoController extends Controller
         //return $subquery;
 
         //return view('producto.inventory_pdf');
+    }
+
+    public function eliminados()
+    {
+        $productos = Producto::with(['categorias.caracteristica','marca.caracteristica','modelo.caracteristica'])
+            ->where('estado', 0)
+            ->latest()
+            ->get();
+        //dd($productos);
+        return view('producto.productos_eliminados', compact('productos'));
     }
 }
