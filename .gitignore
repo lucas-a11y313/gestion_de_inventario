@@ -21,3 +21,17 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Laravel cache and storage
+/bootstrap/cache/*
+/storage/framework/*
+/storage/logs/*
+/storage/app/public
+
+# Archivos autogenerados por IDE helper
+_ide_helper.php
+.phpstorm.meta.php
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
