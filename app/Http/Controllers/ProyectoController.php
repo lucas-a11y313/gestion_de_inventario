@@ -71,9 +71,8 @@ class ProyectoController extends Controller
             // Crear proyecto
             $proyecto = Proyecto::create([
                 'nombre' => $request->nombre,
+                'fecha_ejecucion' => $request->fecha_ejecucion,
                 'descripcion' => $request->descripcion,
-                'fecha_inicio' => $request->fecha_inicio,
-                'fecha_fin' => $request->fecha_fin,
                 'imagen' => $name
             ]);
 
@@ -163,9 +162,8 @@ class ProyectoController extends Controller
             // Actualizar proyecto
             $proyecto->update([
                 'nombre' => $request->nombre,
+                'fecha_ejecucion' => $request->fecha_ejecucion,
                 'descripcion' => $request->descripcion,
-                'fecha_inicio' => $request->fecha_inicio,
-                'fecha_fin' => $request->fecha_fin,
                 'imagen' => $name
             ]);
 
@@ -227,8 +225,6 @@ class ProyectoController extends Controller
             $proyectoCopia = Proyecto::create([
                 'nombre' => $proyectoOriginal->nombre . ' (Copia)',
                 'descripcion' => $proyectoOriginal->descripcion,
-                'fecha_inicio' => $proyectoOriginal->fecha_inicio,
-                'fecha_fin' => $proyectoOriginal->fecha_fin,
                 'imagen' => $proyectoOriginal->imagen // Se mantiene la misma imagen
             ]);
 
@@ -245,6 +241,38 @@ class ProyectoController extends Controller
             DB::rollBack();
             return redirect()->route('proyectos.index')->with('error', 'Error al copiar el proyecto: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Generate PDF for proyecto with costs
+     */
+    public function printWithCost(Proyecto $proyecto)
+    {
+        // Cargar las relaciones necesarias
+        $proyecto->load('productos.adquisiciones');
+
+        // Generar el PDF
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('proyecto.proyecto_pdf_con_costo', ['proyecto' => $proyecto])
+            ->setPaper('a4', 'portrait');
+
+        // Retornar el PDF para visualización en el navegador
+        return $pdf->stream('proyecto_' . $proyecto->id . '_con_costo_' . now()->format('Ymd') . '.pdf');
+    }
+
+    /**
+     * Generate PDF for proyecto without costs
+     */
+    public function printWithoutCost(Proyecto $proyecto)
+    {
+        // Cargar las relaciones necesarias
+        $proyecto->load('productos');
+
+        // Generar el PDF
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('proyecto.proyecto_pdf_sin_costo', ['proyecto' => $proyecto])
+            ->setPaper('a4', 'portrait');
+
+        // Retornar el PDF para visualización en el navegador
+        return $pdf->stream('proyecto_' . $proyecto->id . '_sin_costo_' . now()->format('Ymd') . '.pdf');
     }
 
     private function handleUploadImage($imagen) {

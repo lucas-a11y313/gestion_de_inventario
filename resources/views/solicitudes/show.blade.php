@@ -103,10 +103,10 @@
                         <table class="table table-striped">
                             <thead class="bg-blue-600">
                                 <tr>
-                                    <th class="text-white">Producto</th>
-                                    <th class="text-white">Cantidad</th>
-                                    <th class="text-white">Precio de compra</th>
-                                    <th class="text-white">Subtotal</th>
+                                    <th style="color: white !important;">Producto</th>
+                                    <th style="color: white !important;">Cantidad</th>
+                                    <th style="color: white !important;">Precio de compra</th>
+                                    <th style="color: white !important;">Subtotal</th>
                                 </tr>
                             </thead>
                             <tbody>

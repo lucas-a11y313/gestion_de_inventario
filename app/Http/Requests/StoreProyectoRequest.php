@@ -23,23 +23,24 @@ class StoreProyectoRequest extends FormRequest
     {
         return [
             'nombre' => 'required|max:255',
+            'fecha_ejecucion' => 'required|date',
             'descripcion' => 'nullable',
-            'fecha_inicio' => 'nullable|date',
-            'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
             'imagen' => 'nullable|image|mimes:jpeg,jpg,png,gif,svg|max:2048'
         ];
     }
 
     public function attributes(){
         return [
-            'nombre' => 'nombre del proyecto'
+            'nombre' => 'nombre del proyecto',
+            'fecha_ejecucion' => 'fecha de ejecución'
         ];
     }
 
     public function messages() {
         return[
             'nombre.required' => 'El nombre del proyecto es obligatorio.',
-            'fecha_fin.after_or_equal' => 'La fecha de fin debe ser igual o posterior a la fecha de inicio.'
+            'fecha_ejecucion.required' => 'La fecha de ejecución es obligatoria.',
+            'fecha_ejecucion.date' => 'La fecha de ejecución debe ser una fecha válida.'
         ];
     }
 }

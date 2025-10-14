@@ -73,12 +73,17 @@ Route::resource('proyectos', ProyectoController::class, ['parameters' => ['proye
 // al final de routes/web.php
 Route::get('ventas/{venta}/print', [App\Http\Controllers\ventaController::class, 'print'])->name('ventas.print')->middleware('permission:mostrar-venta');
 Route::get('solicitudes/{solicitude}/print', [SolicitudController::class, 'print'])->name('solicitudes.print')->middleware('permission:mostrar-solicitud');
+Route::get('adquisiciones/{adquisicione}/print', [AdquisicionController::class, 'print'])->name('adquisiciones.print')->middleware('permission:mostrar-adquisicion');
+Route::get('proyectos/{proyecto}/print-con-costo', [ProyectoController::class, 'printWithCost'])->name('proyectos.print.con-costo')->middleware('permission:mostrar-proyecto');
+Route::get('proyectos/{proyecto}/print-sin-costo', [ProyectoController::class, 'printWithoutCost'])->name('proyectos.print.sin-costo')->middleware('permission:mostrar-proyecto');
+Route::get('inventariobp/{inventariobp}/print', [InventarioBPController::class, 'print'])->name('inventariobp.print')->middleware('permission:mostrar-inventarioBP');
+Route::get('inventariobp_pdf', [InventarioBPController::class, 'pdf'])->name('inventariobp.pdf')->middleware('permission:ver-inventarioBP');
+Route::get('productos/inventario/pdf',[productoController::class, 'inventoryPdf'])->name('productos.inventario.pdf')->middleware('permission:ver-producto');
 
 
 Route::get('/ticket',function (){
     return view('ticket.index');
 });
-Route::get('productos/inventario/pdf',[productoController::class, 'inventoryPdf'])->name('productos.inventario.pdf');
 
 Route::get('/login', [loginController::class, 'index'])->name('login');//Esto le dice a Laravel que cuando alguien visite '/login', debe usar el método index del controlador homeController para manejar la solicitud. Este te trae la vista de login
 Route::post('/login', [loginController::class, 'login']);// Esta ruta se encargará de manejar toda la lógica para poder iniciar sesión
@@ -131,4 +136,3 @@ Route::get('/404', function () {
 Route::get('/500', function () {
     return view('pages.500');
 });*/
-

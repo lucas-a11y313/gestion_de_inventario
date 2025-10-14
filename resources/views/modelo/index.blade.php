@@ -109,7 +109,7 @@
                 </div>
             </div>
 
-            <!-- Modal Confirmaci�n -->
+            <!-- Modal Confirmacion -->
             <div id="confirmModal" class="fixed inset-0 z-[60] overflow-y-auto" style="display: none;">
                 <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
                     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="window.modeloModal.closeConfirmModal()"></div>
@@ -121,7 +121,7 @@
                                     <i class="fas fa-exclamation-triangle text-red-600"></i>
                                 </div>
                                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                    <h3 class="text-lg font-medium text-gray-900">Mensaje de confirmaci�n</h3>
+                                    <h3 class="text-lg font-medium text-gray-900">Mensaje de confirmación</h3>
                                     <div class="mt-2">
                                         <p class="text-sm text-gray-500" id="confirm-message"></p>
                                     </div>
@@ -171,8 +171,8 @@
                 if (!modelo) return;
 
                 const message = action === 'eliminar'
-                    ? '�Seguro que quieres eliminar el modelo?'
-                    : '�Seguro que quieres restaurar el modelo?';
+                    ? '¿Seguro que quieres eliminar el modelo?'
+                    : '¿Seguro que quieres restaurar el modelo?';
 
                 document.getElementById('confirm-message').textContent = message;
                 document.getElementById('confirm-form').action = `/modelos/${modeloId}`;

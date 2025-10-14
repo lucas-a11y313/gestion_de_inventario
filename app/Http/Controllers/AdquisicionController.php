@@ -145,4 +145,23 @@ class AdquisicionController extends Controller
 
         return redirect()->route('adquisiciones.eliminadas')->with('success', 'Adquisición restaurada exitosamente');
     }
+
+    /**
+     * Generate PDF for adquisicion
+     */
+    public function print(Adquisicion $adquisicione)
+    {
+        // Cargar las relaciones necesarias
+        $adquisicione->load('proveedore.persona', 'productos');
+
+        // Generar el PDF
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('adquisicion.adquisicion_pdf', ['adquisicion' => $adquisicione])
+            ->setPaper('a4', 'portrait');
+
+        // Retornar el PDF para visualización en el navegador
+        return $pdf->stream('adquisicion_' . $adquisicione->id . '_' . now()->format('Ymd') . '.pdf');
+
+        // Alternativa: descarga directa
+        // return $pdf->download('adquisicion_' . $adquisicione->id . '_' . now()->format('Ymd') . '.pdf');
+    }
 }

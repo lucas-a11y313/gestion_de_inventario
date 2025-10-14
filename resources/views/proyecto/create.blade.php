@@ -149,30 +149,20 @@
                                 @enderror
                             </div>
 
+                            <!--Fecha de ejecución-->
+                            <div class="mb-3">
+                                <label for="fecha_ejecucion" class="block text-sm font-medium mb-1" style="color: #374151;">Fecha de ejecución: <span class="text-red-500">*</span></label>
+                                <input type="date" name="fecha_ejecucion" id="fecha_ejecucion" class="form-control" value="{{ old('fecha_ejecucion') }}" required>
+                                @error('fecha_ejecucion')
+                                    <small class="form-error">{{'*'.$message}}</small>
+                                @enderror
+                            </div>
+
                             <!--Descripción-->
                             <div class="mb-3">
                                 <label for="descripcion" class="block text-sm font-medium mb-1" style="color: #374151;">Descripción:</label>
                                 <textarea name="descripcion" id="descripcion" rows="3" class="form-control" placeholder="Descripción del proyecto">{{ old('descripcion') }}</textarea>
                                 @error('descripcion')
-                                    <small class="form-error">{{'*'.$message}}</small>
-                                @enderror
-                            </div>
-
-                            <!--Fecha de inicio-->
-                            <div class="mb-3">
-                                <label for="fecha_inicio" class="block text-sm font-medium mb-1" style="color: #374151;">Fecha de inicio:</label>
-                                <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" value="{{ old('fecha_inicio') }}">
-                                @error('fecha_inicio')
-                                    <small class="form-error">{{'*'.$message}}</small>
-                                @enderror
-                            </div>
-
-                            <!--Fecha de fin-->
-                            <div class="mb-3">
-                                <label for="fecha_fin" class="block text-sm font-medium mb-1" style="color: #374151;">Fecha de fin:</label>
-                                <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" value="{{ old('fecha_fin') }}">
-                                <small style="color: #6b7280; font-size: 0.75rem;">Debe ser igual o posterior a la fecha de inicio</small>
-                                @error('fecha_fin')
                                     <small class="form-error">{{'*'.$message}}</small>
                                 @enderror
                             </div>
@@ -275,11 +265,6 @@
             });
 
             disableButtons();
-
-            // Validación de fechas
-            $('#fecha_inicio, #fecha_fin').on('change', function() {
-                validarFechas();
-            });
         });
 
         //Variables
@@ -462,18 +447,6 @@
                     }
                 } catch (e) {
                     console.error('Error al restaurar productos:', e);
-                }
-            }
-        }
-
-        function validarFechas() {
-            let fechaInicio = $('#fecha_inicio').val();
-            let fechaFin = $('#fecha_fin').val();
-
-            if (fechaInicio && fechaFin) {
-                if (new Date(fechaFin) < new Date(fechaInicio)) {
-                    showModal('La fecha de fin debe ser igual o posterior a la fecha de inicio', 'warning');
-                    $('#fecha_fin').val('');
                 }
             }
         }

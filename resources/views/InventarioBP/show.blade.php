@@ -13,6 +13,12 @@
                     <div class="breadcrumb-item active">{{ $inventariobp->bp }}</div>
                 </nav>
 
+                <div>
+                    <a href="{{ route('inventariobp.print', $inventariobp) }}" class="btn btn-danger" target="_blank">
+                        <i class="fas fa-print"></i> Imprimir PDF
+                    </a>
+                </div>
+
                 <!-- Información Principal -->
                 <div class="card mb-6">
                     <div class="card-header">

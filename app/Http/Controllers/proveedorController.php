@@ -25,7 +25,12 @@ class proveedorController extends Controller
      */
     public function index()
     {
-        $proveedores = Proveedore::with('persona.documento')->latest()->get();
+        $proveedores = Proveedore::with('persona.documento')
+            ->whereHas('persona', function($query) {
+                $query->where('estado', 1);
+            })
+            ->latest()
+            ->get();
         return view('proveedor.index', compact('proveedores'));
     }
 

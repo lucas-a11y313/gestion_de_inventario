@@ -51,15 +51,17 @@
                         <i class="fas fa-archive"></i>
                         BP eliminados
                     </button> --}}
+
+
                 </div>
 
                 <div class="flex gap-4">
-                    <a href="{{ route('productos.inventario.pdf') }}" target="_blank" class="btn btn-success">
+                    <a href="{{ route('inventariobp.pdf') }}" class="btn btn-danger" target="_blank">
                         <i class="fas fa-file-pdf mr-2"></i>
                         Generar informe completo
                     </a>
-                    <a href="{{ route('productos.inventario.pdf') }}" target="_blank" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2">
-                        <i class="fas fa-file-pdf"></i>
+                    <a href="{{ route('productos.inventario.pdf') }}" target="_blank" class="btn btn-success">
+                        <i class="fas fa-file-pdf mr-2"></i>
                         Generar informe resumido
                     </a>
                 </div>

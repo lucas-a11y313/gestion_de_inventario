@@ -60,6 +60,10 @@
     @apply bg-blue-600 hover:bg-blue-700 text-white;
   }
 
+  .btn-secondary {
+    @apply bg-gray-600 hover:bg-gray-700 text-white;
+  }
+
   .btn-success {
     @apply bg-green-600 hover:bg-green-700 text-white;
   }

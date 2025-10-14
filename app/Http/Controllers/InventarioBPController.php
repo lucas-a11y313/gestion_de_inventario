@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateInventarioBPRequest;
 use App\Models\InventarioBP;
 use App\Models\Producto;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Routing\Controller;
 
 class InventarioBPController extends Controller
@@ -17,6 +18,8 @@ class InventarioBPController extends Controller
         $this->middleware('permission:crear-inventarioBP', ['only' => ['create', 'store']]);
         $this->middleware('permission:editar-inventarioBP', ['only' => ['edit', 'update']]);
         $this->middleware('permission:mostrar-inventarioBP', ['only' => ['show']]);
+        $this->middleware('permission:ver-inventarioBP', ['only' => ['pdf']]);
+        $this->middleware('permission:mostrar-inventarioBP', ['only' => ['print']]);
     }
 
     /**
@@ -165,5 +168,37 @@ class InventarioBPController extends Controller
                 ? asset('storage/productos/' . $inventariobp->producto->img_path)
                 : null
         ]);
+    }
+
+    /**
+     * Generate a PDF for the specified resource.
+     *
+     * @param  \App\Models\InventarioBP  $inventariobp
+     * @return \Illuminate\Http\Response
+     */
+    public function print(InventarioBP $inventariobp)
+    {
+        $inventariobp->load(['producto', 'user', 'historialUsuarios']);
+
+        $pdf = Pdf::loadView('InventarioBP.bp_pdf', compact('inventariobp'));
+
+        // Opcional: stream() para mostrar en navegador, download() para forzar descarga
+        return $pdf->stream('bp-' . $inventariobp->bp . '.pdf');
+    }
+
+    /**
+     * Generate a PDF of the BP inventory list.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function pdf()
+    {
+        $inventarioBPs = InventarioBP::with(['producto', 'user'])
+            ->latest()
+            ->get();
+
+        $pdf = Pdf::loadView('InventarioBP.index_pdf', compact('inventarioBPs'));
+
+        return $pdf->stream('inventario-bp.pdf');
     }
 }

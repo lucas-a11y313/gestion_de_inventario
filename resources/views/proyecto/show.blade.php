@@ -28,7 +28,7 @@
                                 <i class="fas fa-calendar"></i>
                                 <div>
                                     <p class="text-xs text-purple-200">Fecha de ejecución</p>
-                                    <p class="font-semibold">{{ \Carbon\Carbon::parse($proyecto->created_at)->format('d/m/Y') }}</p>
+                                    <p class="font-semibold">{{ $proyecto->fecha_ejecucion ? \Carbon\Carbon::parse($proyecto->fecha_ejecucion)->format('d/m/Y') : 'No especificada' }}</p>
                                 </div>
                             </div>
 
@@ -77,12 +77,12 @@
                         <table class="table table-striped">
                             <thead class="bg-indigo-600">
                                 <tr>
-                                    <th class="text-white">#</th>
-                                    <th class="text-white">Código</th>
-                                    <th class="text-white">Producto</th>
-                                    <th class="text-white">Cantidad Requerida</th>
-                                    <th class="text-white">Valor Unitario</th>
-                                    <th class="text-white">Subtotal</th>
+                                    <th style="color: white !important;">#</th>
+                                    <th style="color: white !important;">Código</th>
+                                    <th style="color: white !important;">Producto</th>
+                                    <th style="color: white !important;">Cantidad Requerida</th>
+                                    <th style="color: white !important;">Valor Unitario</th>
+                                    <th style="color: white !important;">Subtotal</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -122,11 +122,21 @@
             </div>
 
             <!-- Botones de acción -->
-            <div class="flex gap-3 justify-center">
+            <div class="flex gap-3 justify-center flex-wrap">
                 <a href="{{ route('proyectos.index') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left mr-2"></i>
                     Volver
                 </a>
+                @can('mostrar-proyecto')
+                <a href="{{ route('proyectos.print.con-costo', ['proyecto' => $proyecto]) }}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2">
+                    <i class="fas fa-print"></i>
+                    Imprimir con Costo
+                </a>
+                <a href="{{ route('proyectos.print.sin-costo', ['proyecto' => $proyecto]) }}" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2">
+                    <i class="fas fa-print"></i>
+                    Imprimir sin Costo
+                </a>
+                @endcan
                 @can('editar-proyecto')
                 <a href="{{ route('proyectos.edit', $proyecto->id) }}" class="btn btn-primary">
                     <i class="fas fa-edit mr-2"></i>
