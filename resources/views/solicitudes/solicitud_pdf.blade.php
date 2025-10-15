@@ -186,6 +186,16 @@
     </tfoot>
   </table>
 
+  <div style="margin-top: 100px; text-align: center; font-size: 12px;">
+    <div style="display: inline-block; width: 250px; border-top: 1px solid #333; padding-top: 8px;">
+      <strong>Nombre y Apellido</strong>
+    </div>
+    <div style="display: inline-block; width: 80px;"></div> <!-- Espacio entre las dos firmas -->
+    <div style="display: inline-block; width: 250px; border-top: 1px solid #333; padding-top: 8px;">
+      <strong>Firma</strong>
+    </div>
+  </div>
+
   <div class="footer">
     Generado el {{ now()->format('d-m-Y H:i:s') }}
   </div>

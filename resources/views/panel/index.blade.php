@@ -8,6 +8,10 @@
     use App\Models\Proveedore;
     use App\Models\User;
     use App\Models\Venta;
+    use App\Models\Adquisicion;
+    use App\Models\Solicitud;
+    use App\Models\Proyecto; 
+    use App\Models\InventarioBP;
     use Spatie\Permission\Models\Role;
 @endphp
 
@@ -86,7 +90,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <h3 class="text-lg font-semibold text-gray-900">Productos</h3>
-                                <span class="text-lg font-bold text-teal-600">{{ count(Producto::all()) }}</span>
+                                <span class="text-lg font-bold text-teal-600">{{ Producto::count() }}</span>
                             </div>
                             <p class="text-sm text-gray-600 mb-4 leading-relaxed">Administración completa del catálogo de productos</p>
                         </div>
@@ -122,7 +126,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <h3 class="text-lg font-semibold text-gray-900">Marcas</h3>
-                                <span class="text-lg font-bold text-orange-600">{{ count(Marca::all()) }}</span>
+                                <span class="text-lg font-bold text-orange-600">{{ Marca::count() }}</span>
                             </div>
                             <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de marcas y fabricantes de productos</p>
                         </div>
@@ -140,7 +144,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <h3 class="text-lg font-semibold text-gray-900">Modelos</h3>
-                                <span class="text-lg font-bold text-cyan-600">{{ count(Modelo::all()) }}</span>
+                                <span class="text-lg font-bold text-cyan-600">{{ Modelo::count() }}</span>
                             </div>
                             <p class="text-sm text-gray-600 mb-4 leading-relaxed">Control de modelos y variantes de productos</p>
                         </div>
@@ -176,7 +180,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <h3 class="text-lg font-semibold text-gray-900">Adquisiciones</h3>
-                                <span class="text-lg font-bold text-blue-600">{{ \App\Models\Adquisicion::count() }}</span>
+                                <span class="text-lg font-bold text-blue-600">{{ Adquisicion::count() }}</span>
                             </div>
                             <p class="text-sm text-gray-600 mb-4 leading-relaxed">Registro de adquisiciones de productos</p>
                         </div>
@@ -194,7 +198,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <h3 class="text-lg font-semibold text-gray-900">Solicitudes</h3>
-                                <span class="text-lg font-bold text-yellow-600">{{ \App\Models\Solicitud::count() }}</span>
+                                <span class="text-lg font-bold text-yellow-600">{{ Solicitud::count() }}</span>
                             </div>
                             <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de solicitudes de retiro y préstamo</p>
                         </div>
@@ -212,7 +216,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <h3 class="text-lg font-semibold text-gray-900">Proyectos</h3>
-                                <span class="text-lg font-bold text-green-600">{{ \App\Models\Proyecto::count() }}</span>
+                                <span class="text-lg font-bold text-green-600">{{ Proyecto::count() }}</span>
                             </div>
                             <p class="text-sm text-gray-600 mb-4 leading-relaxed">Administración de proyectos y asignación de recursos</p>
                         </div>
@@ -248,7 +252,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <h3 class="text-lg font-semibold text-gray-900">Inventario de BP</h3>
-                                <span class="text-lg font-bold text-orange-600">{{ \App\Models\InventarioBP::count() }}</span>
+                                <span class="text-lg font-bold text-orange-600">{{ InventarioBP::count() }}</span>
                             </div>
                             <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestiona el inventario de productos BP con códigos, nombres y cantidades</p>
                         </div>
@@ -265,7 +269,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <h3 class="text-lg font-semibold text-gray-900">Inventario de Insumos</h3>
-                                <span class="text-lg font-bold text-teal-600">{{ 852 }}</span>
+                                <span class="text-lg font-bold text-teal-600">{{ $cantidadInsumos }}</span>
                             </div>
                             <p class="text-sm text-gray-600 mb-4 leading-relaxed">Control completo de insumos con estados, retiros y razones</p>
                         </div>
@@ -282,7 +286,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <h3 class="text-lg font-semibold text-gray-900">Usuarios</h3>
-                                <span class="text-lg font-bold text-pink-600">{{ count(User::all()) }}</span>
+                                <span class="text-lg font-bold text-pink-600">{{ User::count() }}</span>
                             </div>
                             <p class="text-sm text-gray-600 mb-4 leading-relaxed">Administración de usuarios del sistema</p>
                         </div>
@@ -300,7 +304,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <h3 class="text-lg font-semibold text-gray-900">Roles</h3>
-                                <span class="text-lg font-bold text-red-600">{{ count(Role::all()) }}</span>
+                                <span class="text-lg font-bold text-red-600">{{ Role::count() }}</span>
                             </div>
                             <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de roles y permisos de usuario</p>
                         </div>
