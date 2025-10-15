@@ -16,30 +16,28 @@
                 <div class="breadcrumb-item active">Inventario Insumos</div>
             </nav>
 
-            <!-- Buttons Section -->
-            <div class="flex flex-wrap gap-4 mb-6">
-                <a href="{{ route('productos.inventario.pdf') }}" target="_blank" class="btn btn-success">
-                    <i class="fas fa-file-pdf"></i>
-                    Generar informe completo
-                </a>
-                <a href="{{ route('productos.inventario.pdf') }}" target="_blank" class="btn" style="background-color: #0d9488; color: white;">
-                    <i class="fas fa-file-pdf"></i>
-                    Generar informe resumido
-                </a>
-                <a href="{{ route('insumos.origen') }}" class="btn btn-warning">
-                    <i class="fas fa-truck-loading"></i>
-                    Origen de insumos
-                </a>
-                <a href="{{ route('insumos.retirados') }}" class="btn btn-danger">
-                    <i class="fas fa-hand-holding"></i>
-                    Insumos retirados
-                </a>
-                <a href="{{ route('insumos.prestados') }}" class="btn btn-primary">
-                    <i class="fas fa-handshake"></i>
-                    Insumos prestados
-                </a>
-            </div>
-
+            @can('crear-producto')
+                <!-- Buttons Section -->
+                <div class="flex flex-wrap gap-4 mb-6">
+                    <a href="{{ route('productos.inventario.pdf') }}" target="_blank" class="btn btn-success">
+                        <i class="fas fa-file-pdf"></i>
+                        Generar informe completo
+                    </a>
+                    <a href="{{ route('insumos.origen') }}" class="btn btn-warning">
+                        <i class="fas fa-truck-loading"></i>
+                        Origen de insumos
+                    </a>
+                    <a href="{{ route('insumos.retirados') }}" class="btn btn-danger">
+                        <i class="fas fa-hand-holding"></i>
+                        Insumos retirados
+                    </a>
+                    <a href="{{ route('insumos.prestados') }}" class="btn btn-primary">
+                        <i class="fas fa-handshake"></i>
+                        Insumos prestados
+                    </a>
+                </div>
+            @endcan
+            
             <!-- Table Card -->
             <div class="card">
                 <div class="card-header">

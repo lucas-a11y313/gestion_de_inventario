@@ -54,10 +54,12 @@
                 </div>
 
                 <div class="flex gap-4">
+                    @can('crear-inventarioBP')
                     <a href="{{ route('inventariobp.pdf') }}" class="btn btn-success" target="_blank">
                         <i class="fas fa-file-pdf mr-2"></i>
                         Generar informe completo
                     </a>
+                    @endcan
                 </div>
             </div>
 
