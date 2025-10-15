@@ -12,7 +12,7 @@
             <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Insumos Retirados</h1>
 
             <nav class="breadcrumb mb-6">
-                <div class="breadcrumb-item"><a href="#">Inicio</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></div>
                 <div class="breadcrumb-item"><a href="{{ route('inventarioinsumos.index') }}">Inventario Insumos</a></div>
                 <div class="breadcrumb-item active">Insumos Retirados</div>
             </nav>

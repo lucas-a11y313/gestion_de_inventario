@@ -34,7 +34,7 @@
             <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Inventario de BP</h1>
 
             <nav class="breadcrumb mb-6">
-                <div class="breadcrumb-item"><a href="#">Inicio</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></div>
                 <div class="breadcrumb-item active">Inventario de BP</div>
             </nav>
 
@@ -51,18 +51,12 @@
                         <i class="fas fa-archive"></i>
                         BP eliminados
                     </button> --}}
-
-
                 </div>
 
                 <div class="flex gap-4">
-                    <a href="{{ route('inventariobp.pdf') }}" class="btn btn-danger" target="_blank">
+                    <a href="{{ route('inventariobp.pdf') }}" class="btn btn-success" target="_blank">
                         <i class="fas fa-file-pdf mr-2"></i>
                         Generar informe completo
-                    </a>
-                    <a href="{{ route('productos.inventario.pdf') }}" target="_blank" class="btn btn-success">
-                        <i class="fas fa-file-pdf mr-2"></i>
-                        Generar informe resumido
                     </a>
                 </div>
             </div>

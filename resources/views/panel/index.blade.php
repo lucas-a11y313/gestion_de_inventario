@@ -149,7 +149,7 @@
                 @endcan
 
                 <!-- Proveedores -->
-                @can('ver-proveedore')
+                @can('ver-proveedor')
                 <a href="{{ route('proveedores.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
                     <div class="flex items-start space-x-4">
                         <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -158,7 +158,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <h3 class="text-lg font-semibold text-gray-900">Proveedores</h3>
-                                <span class="text-lg font-bold text-indigo-600">{{ count(Proveedore::all()) }}</span>
+                                <span class="text-lg font-bold text-indigo-600">{{ Proveedore::count() }}</span>
                             </div>
                             <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de proveedores y contactos de suministro</p>
                         </div>
@@ -220,7 +220,7 @@
                 </a>
                 @endcan
 
-                <!-- Clientes -->
+                {{--<!-- Clientes -->
                 @can('ver-cliente')
                 <a href="{{ route('clientes.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
                     <div class="flex items-start space-x-4">
@@ -236,7 +236,7 @@
                         </div>
                     </div>
                 </a>
-                @endcan
+                @endcan--}}
 
                 <!-- Inventario de BP -->
                 @can('ver-inventarioBP')
