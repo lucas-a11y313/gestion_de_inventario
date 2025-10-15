@@ -47,41 +47,28 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                <!-- Fila 1 -->
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INS001</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Insumo Médico A</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Dr. García</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Fecha de vencimiento</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">8</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15/03/2024 14:30</td>
-                                </tr>
-
-                                <!-- Fila 2 -->
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INS002</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Insumo Quirúrgico B</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Enfermera López</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Defecto de fabricación</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">2</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10/03/2024 09:15</td>
-                                </tr>
-
-                                <!-- Fila 3 -->
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INS003</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Material de Curación C</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Dr. Martínez</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Daño durante transporte</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">5</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">08/03/2024 16:45</td>
-                                </tr>
+                                @forelse ($solicitudes as $solicitud)
+                                    @foreach ($solicitud->productos as $producto)
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $producto->codigo }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $producto->nombre }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $solicitud->user->name }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $solicitud->razon }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                    {{ $producto->pivot->cantidad }}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $solicitud->fecha_hora }}</td>
+                                        </tr>
+                                    @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                            No hay insumos retirados registrados.
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

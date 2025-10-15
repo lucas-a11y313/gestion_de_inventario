@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use App\Models\Producto;
+use App\Models\Solicitud;
 use Illuminate\Http\Request;
 
 class InventarioInsumosController extends Controller
@@ -126,5 +129,36 @@ class InventarioInsumosController extends Controller
             });
 
         return view('InventarioInsumos.origen_insumos', compact('origenes'));
+    }
+
+    public function insumosRetirados()
+    {
+        $solicitudes = Solicitud::where('tipo_solicitud', 'retiro')
+            ->with(['user', 'productos' => function ($query) {
+                $query->where('tipo', 'Insumo');
+            }])
+            ->whereHas('productos', function ($query) {
+                $query->where('tipo', 'Insumo');
+            })
+            ->get();
+
+        return view('InventarioInsumos.insumos_retirados', compact('solicitudes'));
+    }
+
+    public function pdf()
+    {
+        $insumos = Producto::where('tipo', 'Insumo')
+            ->with([
+                'adquisiciones' => function($query) {
+                    $query->withPivot('precio_compra');
+                },
+                'compras' => function($query) {
+                    $query->withPivot('precio_compra');
+                }
+            ])
+            ->get();
+
+        $pdf = Pdf::loadView('InventarioInsumos.index_pdf', compact('insumos'));
+        return $pdf->stream('reporte_inventario_insumos.pdf');
     }
 }

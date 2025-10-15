@@ -78,6 +78,7 @@ Route::get('proyectos/{proyecto}/print-con-costo', [ProyectoController::class, '
 Route::get('proyectos/{proyecto}/print-sin-costo', [ProyectoController::class, 'printWithoutCost'])->name('proyectos.print.sin-costo')->middleware('permission:mostrar-proyecto');
 Route::get('inventariobp/{inventariobp}/print', [InventarioBPController::class, 'print'])->name('inventariobp.print')->middleware('permission:mostrar-inventarioBP');
 Route::get('inventariobp_pdf', [InventarioBPController::class, 'pdf'])->name('inventariobp.pdf')->middleware('permission:ver-inventarioBP');
+Route::get('insumos/inventario/pdf',[InventarioInsumosController::class, 'pdf'])->name('insumos.inventario.pdf')->middleware('permission:ver-producto');
 Route::get('productos/inventario/pdf',[productoController::class, 'inventoryPdf'])->name('productos.inventario.pdf')->middleware('permission:ver-producto');
 
 
@@ -106,9 +107,7 @@ Route::get('/solicitudes_eliminadas', [SolicitudController::class, 'eliminadas']
 Route::post('/solicitudes/{id}/restaurar', [SolicitudController::class, 'restore'])->name('solicitudes.restore');
 
 
-Route::get('/insumosRetirados', function () {
-    return view('InventarioInsumos.insumos_retirados');
-})->name('insumos.retirados');
+Route::get('/insumosRetirados', [InventarioInsumosController::class, 'insumosRetirados'])->name('insumos.retirados');
 
 Route::get('/insumosPrestados', function () {
     return view('InventarioInsumos.insumos_prestados');

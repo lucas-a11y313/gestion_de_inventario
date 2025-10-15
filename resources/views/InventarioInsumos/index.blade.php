@@ -19,7 +19,7 @@
             @can('crear-producto')
                 <!-- Buttons Section -->
                 <div class="flex flex-wrap gap-4 mb-6">
-                    <a href="{{ route('productos.inventario.pdf') }}" target="_blank" class="btn btn-success">
+                    <a href="{{ route('insumos.inventario.pdf') }}" target="_blank" class="btn btn-success">
                         <i class="fas fa-file-pdf"></i>
                         Generar informe completo
                     </a>
