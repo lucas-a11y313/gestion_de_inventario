@@ -21,6 +21,8 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+excel/
+Datos_csv/
 
 # Laravel cache and storage
 /bootstrap/cache/*

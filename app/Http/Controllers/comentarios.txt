@@ -167,6 +167,16 @@ $proveedores = Proveedore::whereHas('persona',function($query) {
             $query->where('estado',1);
         })->get();
 
+whereHas() NO carga los productos, solo VERIFICA
+El whereHas() NO carga productos, solo hace una verificación:
+->whereHas('productos', function ($query) {
+    $query->where('productos.tipo', 'Insumo')
+        ->whereNull('producto_solicitud.fecha_devolucion');
+})
+Lo que hace: "Oye base de datos, ¿esta solicitud tiene al menos UN producto que sea Insumo y no esté devuelto?"
+Si la respuesta es SÍ → Incluye la solicitud en el resultado
+Si la respuesta es NO → Descarta la solicitud
+Lo que NO hace: No filtra ni carga los productos. Solo decide si la solicitud entra o no.
 
 --              $producto->categorias()->attach($categorias);
 
