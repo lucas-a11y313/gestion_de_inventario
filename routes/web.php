@@ -109,9 +109,9 @@ Route::post('/solicitudes/{id}/restaurar', [SolicitudController::class, 'restore
 
 Route::get('/insumosRetirados', [InventarioInsumosController::class, 'insumosRetirados'])->name('insumos.retirados');
 
-Route::get('/insumosPrestados', function () {
-    return view('InventarioInsumos.insumos_prestados');
-})->name('insumos.prestados');
+Route::get('/insumosPrestados', [InventarioInsumosController::class, 'insumosPrestados'])->name('insumos.prestados');
+
+Route::post('/insumos/devolver/{solicitud_id}/{producto_id}', [InventarioInsumosController::class, 'devolverInsumo'])->name('insumos.devolver');
 
 Route::get('/insumos/origen', [InventarioInsumosController::class, 'origenInsumos'])->name('insumos.origen');
 

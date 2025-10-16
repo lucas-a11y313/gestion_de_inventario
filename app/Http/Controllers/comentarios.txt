@@ -160,11 +160,12 @@ Necesitas una colección de inmediato (porque all() devuelve una colección en l
 
 --                          El método whereHas()
 El método whereHas() en Laravel se usa para filtrar registros según una relación, asegurando que solo se devuelvan aquellos registros cuyo modelo relacionado cumpla con una condición específica.
+whereHas() es un método de Laravel que filtra las solicitudes que tienen AL MENOS UN producto que cumpla con las condiciones dentro de la función anónima.
+Es decir, solo incluye solicitudes que tengan productos relacionados que cumplan ciertos criterios.
 Por ejemplo: 
 $proveedores = Proveedore::whereHas('persona',function($query) {
             $query->where('estado',1);
         })->get();
-
 
 
 --              $producto->categorias()->attach($categorias);

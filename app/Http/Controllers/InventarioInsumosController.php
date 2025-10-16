@@ -145,6 +145,47 @@ class InventarioInsumosController extends Controller
         return view('InventarioInsumos.insumos_retirados', compact('solicitudes'));
     }
 
+    public function insumosPrestados()
+    {
+        // Obtener todas las solicitudes de préstamo que tienen al menos un insumo sin devolver
+        $solicitudes = Solicitud::where('tipo_solicitud', 'prestamo')
+            ->whereHas('productos', function ($query) {
+                $query->where('productos.tipo', 'Insumo')
+                    ->whereNull('producto_solicitud.fecha_devolucion');
+            })
+            ->with(['user', 'productos' => function ($query) {
+                // Solo cargar los insumos que no han sido devueltos
+                $query->where('productos.tipo', 'Insumo')
+                    ->whereNull('producto_solicitud.fecha_devolucion');
+            }])
+            ->get();
+
+        return view('InventarioInsumos.insumos_prestados', compact('solicitudes'));
+    }
+
+    public function devolverInsumo(Request $request, $solicitud_id, $producto_id)
+    {
+        try {
+            $solicitud = Solicitud::findOrFail($solicitud_id);
+            $producto = Producto::findOrFail($producto_id);
+
+            // Update stock
+            $pivot = $solicitud->productos()->where('producto_id', $producto->id)->first()->pivot;
+            $cantidad_prestada = $pivot->cantidad;
+            $producto->stock += $cantidad_prestada;
+            $producto->save();
+
+            // Update pivot table with return date
+            $solicitud->productos()->updateExistingPivot($producto->id, [
+                'fecha_devolucion' => now(),
+            ]);
+
+            return redirect()->route('insumos.prestados')->with('success', 'Insumo devuelto correctamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('insumos.prestados')->with('error', 'Hubo un error al devolver el insumo: ' . $e->getMessage());
+        }
+    }
+
     public function pdf()
     {
         $insumos = Producto::where('tipo', 'Insumo')

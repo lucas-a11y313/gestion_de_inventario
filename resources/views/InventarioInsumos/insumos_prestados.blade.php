@@ -30,7 +30,7 @@
             <!-- Table Card -->
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-handshake mr-2"></i>
+                    <i class="fas fa-hand-holding-heart mr-2"></i>
                     Tabla Insumos Prestados
                 </div>
                 <div class="card-body">
@@ -48,56 +48,34 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                <!-- Fila 1 -->
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INS001</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Insumo Médico A</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Hospital Central</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Emergencia médica</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">15</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">20/03/2024 10:00</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="btn btn-success btn-sm">
-                                            <i class="fas fa-undo mr-1"></i>Devolver
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <!-- Fila 2 -->
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INS002</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Insumo Quirúrgico B</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Clínica San José</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Campaña de vacunación</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">25</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">18/03/2024 14:20</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="btn btn-success btn-sm">
-                                            <i class="fas fa-undo mr-1"></i>Devolver
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <!-- Fila 3 -->
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INS003</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Material de Curación C</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Centro de Salud Norte</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Jornada de salud comunitaria</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">10</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12/03/2024 08:30</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="btn btn-success btn-sm">
-                                            <i class="fas fa-undo mr-1"></i>Devolver
-                                        </button>
-                                    </td>
-                                </tr>
+                                @forelse ($solicitudes as $solicitud)
+                                    @foreach ($solicitud->productos as $producto)
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $producto->codigo }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $producto->nombre }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $solicitud->user->name }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $solicitud->razon }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                    {{ $producto->pivot->cantidad }}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $solicitud->fecha_hora }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <form action="{{ route('insumos.devolver', ['solicitud_id' => $solicitud->id, 'producto_id' => $producto->id]) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres devolver este insumo?')">
+                                                    @csrf
+                                                    <button type="submit" class="text-indigo-600 hover:text-indigo-900">Devolver</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                            No hay insumos prestados registrados.
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

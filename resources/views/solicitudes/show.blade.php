@@ -107,6 +107,9 @@
                                     <th style="color: white !important;">Cantidad</th>
                                     <th style="color: white !important;">Precio de compra</th>
                                     <th style="color: white !important;">Subtotal</th>
+                                    @if($solicitud->tipo_solicitud == 'prestamo')
+                                        <th style="color: white !important;">Devuelto</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -116,10 +119,23 @@
                                         <td>{{$producto->pivot->cantidad}}</td>
                                         <td>{{$producto->pivot->precio_compra}}</td>
                                         <td class="td_subtotal">{{($producto->pivot->cantidad) * ($producto->pivot->precio_compra)}}</td>
+                                        @if($solicitud->tipo_solicitud == 'prestamo')
+                                            <td>
+                                                @if($producto->pivot->fecha_devolucion)
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                        {{\Carbon\Carbon::parse($producto->pivot->fecha_devolucion)->format('d-m-Y H:i')}}
+                                                    </span>
+                                                @else
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                        No
+                                                    </span>
+                                                @endif
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
-                        </table>
+                        </table>                    
                     </div>
                 </div>
             </div>

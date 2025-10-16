@@ -16,7 +16,7 @@ class Solicitud extends Model
     }
 
     public function productos(){/* Relacion N a N  */
-        return $this->belongsToMany(Producto::class)->withTimestamps()->withPivot('cantidad','precio_compra');
+        return $this->belongsToMany(Producto::class)->withTimestamps()->withPivot('cantidad','precio_compra', 'fecha_devolucion');
     }
 
 }

@@ -37,6 +37,7 @@ class SolicitudController extends Controller
     {
         $users = User::all();
         $productos = Producto::where('estado',1)
+            ->where('tipo', 'Insumo') // Solo productos de tipo Insumo
             ->with(['adquisiciones' => function($query) {
                 $query->orderBy('adquisicion_producto.created_at', 'desc')->limit(1);
             }])
