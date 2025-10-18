@@ -124,21 +124,7 @@
                                 @enderror
                             </div>
 
-                            <!-- Modelo -->
-                            <div class="form-group">
-                                <label for="modelo_id" class="form-label">Modelo:</label>
-                                <select name="modelo_id" id="modelo_id" class="form-select">
-                                    <option value="">Seleccione un modelo</option>
-                                    @foreach ($modelos as $modelo)
-                                        <option value="{{ $modelo->id }}" {{ old('modelo_id') == $modelo->id ? 'selected' : '' }}>
-                                            {{ $modelo->nombre }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('modelo_id')
-                                    <small class="form-error">{{ '*' . $message }}</small>
-                                @enderror
-                            </div>
+
 
                             <!-- Sugerencia -->
                             <div class="form-group">

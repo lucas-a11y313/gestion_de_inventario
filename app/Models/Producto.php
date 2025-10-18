@@ -27,15 +27,11 @@ class Producto extends Model
         return $this->belongsTo(Marca::class);
     }
 
-    public function modelo(){
-        return $this->belongsTo(Modelo::class);
-    }
-
     public function inventarioBPs(){
         return $this->hasMany(InventarioBP::class);
     }
 
-    protected $fillable = ['codigo','nombre','descripcion','fecha_vencimiento','marca_id','modelo_id','img_path','tipo','ubicacion','sugerencia'];
+    protected $fillable = ['codigo','nombre','descripcion','fecha_vencimiento','marca_id','img_path','tipo','ubicacion','sugerencia'];
 
     public function hanbleUploadImage($image){//Esta función va a gestionar todo lo que tenga ver con el guardado de la imagen
         

@@ -26,11 +26,6 @@ class PermissionSeeder extends Seeder
             'editar-marca',
             'eliminar-marca',
 
-            //modelo
-            'ver-modelo',
-            'crear-modelo',
-            'editar-modelo',
-            'eliminar-modelo',
 
             //cliente
             'ver-cliente',

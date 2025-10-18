@@ -14,9 +14,7 @@ class Caracteristica extends Model
         return $this->hasOne(Marca::class);
     }
 
-    public function modelo(){
-        return $this->hasOne(Modelo::class);
-    }
+
 
     protected $fillable = ['nombre','descripcion'];
 }

@@ -3,7 +3,7 @@
     use App\Models\Categoria;
     use App\Models\Compra;
     use App\Models\Marca;
-    use App\Models\Modelo;
+    
     use App\Models\Producto;
     use App\Models\Proveedore;
     use App\Models\User;
@@ -134,23 +134,7 @@
                 </a>
                 @endcan
 
-                <!-- Modelos -->
-                @can('ver-modelo')
-                <a href="{{ route('modelos.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
-                    <div class="flex items-start space-x-4">
-                        <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-cog text-xl text-cyan-600"></i>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between mb-1">
-                                <h3 class="text-lg font-semibold text-gray-900">Modelos</h3>
-                                <span class="text-lg font-bold text-cyan-600">{{ Modelo::count() }}</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Control de modelos y variantes de productos</p>
-                        </div>
-                    </div>
-                </a>
-                @endcan
+
 
                 <!-- Proveedores -->
                 @can('ver-proveedor')

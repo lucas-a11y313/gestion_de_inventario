@@ -10,7 +10,6 @@ use App\Http\Controllers\InventarioInsumosController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\logoutController;
 use App\Http\Controllers\marcaController;
-use App\Http\Controllers\modeloController;
 use App\Http\Controllers\productoController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\ProyectoController;
@@ -51,7 +50,6 @@ Route::resource('preoductos',productoController::class);
 Route::resources([
     'categorias' => categoriaController::class,
     'marcas' => marcaController::class,
-    'modelos' => modeloController::class,
     'productos' => productoController::class,
     'clientes' => clienteController::class,
     'proveedores' => proveedorController::class,
@@ -95,7 +93,7 @@ Route::get('/logout', [logoutController::class, 'logout'])->name('logout');
 Route::get('/productos_eliminados', [productoController::class, 'eliminados'])->name('productos.eliminados');
 Route::get('/marcas_eliminadas', [marcaController::class, 'eliminadas'])->name('marcas.eliminadas');
 Route::get('/categorias_eliminadas', [categoriaController::class, 'eliminadas'])->name('categorias.eliminadas');
-Route::get('/modelos_eliminados', [modeloController::class, 'eliminados'])->name('modelos.eliminados');
+
 Route::get('/clientes_eliminados', [clienteController::class, 'eliminados'])->name('clientes.eliminados');
 Route::get('/proveedores_eliminados', [proveedorController::class, 'eliminados'])->name('proveedores.eliminados');
 Route::get('/compras_eliminadas', [compraCrontroller::class, 'eliminadas'])->name('compras.eliminadas');

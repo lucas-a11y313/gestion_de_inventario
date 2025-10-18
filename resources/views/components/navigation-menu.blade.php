@@ -83,13 +83,7 @@
                 </a>
             @endcan
 
-            @can('ver-modelo')
-                <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
-                   href="{{ route('modelos.index') }}">
-                    <i class="fa-solid fa-cog mr-3 w-4"></i>
-                    Modelos
-                </a>
-            @endcan
+
 
             @can('ver-proveedor')
                 <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
