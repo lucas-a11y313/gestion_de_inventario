@@ -10,8 +10,8 @@ class Proveedore extends Model
         return $this->belongsTo(Persona::class);
     }
 
-    public function compras(){
-        return $this->hasMany(Compra::class);
+    public function adquisiciones(){
+        return $this->hasMany(Adquisicion::class);
     }
 
     protected $fillable = ['persona_id'];

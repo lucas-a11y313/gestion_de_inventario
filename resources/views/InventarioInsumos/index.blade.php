@@ -68,11 +68,9 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                             @php
-                                                // Combine prices from both adquisiciones and compras
+                                                // Get prices from adquisiciones
                                                 $preciosAdquisiciones = $insumo->adquisiciones->pluck('pivot.precio_compra')->filter();
-                                                $preciosCompras = $insumo->compras->pluck('pivot.precio_compra')->filter();
-                                                $todosPrecios = $preciosAdquisiciones->concat($preciosCompras);
-                                                $precioPromedio = $todosPrecios->isNotEmpty() ? $todosPrecios->avg() : 0;
+                                                $precioPromedio = $preciosAdquisiciones->isNotEmpty() ? $preciosAdquisiciones->avg() : 0;
                                             @endphp
                                             ${{ number_format($precioPromedio, 2) }}
                                         </td>

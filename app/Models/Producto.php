@@ -7,16 +7,8 @@ use Storage;
 
 class Producto extends Model
 {
-    public function compras(){
-        return $this->belongsToMany(Compra::class)->withTimestamps()->withPivot('cantidad','precio_compra','precio_venta');
-    }
-
     public function adquisiciones(){
         return $this->belongsToMany(Adquisicion::class, 'adquisicion_producto')->withTimestamps()->withPivot('cantidad','precio_compra');
-    }
-
-    public function ventas(){
-        return $this->belongsToMany(Venta::class)->withTimestamps()->withPivot('cantidad','precio_venta','descuento');
     }
 
     public function categorias(){
@@ -29,6 +21,14 @@ class Producto extends Model
 
     public function inventarioBPs(){
         return $this->hasMany(InventarioBP::class);
+    }
+
+    public function solicitudes(){
+        return $this->belongsToMany(Solicitud::class)->withTimestamps()->withPivot('cantidad','precio_compra', 'fecha_devolucion');
+    }
+
+    public function proyectos(){
+        return $this->belongsToMany(Proyecto::class, 'proyecto_producto')->withTimestamps()->withPivot('cantidad');
     }
 
     protected $fillable = ['codigo','nombre','descripcion','fecha_vencimiento','marca_id','img_path','tipo','ubicacion','sugerencia'];

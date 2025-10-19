@@ -3,7 +3,6 @@
 use App\Http\Controllers\AdquisicionController;
 use App\Http\Controllers\categoriaController;
 use App\Http\Controllers\clienteController;
-use App\Http\Controllers\compraCrontroller;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\InventarioBPController;
 use App\Http\Controllers\InventarioInsumosController;
@@ -17,7 +16,6 @@ use App\Http\Controllers\proveedorController;
 use App\Http\Controllers\roleController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\userController;
-use App\Http\Controllers\ventaController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -53,9 +51,7 @@ Route::resources([
     'productos' => productoController::class,
     'clientes' => clienteController::class,
     'proveedores' => proveedorController::class,
-    'compras' => compraCrontroller::class,
     'solicitudes' => SolicitudController::class,
-    'ventas' => ventaController::class,
     'users' => userController::class,
     'roles' => roleController::class,
     'profile' => profileController::class,
@@ -69,7 +65,6 @@ Route::resource('adquisiciones', AdquisicionController::class, ['parameters' => 
 Route::resource('proyectos', ProyectoController::class, ['parameters' => ['proyectos' => 'proyecto']]);
 
 // al final de routes/web.php
-Route::get('ventas/{venta}/print', [App\Http\Controllers\ventaController::class, 'print'])->name('ventas.print')->middleware('permission:mostrar-venta');
 Route::get('solicitudes/{solicitude}/print', [SolicitudController::class, 'print'])->name('solicitudes.print')->middleware('permission:mostrar-solicitud');
 Route::get('adquisiciones/{adquisicione}/print', [AdquisicionController::class, 'print'])->name('adquisiciones.print')->middleware('permission:mostrar-adquisicion');
 Route::get('proyectos/{proyecto}/print-con-costo', [ProyectoController::class, 'printWithCost'])->name('proyectos.print.con-costo')->middleware('permission:mostrar-proyecto');
@@ -96,7 +91,6 @@ Route::get('/categorias_eliminadas', [categoriaController::class, 'eliminadas'])
 
 Route::get('/clientes_eliminados', [clienteController::class, 'eliminados'])->name('clientes.eliminados');
 Route::get('/proveedores_eliminados', [proveedorController::class, 'eliminados'])->name('proveedores.eliminados');
-Route::get('/compras_eliminadas', [compraCrontroller::class, 'eliminadas'])->name('compras.eliminadas');
 Route::get('/adquisiciones_eliminadas', [AdquisicionController::class, 'eliminadas'])->name('adquisiciones.eliminadas');
 Route::post('/adquisiciones/{id}/restaurar', [AdquisicionController::class, 'restaurar'])->name('adquisiciones.restaurar');
 Route::get('/proyectos_eliminados', [ProyectoController::class, 'eliminados'])->name('proyectos.eliminados');

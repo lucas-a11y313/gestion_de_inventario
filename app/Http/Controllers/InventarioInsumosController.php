@@ -19,9 +19,6 @@ class InventarioInsumosController extends Controller
             ->with([
                 'adquisiciones' => function($query) {
                     $query->withPivot('precio_compra');
-                },
-                'compras' => function($query) {
-                    $query->withPivot('precio_compra');
                 }
             ])
             ->get();
@@ -191,9 +188,6 @@ class InventarioInsumosController extends Controller
         $insumos = Producto::where('tipo', 'Insumo')
             ->with([
                 'adquisiciones' => function($query) {
-                    $query->withPivot('precio_compra');
-                },
-                'compras' => function($query) {
                     $query->withPivot('precio_compra');
                 }
             ])

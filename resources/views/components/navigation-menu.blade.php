@@ -93,22 +93,6 @@
                 </a>
             @endcan
 
-            @can('ver-compra')
-                <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
-                   href="{{ route('compras.index') }}">
-                    <i class="fa-solid fa-store mr-3 w-4"></i>
-                    Compras
-                </a>
-            @endcan
-
-            @can('ver-venta')
-                <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
-                   href="{{ route('ventas.index') }}">
-                    <i class="fa-solid fa-cart-shopping mr-3 w-4"></i>
-                    Ventas
-                </a>
-            @endcan
-
             @canany(['ver-user','ver-role'])
                 <!-- Otros Section -->
                 <div class="px-4 py-2 mt-6 text-gray-400 text-xs font-semibold uppercase tracking-wider">

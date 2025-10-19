@@ -47,8 +47,12 @@ class User extends Authenticatable
         ];
     }
 
-    public function ventas(){
-        return $this->hasMany(Venta::class);
+    /**
+     * Solicitudes realizadas por este usuario
+     */
+    public function solicitudes()
+    {
+        return $this->hasMany(Solicitud::class);
     }
 
     /**
