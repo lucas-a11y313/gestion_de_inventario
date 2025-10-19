@@ -245,6 +245,7 @@
                 @endcan
 
                 <!-- Inventario de Insumos -->
+                @can('ver-producto')
                 <a href="{{ route('inventarioinsumos.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
                     <div class="flex items-start space-x-4">
                         <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -259,6 +260,7 @@
                         </div>
                     </div>
                 </a>
+                @endcan
 
                 <!-- Usuarios -->
                 @can('ver-user')

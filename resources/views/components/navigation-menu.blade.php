@@ -60,12 +60,14 @@
                     Inventario de BP
                 </a>
             @endcan
-
-            <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
-               href="{{ route('inventarioinsumos.index') }}">
-                <i class="fa-solid fa-clipboard-list mr-3 w-4"></i>
-                Inventario de Insumos
-            </a>
+            
+            @can('ver-producto')
+                <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                href="{{ route('inventarioinsumos.index') }}">
+                    <i class="fa-solid fa-clipboard-list mr-3 w-4"></i>
+                    Inventario de Insumos
+                </a>
+            @endcan
 
             @can('ver-categoria')
                 <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
@@ -109,12 +111,12 @@
             @endcan
 
             @can('ver-role')
-            @endcan
             <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
                href="{{ route('roles.index') }}">
                 <i class="fa-solid fa-person-circle-plus mr-3 w-4"></i>
                 Roles
             </a>
+            @endcan
         </div>
     </div>
 
