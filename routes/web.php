@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AdquisicionController;
 use App\Http\Controllers\categoriaController;
-use App\Http\Controllers\clienteController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\InventarioBPController;
 use App\Http\Controllers\InventarioInsumosController;
@@ -49,7 +48,6 @@ Route::resources([
     'categorias' => categoriaController::class,
     'marcas' => marcaController::class,
     'productos' => productoController::class,
-    'clientes' => clienteController::class,
     'proveedores' => proveedorController::class,
     'solicitudes' => SolicitudController::class,
     'users' => userController::class,
@@ -89,7 +87,6 @@ Route::get('/productos_eliminados', [productoController::class, 'eliminados'])->
 Route::get('/marcas_eliminadas', [marcaController::class, 'eliminadas'])->name('marcas.eliminadas');
 Route::get('/categorias_eliminadas', [categoriaController::class, 'eliminadas'])->name('categorias.eliminadas');
 
-Route::get('/clientes_eliminados', [clienteController::class, 'eliminados'])->name('clientes.eliminados');
 Route::get('/proveedores_eliminados', [proveedorController::class, 'eliminados'])->name('proveedores.eliminados');
 Route::get('/adquisiciones_eliminadas', [AdquisicionController::class, 'eliminadas'])->name('adquisiciones.eliminadas');
 Route::post('/adquisiciones/{id}/restaurar', [AdquisicionController::class, 'restaurar'])->name('adquisiciones.restaurar');

@@ -1,16 +1,15 @@
 @php
-    use App\Models\Cliente;
     use App\Models\Categoria;
     use App\Models\Compra;
     use App\Models\Marca;
-    
+
     use App\Models\Producto;
     use App\Models\Proveedore;
     use App\Models\User;
     use App\Models\Venta;
     use App\Models\Adquisicion;
     use App\Models\Solicitud;
-    use App\Models\Proyecto; 
+    use App\Models\Proyecto;
     use App\Models\InventarioBP;
     use Spatie\Permission\Models\Role;
 @endphp
@@ -61,24 +60,6 @@
 
             <!-- Module Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                {{-- <!-- Funcionarios -->
-                @can('ver-cliente')
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300">
-                    <div class="flex items-start space-x-4">
-                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-users text-xl text-blue-600"></i>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between mb-1">
-                                <h3 class="text-lg font-semibold text-gray-900">Funcionarios</h3>
-                                <span class="text-lg font-bold text-blue-600">{{ count(Cliente::all()) }}</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de funcionarios y personal del sistema</p>
-                        </div>
-                    </div>
-                </div>
-                @endcan --}}
 
                 <!-- Productos -->
                 @can('ver-producto')
@@ -207,24 +188,6 @@
                     </div>
                 </a>
                 @endcan
-
-                {{--<!-- Clientes -->
-                @can('ver-cliente')
-                <a href="{{ route('clientes.index') }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 block">
-                    <div class="flex items-start space-x-4">
-                        <div class="w-12 h-12 bg-lime-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-user-friends text-xl text-lime-600"></i>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between mb-1">
-                                <h3 class="text-lg font-semibold text-gray-900">Clientes</h3>
-                                <span class="text-lg font-bold text-lime-600">{{ count(Cliente::all()) }}</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-4 leading-relaxed">Gestión de clientes y contactos comerciales</p>
-                        </div>
-                    </div>
-                </a>
-                @endcan--}}
 
                 <!-- Inventario de BP -->
                 @can('ver-inventarioBP')

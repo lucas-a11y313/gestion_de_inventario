@@ -26,13 +26,6 @@ class PermissionSeeder extends Seeder
             'editar-marca',
             'eliminar-marca',
 
-
-            //cliente
-            'ver-cliente',
-            'crear-cliente',
-            'editar-cliente',
-            'eliminar-cliente',
-
             //compra
             'ver-compra',
             'crear-compra',
