@@ -101,7 +101,7 @@
                   $preciosAdquisiciones = $insumo->adquisiciones->pluck('pivot.precio_compra')->filter();
                   $precioPromedio = $preciosAdquisiciones->isNotEmpty() ? $preciosAdquisiciones->avg() : 0;
               @endphp
-              ${{ number_format($precioPromedio, 2) }}
+              {{ number_format($precioPromedio, 2) }}
           </td>
         </tr>
       @empty
