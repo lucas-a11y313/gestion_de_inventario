@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
 
         // el create solo te permite crear un usuario por vez
         $user = User::create([
-            'name' => 'Lucas',
+            'name' => 'Raj Kumar',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password')
         ]);
