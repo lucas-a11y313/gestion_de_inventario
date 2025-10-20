@@ -3,10 +3,21 @@
 @section('title', 'Editar proveedores')
 
 @push('css')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        /* Fix bootstrap-select styling to work with Tailwind */
+        .bootstrap-select .dropdown-toggle {
+            background-color: white !important;
+            border: 1px solid #d1d5db !important;
+            border-radius: 0.375rem !important;
+            padding: 0.5rem 0.75rem !important;
+        }
+
+        .bootstrap-select .dropdown-menu {
+            border: 1px solid #d1d5db !important;
+            border-radius: 0.375rem !important;
+        }
+
         /* Fix navigation styles - Override Bootstrap */
         .nav-link {
             padding: 0.5rem 1rem !important;
@@ -131,12 +142,22 @@
 @endsection
 
 @push('js')
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
     <script>
-        $(document).ready(function(){
+        // Esperar a que todo esté completamente cargado
+        window.addEventListener('load', function() {
+            console.log('Initializing selectpicker...');
+
             // Inicializar selectpicker
-            $('.selectpicker').selectpicker();
+            $('.selectpicker').selectpicker({
+                style: '',
+                styleBase: 'form-control'
+            });
+
+            console.log('Selectpicker initialized');
         });
     </script>
 @endpush
