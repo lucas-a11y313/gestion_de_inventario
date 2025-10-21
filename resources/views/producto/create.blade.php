@@ -11,6 +11,17 @@
 @endpush
 
 @section('content')
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: "{{ session('error') }}",
+                confirmButtonColor: '#3085d6'
+            });
+        </script>
+    @endif
+
     <div class="px-4 py-6">
         <div class="max-w-4xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Crear Producto</h1>
