@@ -124,10 +124,12 @@
                                 <label for="categorias" class="form-label">Categorías:</label>
                                 <select name="categorias[]" id="categorias" class="form-select" multiple>
                                     @foreach ($categorias as $categoria)
-                                        <option value="{{ $categoria->id }}"
+                                        <option value="{{ $categoria->id }}" 
                                             {{ in_array($categoria->id, old('categorias', [])) ? 'selected' : '' }}>
                                             {{ $categoria->nombre }}
                                         </option>
+                                    
+                                    
                                     @endforeach
                                 </select>
                                 @error('categorias')
