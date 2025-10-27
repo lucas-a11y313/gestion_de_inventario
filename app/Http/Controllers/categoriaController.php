@@ -111,17 +111,10 @@ class categoriaController extends Controller
      */
     public function destroy(string $id)
     {
-        $message = '';
-        $categoria = Categoria::find($id);
-        if ($categoria->caracteristica->estado == 1) {
-            Caracteristica::where('id', $categoria->caracteristica->id)->update(['estado' => 0]);
-            $message = 'Categoría eliminada';
-        } else {
-            Caracteristica::where('id', $categoria->caracteristica->id)->update(['estado' => 1]);
-            $message = 'Categoría restaurada';
-        }
+        $categoria = Categoria::findOrFail($id);
+        $categoria->caracteristica->delete(); // Al eliminar la característica, la categoría y la relación en categoria_producto se eliminan en cascada.
 
-        return redirect()->route('categorias.index')->with('success',$message);
+        return redirect()->route('categorias.index')->with('success', 'Categoría eliminada permanentemente.');
     }
 
     public function eliminadas()
