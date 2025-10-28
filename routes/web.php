@@ -73,9 +73,6 @@ Route::get('insumos/inventario/pdf',[InventarioInsumosController::class, 'pdf'])
 Route::get('productos/inventario/pdf',[productoController::class, 'inventoryPdf'])->name('productos.inventario.pdf')->middleware('permission:ver-producto');
 
 
-Route::get('/ticket',function (){
-    return view('ticket.index');
-});
 
 Route::get('/login', [loginController::class, 'index'])->name('login');//Esto le dice a Laravel que cuando alguien visite '/login', debe usar el método index del controlador homeController para manejar la solicitud. Este te trae la vista de login
 Route::post('/login', [loginController::class, 'login']);// Esta ruta se encargará de manejar toda la lógica para poder iniciar sesión
