@@ -117,14 +117,14 @@ docker logs -f laravel_app              # Seguir logs en tiempo real
 
 ### Base de Datos
 - **Host**: db (dentro de Docker) o localhost:3306 (desde el host)
-- **Database**: dblaboratorio
+- **Database**: database
 - **User**: root
-- **Password**: password
+- **Password**: 12345
 
 ### PHPMyAdmin
 - **URL**: http://localhost:8091
 - **User**: root
-- **Password**: password
+- **Password**: 12345
 
 ### Laravel App
 - **URL**: http://localhost:8000
