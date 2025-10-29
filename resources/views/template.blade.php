@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Sistema de ventas" />
         <meta name="author" content="Lucas" />
-        <title>Sistema ventas - @yield('title')</title>
+        <title>SGI PTI - @yield('title')</title>
         @vite(['resources/css/app.css'])
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>

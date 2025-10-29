@@ -3,32 +3,9 @@
 @section('title', 'Crear proveedores')
 
 @push('css')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         #box-razon-social{
             display: none;
-        }
-
-        /* Fix navigation styles - Override Bootstrap */
-        .nav-link {
-            padding: 0.5rem 1rem !important;
-            display: flex !important;
-            align-items: center !important;
-            color: #d1d5db !important;
-            transition: all 0.3s ease !important;
-            text-decoration: none !important;
-        }
-
-        .nav-link:hover {
-            background-color: #374151 !important;
-            color: white !important;
-        }
-
-        .nav-link i {
-            margin-right: 0.75rem !important;
-            width: 1rem !important;
         }
     </style>
 @endpush
@@ -56,7 +33,8 @@
                             <!--Tipo de persona-->
                             <div class="form-group">
                                 <label for="tipo_persona" class="form-label">Tipo de proveedor:</label>
-                                <select title="Seleccione una opción" name="tipo_persona" id="tipo_persona" class="form-control selectpicker show-tick" data-live-search="true">
+                                <select name="tipo_persona" id="tipo_persona" class="form-select">
+                                    <option value="" disabled selected>Seleccione una opción</option>
                                     <option value="natural" {{old('tipo_persona') == 'natural' ? 'selected' : ''}}>Persona natural</option>
                                     <option value="juridica" {{old('tipo_persona') == 'juridica' ? 'selected' : ''}}>Persona juridica</option>
                                 </select>
@@ -87,7 +65,8 @@
                             <!--Tipo de documento-->
                             <div class="form-group">
                                 <label for="documento_id" class="form-label">Tipo de documento:</label>
-                                <select title="Seleccione una opción" name="documento_id" id="documento_id" class="form-control selectpicker show-tick" data-live-search="true">
+                                <select name="documento_id" id="documento_id" class="form-select">
+                                    <option value="" disabled selected>Seleccione una opción</option>
                                    @foreach ($documentos as $documento)
                                        <option value="{{$documento->id}}" {{old('documento_id') == $documento->id ? 'selected' : ''}}>{{$documento->tipo_documento}}</option>
                                    @endforeach
@@ -127,29 +106,27 @@
 @endsection
 
 @push('js')
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
     <script>
-        $(document).ready(function(){
-            // Inicializar selectpicker
-            $('.selectpicker').selectpicker();
+        document.addEventListener('DOMContentLoaded', function() {
+            const tipoPersonaSelect = document.getElementById('tipo_persona');
+            const boxRazonSocial = document.getElementById('box-razon-social');
+            const labelNatural = document.getElementById('label-natural');
+            const labelJuridico = document.getElementById('label-juridico');
 
-            //cuando mi select "tipo_persona" cambie(haga un change) se ejecutará una función
-            $('#tipo_persona').on('change',function(){
+            // Cuando el select "tipo_persona" cambie, se ejecutará esta función
+            tipoPersonaSelect.addEventListener('change', function() {
+                const selectValue = this.value;
 
-                //"$(this)" hace referencia al select '#tipo_persona', por lo cual el ".val()" trae el valor que está en el select y se asigna a la variable selectValue
-                let selectValue = $(this).val();
-
-                //"selectValue" puede ser natural o juridica
-                if (selectValue == 'natural') {
-                    $('#label-juridico').hide();//se oculta el label con id ="label-juridica" con hide()
-                    $('#label-natural').show();//se muestra el label con id ="label-natural" con show()
-                } else {
-                    $('#label-natural').hide();
-                    $('#label-juridico').show();
+                // selectValue puede ser 'natural' o 'juridica'
+                if (selectValue === 'natural') {
+                    labelJuridico.style.display = 'none'; // Oculta el label jurídico
+                    labelNatural.style.display = 'block'; // Muestra el label natural
+                } else if (selectValue === 'juridica') {
+                    labelNatural.style.display = 'none'; // Oculta el label natural
+                    labelJuridico.style.display = 'block'; // Muestra el label jurídico
                 }
 
-                $('#box-razon-social').show();
+                boxRazonSocial.style.display = 'block'; // Muestra el campo de razón social
             });
         });
     </script>

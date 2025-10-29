@@ -295,7 +295,7 @@
                     descripcion: `{{ $producto->descripcion ?? '' }}`,
                     fecha_vencimiento: '{{ $producto->fecha_vencimiento ?? '' }}',
                     img_path: '{{ $producto->img_path ?? '' }}',
-                    img_url: '{{ $producto->img_path ? Storage::url("productos/" . $producto->img_path) : "" }}',
+                    img_url: '{{ $producto->img_path ? asset("storage/productos/" . $producto->img_path) : "" }}',
                     estado: {{ $producto->estado }}
                 },
                 @endforeach

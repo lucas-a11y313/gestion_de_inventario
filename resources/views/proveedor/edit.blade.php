@@ -3,30 +3,6 @@
 @section('title', 'Editar proveedores')
 
 @push('css')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* Fix navigation styles - Override Bootstrap */
-        .nav-link {
-            padding: 0.5rem 1rem !important;
-            display: flex !important;
-            align-items: center !important;
-            color: #d1d5db !important;
-            transition: all 0.3s ease !important;
-            text-decoration: none !important;
-        }
-
-        .nav-link:hover {
-            background-color: #374151 !important;
-            color: white !important;
-        }
-
-        .nav-link i {
-            margin-right: 0.75rem !important;
-            width: 1rem !important;
-        }
-    </style>
 @endpush
 
 @section('content')
@@ -83,7 +59,7 @@
                             <!--Tipo de documento-->
                             <div class="form-group">
                                 <label for="documento_id" class="form-label">Tipo de documento:</label>
-                                <select title="Seleccione una opción" name="documento_id" id="documento_id" class="form-control selectpicker show-tick" data-live-search="true">
+                                <select name="documento_id" id="documento_id" class="form-select">
                                    @foreach ($documentos as $documento)
                                         @if ($proveedore->persona->documento->tipo_documento == $documento->tipo_documento)
                                             <option value="{{$documento->id}}" selected>{{$documento->tipo_documento}}</option>
@@ -131,12 +107,4 @@
 @endsection
 
 @push('js')
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            // Inicializar selectpicker
-            $('.selectpicker').selectpicker();
-        });
-    </script>
 @endpush

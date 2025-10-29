@@ -72,7 +72,7 @@ class productoController extends Controller
             } else {
                 $name = null;
             }
-            
+
             //El método fill() te permite asignar valores masivos a los atributos de un modelo(producto), Para que fill() funcione, los atributos deben estar incluidos en la propiedad $fillable del modelo.
             $producto->fill([
                 'codigo' => $request->codigo,
@@ -93,11 +93,12 @@ class productoController extends Controller
             $producto->categorias()->attach($categorias);//El método attach() es utilizado para insertar registros en la tabla pivote.
 
             DB::commit();
+
+            return redirect()->route('productos.index')->with('success','Producto registrado');
         }catch(Exception $e){
             DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Error al registrar el producto: ' . $e->getMessage());
         }
-
-        return redirect()->route('productos.index')->with('success','Producto registrado');
     }
 
     /**
@@ -146,11 +147,11 @@ class productoController extends Controller
                 if (Storage::disk('public')->exists('productos/'.$producto->img_path)) {
                     Storage::disk('public')->delete('productos/'.$producto->img_path);
                 }
-                
+
             } else {
                 $name = $producto->img_path;
             }
-            
+
             //El método fill() te permite asignar valores masivos a los atributos de un modelo(producto), Para que fill() funcione, los atributos deben estar incluidos en la propiedad $fillable del modelo.
             $producto->fill([
                 'codigo' => $request->codigo,
@@ -168,14 +169,15 @@ class productoController extends Controller
 
             //---Tabla categoría producto
             $categorias = $request->get('categorias');
-            $producto->categorias()->sync($categorias);//El método sync() es utilizado para eliminar todos los registros existentes en la tabla pivote y luego inserta los nuevos registros que están en la variable $categorias 
-            
+            $producto->categorias()->sync($categorias);//El método sync() es utilizado para eliminar todos los registros existentes en la tabla pivote y luego inserta los nuevos registros que están en la variable $categorias
+
             DB::commit();
+
+            return redirect()->route('productos.index')->with('success','Producto editado');
         }catch(Exception $e){
             DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Error al actualizar el producto: ' . $e->getMessage());
         }
-
-        return redirect()->route('productos.index')->with('success','Producto editado');
     }
 
     /**

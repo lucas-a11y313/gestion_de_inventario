@@ -11,6 +11,17 @@
 @endpush
 
 @section('content')
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: "{{ session('error') }}",
+                confirmButtonColor: '#3085d6'
+            });
+        </script>
+    @endif
+
     <div class="px-4 py-6">
         <div class="max-w-4xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Editar Producto</h1>
@@ -140,28 +151,26 @@
                             <!-- Ubicación -->
                             <div class="form-group">
                                 <label for="ubicacion" class="form-label">Ubicación:</label>
-                                <input type="text" name="ubicacion" id="ubicacion" class="form-input"
-                                    placeholder="Ej: Almacén A, Estante 3" value="{{ old('ubicacion', $producto->ubicacion) }}">
-                                @error('ubicacion')
-                                    <small class="form-error">{{ '*' . $message }}</small>
-                                @enderror
-                            </div>
-
-                            {{-- Campo comentado
-                            <div class="form-group">
-                                <label for="ubicacion_old" class="form-label">Ubicación Old:</label>
-                                <select name="ubicacion_old" id="ubicacion_old" class="form-select">
-                                    <option value="">Seleccione la ubicación</option>
-                                    <option value="Almacén" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Almacén' ? 'selected' : '' }}>Almacén</option>
-                                    <option value="Oficina" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Oficina' ? 'selected' : '' }}>Oficina</option>
-                                    <option value="Laboratorio" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Laboratorio' ? 'selected' : '' }}>Laboratorio</option>
-                                    <option value="Producción" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Producción' ? 'selected' : '' }}>Producción</option>
+                                <select name="ubicacion" id="ubicacion" class="form-select">
+                                    <option value="">Seleccione una ubicación</option>
+                                    <option value="Dirección Técnica (DT)" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Dirección Técnica (DT)' ? 'selected' : '' }}>Dirección Técnica (DT)</option>
+                                    <option value="Unidad de Proyectos Especiales" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Unidad de Proyectos Especiales' ? 'selected' : '' }}>Unidad de Proyectos Especiales</option>
+                                    <option value="Planificación y Control" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Planificación y Control' ? 'selected' : '' }}>Planificación y Control</option>
+                                    <option value="Centro de Innovación Empresarial" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Centro de Innovación Empresarial' ? 'selected' : '' }}>Centro de Innovación Empresarial</option>
+                                    <option value="Centro de Innovación en Educación" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Centro de Innovación en Educación' ? 'selected' : '' }}>Centro de Innovación en Educación</option>
+                                    <option value="Centro de Innovación en Seguridad de Presa" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Centro de Innovación en Seguridad de Presa' ? 'selected' : '' }}>Centro de Innovación en Seguridad de Presa</option>
+                                    <option value="Centro de Innovación en Ingeniería de Computación" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Centro de Innovación en Ingeniería de Computación' ? 'selected' : '' }}>Centro de Innovación en Ingeniería de Computación</option>
+                                    <option value="Centro de Innovación Social y Gestión Territorial" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Centro de Innovación Social y Gestión Territorial' ? 'selected' : '' }}>Centro de Innovación Social y Gestión Territorial</option>
+                                    <option value="Centro de Innovación en Energías Alternativas" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Centro de Innovación en Energías Alternativas' ? 'selected' : '' }}>Centro de Innovación en Energías Alternativas</option>
+                                    <option value="Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ICI" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ICI' ? 'selected' : '' }}>Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ICI</option>
+                                    <option value="Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ASE" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ASE' ? 'selected' : '' }}>Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ASE</option>
+                                    <option value="Centro de Innovación en Sistemas Eléctricos y Automatización: Depósito" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Centro de Innovación en Sistemas Eléctricos y Automatización: Depósito' ? 'selected' : '' }}>Centro de Innovación en Sistemas Eléctricos y Automatización: Depósito</option>
+                                    <option value="Centro de Innovación en Sistemas Eléctricos y Automatización: Tacuru Pucu" {{ (old('ubicacion') ?? $producto->ubicacion) == 'Centro de Innovación en Sistemas Eléctricos y Automatización: Tacuru Pucu' ? 'selected' : '' }}>Centro de Innovación en Sistemas Eléctricos y Automatización: Tacuru Pucu</option>
                                 </select>
                                 @error('ubicacion')
                                     <small class="form-error">{{ '*' . $message }}</small>
                                 @enderror
                             </div>
-                            --}}
                         </div>
 
                         <!-- Botones -->
