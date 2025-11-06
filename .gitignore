@@ -23,6 +23,8 @@ yarn-error.log
 /.zed
 excel/
 Datos_csv/
+guia-produccion-local-docker.md
+backup_bd_*.sql
 
 # Laravel cache and storage
 /bootstrap/cache/*

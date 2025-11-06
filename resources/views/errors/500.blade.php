@@ -22,7 +22,7 @@
                                     <p class="lead">Error Interno del Servidor</p>
                                     <a href="{{ route('login') }}">
                                         <i class="fas fa-arrow-left me-1"></i>
-                                        Volver al panel
+                                        Volver al login
                                     </a>
                                 </div>
                             </div>

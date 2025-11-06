@@ -25,7 +25,7 @@ class loginController extends Controller
         //VALIDAR CREDENCIALES
         //only() hace que agarre solo los valores que solicites, en este caso serían email y password
         if(!Auth::validate($request->only('email','password'))) {//aca se verifica si no existe un usuario con estas credenciales, si existe entonces se niega y sale del if; si no existe se niega el false y pasa a true, asi entrando en el if 
-            return redirect()->to('login')->withErrors('Credenciales incorrectas');
+            return redirect()->route('login')->withErrors('Credenciales incorrectas');
         }
         
         //CREAR UNA SESIÓN

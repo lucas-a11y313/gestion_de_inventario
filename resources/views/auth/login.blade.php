@@ -31,7 +31,7 @@
                                             
                                         @endif
 
-                                        <form action="/login" method="post">
+                                        <form action="{{ route('login.attempt') }}" method="post">
                                             @csrf
                                             <div class="form-floating mb-3">
                                                 <input name="email" class="form-control" id="inputEmail" type="email" value="{{ old('email') }}" placeholder="name@example.com" />

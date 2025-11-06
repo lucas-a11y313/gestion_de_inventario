@@ -35,7 +35,13 @@ Route::get('/panel', function(){
                     ||
 */
 //Esta version tambien trae a panel.index solo que a través del controlador homeController
-Route::get('/',[homeController::class, 'index'])->name('panel');//Esto le dice a Laravel que cuando alguien visite la ruta raiz '/', debe usar el método index del controlador homeController para manejar la solicitud.
+//Route::get('/',[homeController::class, 'index'])->name('panel');//Esto le dice a Laravel que cuando alguien visite la ruta raiz '/', debe usar el método index del controlador homeController para manejar la solicitud.
+Route::get('/panel',[homeController::class, 'index'])->name('panel')->middleware('auth');//Esto le dice a Laravel que cuando alguien visite '/panel', debe usar el método index del controlador homeController para manejar la solicitud. Este te trae la vista de panel
+
+Route::get('/',[loginController::class, 'index'])->name('login');//Esto le dice a Laravel que cuando alguien visite la ruta raiz '/', debe usar el método index del controlador loginController para manejar la solicitud.
+Route::post('/', [loginController::class, 'login'])->name('login.attempt');// Esta ruta se encargará de manejar toda la lógica para poder iniciar sesión
+Route::get('/logout', [logoutController::class, 'logout'])->name('logout');
+
 
 /* Podes optar por 1)llamar una ruta para cada recurso o 2)llamar una ruta para todos los recursos de tipo controlador
 1)
@@ -74,9 +80,6 @@ Route::get('productos/inventario/pdf',[productoController::class, 'inventoryPdf'
 
 
 
-Route::get('/login', [loginController::class, 'index'])->name('login');//Esto le dice a Laravel que cuando alguien visite '/login', debe usar el método index del controlador homeController para manejar la solicitud. Este te trae la vista de login
-Route::post('/login', [loginController::class, 'login']);// Esta ruta se encargará de manejar toda la lógica para poder iniciar sesión
-Route::get('/logout', [logoutController::class, 'logout'])->name('logout');
 
 
 
