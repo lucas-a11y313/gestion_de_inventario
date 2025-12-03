@@ -42,7 +42,7 @@ class Producto extends Model
         
         //$file->move(public_path().'/img/productos/',$name);//el archivo lo guardo en la carpeta img\productos tambien con el nombre de la imagen
         
-        Storage::putFileAs('/public/productos/',$file,$name,'public');
+        Storage::putFileAs('productos',$file,$name,'public');
 
         return $name;//retornar el nombre ya que eso lo voy a guardar en mi base de datos
     }
