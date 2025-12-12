@@ -53,6 +53,14 @@
                 </a>
             @endcan
 
+            @can('ver-producto')
+                <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                   href="{{ route('productos.gestion') }}">
+                    <i class="fa-solid fa-cart-plus mr-3 w-4"></i>
+                    Gestión de Productos
+                </a>
+            @endcan
+
             @can('ver-inventarioBP')
                 <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
                    href="{{ route('inventariobp.index') }}">
