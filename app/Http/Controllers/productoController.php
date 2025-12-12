@@ -267,4 +267,9 @@ class productoController extends Controller
         //dd($productos);
         return view('producto.productos_eliminados', compact('productos'));
     }
+
+    public function gestion()
+    {
+        return view('producto.gestion');
+    }
 }
