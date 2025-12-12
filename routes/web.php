@@ -77,6 +77,7 @@ Route::get('inventariobp/{inventariobp}/print', [InventarioBPController::class, 
 Route::get('inventariobp_pdf', [InventarioBPController::class, 'pdf'])->name('inventariobp.pdf')->middleware('permission:ver-inventarioBP');
 Route::get('insumos/inventario/pdf',[InventarioInsumosController::class, 'pdf'])->name('insumos.inventario.pdf')->middleware('permission:ver-producto');
 Route::get('productos/inventario/pdf',[productoController::class, 'inventoryPdf'])->name('productos.inventario.pdf')->middleware('permission:ver-producto');
+Route::get('/gestion', [productoController::class, 'gestion'])->name('productos.gestion')->middleware('permission:ver-producto');
 
 
 
