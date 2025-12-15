@@ -18,7 +18,8 @@ class SolicitudController extends Controller
         $this->middleware('permission:ver-solicitud|crear-solicitud|mostrar-solicitud|eliminar-solicitud',['only' => ['index']]);
         $this->middleware('permission:crear-solicitud',['only' => ['create','store']]);
         $this->middleware('permission:mostrar-solicitud',['only' => ['show']]);
-        $this->middleware('permission:eliminar-solicitud',['only' => ['destroy']]);
+        $this->middleware('permission:eliminar-solicitud',['only' => ['destroy','restore']]);
+        $this->middleware('permission:ver-solicitud',['only' => ['eliminadas']]);
     }
     /**
      * Display a listing of the resource.

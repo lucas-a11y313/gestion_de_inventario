@@ -18,6 +18,7 @@ class categoriaController extends Controller
         $this->middleware('permission:crear-categoria',['only' => ['create', 'store']]);
         $this->middleware('permission:editar-categoria',['only' => ['edit', 'update']]);
         $this->middleware('permission:eliminar-categoria',['only' => ['destroy']]);
+        $this->middleware('permission:ver-categoria', ['only' => ['eliminadas']]);
     }
     /**
      * Display a listing of the resource.

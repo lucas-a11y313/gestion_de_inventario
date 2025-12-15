@@ -7,9 +7,15 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Producto;
 use App\Models\Solicitud;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class InventarioInsumosController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -55,7 +61,7 @@ class InventarioInsumosController extends Controller
      */
     public function edit(string $id)
     {
-        return view('InventarioInsumos.edit');
+        //
     }
 
     /**

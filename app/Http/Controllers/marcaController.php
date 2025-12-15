@@ -18,6 +18,7 @@ class marcaController extends Controller
         $this->middleware('permission:crear-marca',['only' => ['create','store']]);
         $this->middleware('permission:editar-marca', ['only' => ['edit','update']]);
         $this->middleware('permission:eliminar-marca', ['only'=> ['destroy']]);
+        $this->middleware('permission:ver-marca', ['only' => ['eliminadas']]);
     }
     /**
      * Display a listing of the resource.

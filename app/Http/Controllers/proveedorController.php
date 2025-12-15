@@ -19,6 +19,7 @@ class proveedorController extends Controller
         $this->middleware('permission:crear-proveedor',['only' => ['create','store']]);
         $this->middleware('permission:editar-proveedor',['only' => ['edit','update']]);
         $this->middleware('permission:eliminar-proveedor',['only' => ['destroy']]);
+        $this->middleware('permission:ver-proveedor', ['only' => ['eliminadas']]);
     }
     /**
      * Display a listing of the resource.

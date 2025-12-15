@@ -17,9 +17,8 @@ class InventarioBPController extends Controller
         $this->middleware('permission:ver-inventarioBP|crear-inventarioBP|editar-inventarioBP|mostrar-inventarioBP', ['only' => ['index']]);
         $this->middleware('permission:crear-inventarioBP', ['only' => ['create', 'store']]);
         $this->middleware('permission:editar-inventarioBP', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:mostrar-inventarioBP', ['only' => ['show']]);
+        $this->middleware('permission:mostrar-inventarioBP', ['only' => ['show', 'print', 'getData']]);
         $this->middleware('permission:ver-inventarioBP', ['only' => ['pdf']]);
-        $this->middleware('permission:mostrar-inventarioBP', ['only' => ['print']]);
     }
 
     /**

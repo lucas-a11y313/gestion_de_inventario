@@ -17,7 +17,8 @@ class AdquisicionController extends Controller
         $this->middleware('permission:ver-adquisicion|crear-adquisicion|mostrar-adquisicion|eliminar-adquisicion',['only' => ['index']]);
         $this->middleware('permission:crear-adquisicion',['only' => ['create','store']]);
         $this->middleware('permission:mostrar-adquisicion',['only' => ['show']]);
-        $this->middleware('permission:eliminar-adquisicion',['only' => ['destroy']]);
+        $this->middleware('permission:eliminar-adquisicion',['only' => ['destroy', 'restaurar']]);
+        $this->middleware('permission:ver-adquisicion',['only' => ['eliminadas']]);
     }
     /**
      * Display a listing of the resource.
