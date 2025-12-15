@@ -25,6 +25,8 @@ excel/
 Datos_csv/
 guia-produccion-local-docker.md
 backup_bd_*.sql
+Manejo_de_Imagenes_en_Laravel
+Modificar_cantidad_registros_a_la_vista_del_usuario
 
 # Laravel cache and storage
 /bootstrap/cache/*
