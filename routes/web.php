@@ -14,6 +14,7 @@ use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\proveedorController;
 use App\Http\Controllers\roleController;
 use App\Http\Controllers\SolicitudController;
+use App\Http\Controllers\UbicacionController;
 use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,7 +61,8 @@ Route::resources([
     'roles' => roleController::class,
     'profile' => profileController::class,
     'inventarioinsumos' => InventarioInsumosController::class,
-    'inventariobp' => InventarioBPController::class
+    'inventariobp' => InventarioBPController::class,
+    'ubicaciones' => UbicacionController::class
 ], ['parameters' => [
     'adquisiciones' => 'adquisicion'
 ]]);
