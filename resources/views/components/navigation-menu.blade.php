@@ -93,6 +93,15 @@
                 </a>
             @endcan
 
+            <!--Cambiar el permiso a ver-ubicacion -->
+            @can('ver-ubicacion')
+                <a class="nav-link flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                   href="{{ route('ubicaciones.index') }}">
+                    <i class="fa-solid fa-map-marker-alt mr-3 w-4"></i>
+                    Ubicaciones
+                </a>
+            @endcan
+
 
 
             @can('ver-proveedor')
