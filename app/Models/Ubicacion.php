@@ -11,7 +11,7 @@ class Ubicacion extends Model
     protected $fillable = ['nombre'];
 
     public function productos(){
-        return $this->belongsToMany(Producto::class, 'producto_ubicacion')->withTimestamps();
+        return $this->belongsToMany(Producto::class, 'producto_ubicacion')->withTimestamps()->withPivot('cantidad');
     }
 
     
