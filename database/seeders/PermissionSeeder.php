@@ -26,12 +26,6 @@ class PermissionSeeder extends Seeder
             'editar-marca',
             'eliminar-marca',
 
-            //compra
-            'ver-compra',
-            'crear-compra',
-            'mostrar-compra',
-            'eliminar-compra',
-
             //adquisicion
             'ver-adquisicion',
             'crear-adquisicion',
@@ -50,12 +44,6 @@ class PermissionSeeder extends Seeder
             'editar-proyecto',
             'mostrar-proyecto',
             'eliminar-proyecto',
-
-            //venta
-            'ver-venta',
-            'crear-venta',
-            'mostrar-venta',
-            'eliminar-venta',
 
             //producto
             'ver-producto',
@@ -86,6 +74,12 @@ class PermissionSeeder extends Seeder
             'crear-user',
             'editar-user',
             'eliminar-user',
+
+            //Ubicaciones
+            'ver-ubicacion',
+            'crear-ubicacion',
+            'editar-ubicacion',
+            'eliminar-ubicacion',
         ];
 
         foreach($permisos as $permiso) {
