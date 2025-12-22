@@ -11,13 +11,10 @@ class UbicacionController extends Controller
 {
     function __construct()
     {
-        //A AÑADIR LOS PERMISOS DE UBICACION 
-        /*
         $this->middleware('permission:ver-ubicacion|crear-ubicacion|editar-ubicacion|eliminar-ubicacion', ['only' => ['index']]);
         $this->middleware('permission:crear-ubicacion', ['only' => ['create', 'store']]);
         $this->middleware('permission:editar-ubicacion', ['only' => ['edit', 'update']]);
         $this->middleware('permission:eliminar-ubicacion', ['only' => ['destroy']]);
-        */
     }
 
     /**
@@ -49,7 +46,7 @@ class UbicacionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Ubicacion $ubicacion)
+    public function show(Ubicacion $ubicacione)
     {
         // Not implemented
     }
@@ -57,27 +54,27 @@ class UbicacionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Ubicacion $ubicacion)
+    public function edit(Ubicacion $ubicacione)
     {
-        return view('ubicacion.edit', compact('ubicacion'));
+        return view('ubicacion.edit', compact('ubicacione'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUbicacionRequest $request, Ubicacion $ubicacion)
+    public function update(UpdateUbicacionRequest $request, Ubicacion $ubicacione)
     {
-        $ubicacion->update($request->validated());
+        $ubicacione->update($request->validated());
         return redirect()->route('ubicaciones.index')->with('success', 'Ubicación editada');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ubicacion $ubicacion)
+    public function destroy(Ubicacion $ubicacione)
     {
-        $ubicacion->estado = 0;
-        $ubicacion->save();
+        $ubicacione->estado = 0;
+        $ubicacione->save();
         return redirect()->route('ubicaciones.index')->with('success', 'Ubicación eliminada');
     }
 }
