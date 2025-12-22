@@ -196,3 +196,14 @@
     }
   }
 }
+
+/* Estilo forzado para el buscador de simple-datatables */
+.datatable-search input {
+    background-color: #DBEAFE !important; /* blue-200 */
+    color: #1E40AF !important; /* blue-800 */
+    border: 1px solid #60A5FA !important; /* blue-400 */
+}
+.datatable-search input::placeholder {
+    font-weight: normal !important; /* Removed bold */
+    color: #000000 !important; /* black */
+}
