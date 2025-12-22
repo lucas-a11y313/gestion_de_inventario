@@ -175,7 +175,7 @@
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
-    <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+    <script src="{{ asset('js/datatables-simple-demo.js') }}?v={{ filemtime(public_path('js/datatables-simple-demo.js')) }}"></script>
 
     <script>
         // Global user modal object

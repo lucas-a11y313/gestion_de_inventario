@@ -82,7 +82,8 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marca</th>
                                     
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categorías</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ubicación</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad total</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ubicaciones con su cantidad</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                                 </tr>
@@ -101,23 +102,41 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $producto->marca?->caracteristica?->nombre ?? 'Sin marca' }}
                                     </td>
-
                                     <td class="px-6 py-4">
                                         <div class="flex flex-wrap gap-1">
-                                            @if($producto->categorias && $producto->categorias->count() > 0)
-                                                @foreach ($producto->categorias as $categoria)
-                                                    @if($categoria->caracteristica)
-                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                            {{ $categoria->caracteristica->nombre }}
-                                                        </span>
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                <span class="text-xs text-gray-400">Sin categorías</span>
-                                            @endif
+                                            @forelse ($producto->categorias as $categoria)
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                    {{ $categoria->caracteristica->nombre }}
+                                                </span>
+                                            @empty
+                                                <span class="text-xs text-gray-400"> Sin categorías</span>
+                                            @endforelse
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $producto->ubicacion ?? '-' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                                            {{ $producto->stock }}
+                                        </span>
+                                    </td>
+                                    <!--
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col gap-1">
+                                            @forelse ($producto->ubicaciones as $ubicacion)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                                                    {{ $ubicacion->nombre }} (Cant: {{ $ubicacion->pivot->cantidad ?? 0 }})
+                                                </span>
+                                            @empty
+                                                <span class="text-xs text-gray-400">Sin ubicación</span>
+                                            @endforelse
+                                        </div>
+                                    </td>
+                                    -->
+                                    <td>
+                                        <a href="{{ route('productos.ubicaciones') }}" class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Ver o añadir
+                                        </a>
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if ($producto->estado == 1)
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">

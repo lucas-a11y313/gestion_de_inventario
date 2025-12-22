@@ -148,26 +148,18 @@
                                 @enderror
                             </div>
 
-                            <!-- Ubicación -->
+                            <!-- Ubicaciones -->
                             <div class="form-group">
-                                <label for="ubicacion" class="form-label">Ubicación:</label>
-                                <select name="ubicacion" id="ubicacion" class="form-select">
-                                    <option value="">Seleccione una ubicación</option>
-                                    <option value="Dirección Técnica (DT)" {{ old('ubicacion') == 'Dirección Técnica (DT)' ? 'selected' : '' }}>Dirección Técnica (DT)</option>
-                                    <option value="Unidad de Proyectos Especiales" {{ old('ubicacion') == 'Unidad de Proyectos Especiales' ? 'selected' : '' }}>Unidad de Proyectos Especiales</option>
-                                    <option value="Planificación y Control" {{ old('ubicacion') == 'Planificación y Control' ? 'selected' : '' }}>Planificación y Control</option>
-                                    <option value="Centro de Innovación Empresarial" {{ old('ubicacion') == 'Centro de Innovación Empresarial' ? 'selected' : '' }}>Centro de Innovación Empresarial</option>
-                                    <option value="Centro de Innovación en Educación" {{ old('ubicacion') == 'Centro de Innovación en Educación' ? 'selected' : '' }}>Centro de Innovación en Educación</option>
-                                    <option value="Centro de Innovación en Seguridad de Presa" {{ old('ubicacion') == 'Centro de Innovación en Seguridad de Presa' ? 'selected' : '' }}>Centro de Innovación en Seguridad de Presa</option>
-                                    <option value="Centro de Innovación en Ingeniería de Computación" {{ old('ubicacion') == 'Centro de Innovación en Ingeniería de Computación' ? 'selected' : '' }}>Centro de Innovación en Ingeniería de Computación</option>
-                                    <option value="Centro de Innovación Social y Gestión Territorial" {{ old('ubicacion') == 'Centro de Innovación Social y Gestión Territorial' ? 'selected' : '' }}>Centro de Innovación Social y Gestión Territorial</option>
-                                    <option value="Centro de Innovación en Energías Alternativas" {{ old('ubicacion') == 'Centro de Innovación en Energías Alternativas' ? 'selected' : '' }}>Centro de Innovación en Energías Alternativas</option>
-                                    <option value="Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ICI" {{ old('ubicacion') == 'Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ICI' ? 'selected' : '' }}>Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ICI</option>
-                                    <option value="Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ASE" {{ old('ubicacion') == 'Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ASE' ? 'selected' : '' }}>Centro de Innovación en Sistemas Eléctricos y Automatización: Lab.ASE</option>
-                                    <option value="Centro de Innovación en Sistemas Eléctricos y Automatización: Depósito" {{ old('ubicacion') == 'Centro de Innovación en Sistemas Eléctricos y Automatización: Depósito' ? 'selected' : '' }}>Centro de Innovación en Sistemas Eléctricos y Automatización: Depósito</option>
-                                    <option value="Centro de Innovación en Sistemas Eléctricos y Automatización: Tacuru Pucu" {{ old('ubicacion') == 'Centro de Innovación en Sistemas Eléctricos y Automatización: Tacuru Pucu' ? 'selected' : '' }}>Centro de Innovación en Sistemas Eléctricos y Automatización: Tacuru Pucu</option>
+                                <label for="ubicaciones" class="form-label">Ubicaciones:</label>
+                                <select name="ubicaciones[]" id="ubicaciones" class="form-select" multiple>
+                                    @foreach ($ubicaciones as $ubicacion)
+                                        <option value="{{ $ubicacion->id }}"
+                                            {{ in_array($ubicacion->id, old('ubicaciones', [])) ? 'selected' : '' }}>
+                                            {{ $ubicacion->nombre }}
+                                        </option>
+                                    @endforeach
                                 </select>
-                                @error('ubicacion')
+                                @error('ubicaciones')
                                     <small class="form-error">{{ '*' . $message }}</small>
                                 @enderror
                             </div>

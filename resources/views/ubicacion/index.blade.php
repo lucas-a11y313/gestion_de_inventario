@@ -44,6 +44,10 @@
                             <i class="fas fa-plus"></i>
                             Añadir nueva ubicación
                         </a>
+                        <a href="{{ route('productos.ubicaciones') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2">
+                            <i class="fas fa-map-marked-alt"></i>
+                            Ubicaciones de productos
+                        </a>
                     </div>
                 </div>
             @endcan
@@ -98,5 +102,5 @@
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
-    <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+    <script src="{{ asset('js/datatables-simple-demo.js') }}?v={{ filemtime(public_path('js/datatables-simple-demo.js')) }}"></script>
 @endpush
