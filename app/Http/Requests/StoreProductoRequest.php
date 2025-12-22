@@ -22,14 +22,14 @@ class StoreProductoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'codigo' => 'required|max:50|unique:productos,codigo',
+            'codigo' => 'nullable|max:50|unique:productos,codigo',
             'nombre' => 'required|max:80|unique:productos,nombre',
             'descripcion' => 'nullable|max:255',
             'fecha_vencimiento' => 'nullable|date',
             'img_path' => 'nullable|max:2048|image|mimes:png,jpg,jpeg',
             'tipo' => 'required|in:BP,Insumo',
-            'marca_id' => 'required|integer|exists:marcas,id',
-            'categorias' => 'required',
+            'marca_id' => 'nullable|integer|exists:marcas,id',
+            'categorias' => 'nullable',
             'ubicacion' => 'nullable|string|max:100',
             'origen' => 'nullable|string|max:100',
             'sugerencia' => 'nullable|string'
