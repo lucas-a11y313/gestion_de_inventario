@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
 use App\Models\Categoria;
 use App\Models\Marca;
+use App\Models\Ubicacion;
 
 use App\Models\Producto;
 use Exception;
@@ -31,11 +32,11 @@ class productoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::with(['categorias.caracteristica','marca.caracteristica'])
+        $productos = Producto::with(['categorias.caracteristica','marca.caracteristica','ubicaciones'])
             ->where('estado', 1)
             ->latest()
             ->get();
-
+        //dd($productos);
         return view('producto.index',compact('productos'));//compact('productos'): Este método convierte la variable $productos en un array asociativo, usar compact('productos') es lo mismo que ['productos' => $productos]
     }
 
@@ -54,7 +55,9 @@ class productoController extends Controller
         ->where('c.estado',1)
         ->get();
 
-        return view('producto.create', compact('marcas', 'categorias'));//compact('marcas'): Este método convierte la variable $marcas en un array asociativo, usar compact('marcas') es lo mismo que ['marcas' => $marcas]
+        $ubicaciones = Ubicacion::all();
+
+        return view('producto.create', compact('marcas', 'categorias', 'ubicaciones'));//compact('marcas'): Este método convierte la variable $marcas en un array asociativo, usar compact('marcas') es lo mismo que ['marcas' => $marcas]
     }
 
     /**
@@ -83,7 +86,6 @@ class productoController extends Controller
                 'img_path' => $name,
                 'marca_id' => $request->marca_id,
                 'tipo' => $request->tipo,
-                'ubicacion' => $request->ubicacion,
                 'sugerencia' => $request->sugerencia
             ]);
 
@@ -91,7 +93,16 @@ class productoController extends Controller
 
             //---Tabla categoría producto
             $categorias = $request->get('categorias');
-            $producto->categorias()->attach($categorias);//El método attach() es utilizado para insertar registros en la tabla pivote.
+            if ($categorias) {
+                $producto->categorias()->attach($categorias);
+            }
+
+            //---Tabla producto ubicacion
+            $ubicaciones = $request->get('ubicaciones');
+            if ($ubicaciones) {
+                $producto->ubicaciones()->attach($ubicaciones);//El método attach() es utilizado para insertar registros en la tabla pivote.
+            }
+
 
             DB::commit();
 
@@ -116,7 +127,7 @@ class productoController extends Controller
     public function edit(Producto $producto)
     {
         // Cargar las relaciones del producto para asegurar que están disponibles
-        $producto->load(['marca.caracteristica', 'categorias.caracteristica']);
+        $producto->load(['marca.caracteristica', 'categorias.caracteristica', 'ubicaciones']);
 
         $marcas = Marca::join('caracteristicas as c','marcas.caracteristica_id','=','c.id')
         ->select('marcas.id as id','c.nombre as nombre')
@@ -128,7 +139,9 @@ class productoController extends Controller
         ->where('c.estado',1)
         ->get();
 
-        return view('producto.edit',compact('producto','marcas','categorias'));
+        $ubicaciones = Ubicacion::all();
+
+        return view('producto.edit',compact('producto','marcas','categorias', 'ubicaciones'));
     }
 
     /**
@@ -145,7 +158,7 @@ class productoController extends Controller
                 $name = $producto->hanbleUploadImage($request->File('img_path'));
 
                 //Eliminar si existiese una imagen antigua
-                if (Storage::disk('public')->exists('productos/'.$producto->img_path)) {
+                if ($producto->img_path && Storage::disk('public')->exists('productos/'.$producto->img_path)) {
                     Storage::disk('public')->delete('productos/'.$producto->img_path);
                 }
 
@@ -162,7 +175,6 @@ class productoController extends Controller
                 'img_path' => $name,
                 'marca_id' => $request->marca_id,
                 'tipo' => $request->tipo,
-                'ubicacion' => $request->ubicacion,
                 'sugerencia' => $request->sugerencia
             ]);
 
@@ -170,7 +182,11 @@ class productoController extends Controller
 
             //---Tabla categoría producto
             $categorias = $request->get('categorias');
-            $producto->categorias()->sync($categorias);//El método sync() es utilizado para eliminar todos los registros existentes en la tabla pivote y luego inserta los nuevos registros que están en la variable $categorias
+            $producto->categorias()->sync($categorias ?: []);
+
+            //---Tabla producto ubicacion
+            $ubicaciones = $request->get('ubicaciones');
+            $producto->ubicaciones()->sync($ubicaciones ?: []);
 
             DB::commit();
 
@@ -271,6 +287,12 @@ class productoController extends Controller
 
     public function gestion()
     {
-        return view('producto.gestion');
+        $productos = Producto::where('estado',1)->latest()->get();
+        return view('producto.gestion', compact('productos'));
+    }
+
+    public function ubicaciones()
+    {
+        return view('producto.UbicacionesProductos');
     }
 }
