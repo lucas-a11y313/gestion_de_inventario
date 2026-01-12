@@ -7,133 +7,128 @@
 @endpush
 
 @section('content')
-<div class="container mx-auto p-4" x-data="productManagement()">
-    
-
-    <!-- Controles y Búsqueda -->
-    <div class="flex justify-between items-center mb-4">
-        
-        <button
-            @click="showAddProductModal = true"
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
-        >
-            <i class="fas fa-plus mr-2"></i> Añadir Producto
-        </button>
-    </div>
-
-    <!-- ===== MODALES ===== -->
-
-    <!-- Modal Añadir Producto (z-40) -->
-    <div x-show="showAddProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40" style="display: none;">
-        <div @click.away="handleCloseMainModal()" class="bg-white rounded-lg shadow-xl p-6 max-w-3xl">
-            <h3 class="text-xl font-bold mb-4">Añadir Nuevo Producto</h3>
-            <form @submit.prevent="addProduct">
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="text" x-model="formData.product.code" placeholder="Código del producto" class="p-2 border rounded">
-                    <input type="text" x-model="formData.product.name" placeholder="Nombre del producto" class="p-2 border rounded">
-                    <textarea x-model="formData.product.description" placeholder="Descripción" class="p-2 border rounded col-span-2"></textarea>
-                    
-                    <div class="flex items-center gap-2">
-                        <select x-model="formData.product.brand" class="p-2 border rounded w-full">
-                            <option value="">Selecciona una Marca</option>
-                            <template x-for="brand in brands" :key="brand.id">
-                                <option :value="brand.id" x-text="brand.name"></option>
-                            </template>
-                        </select>
-                        <button @click.prevent="showAddBrandModal = true" class="bg-green-500 text-white p-2 rounded hover:bg-green-600 font-bold">+</button>
-                    </div>
-
-                    <div class="flex items-center gap-2">
-                        <select x-model="formData.product.category" class="p-2 border rounded w-full">
-                            <option value="">Selecciona una Categoría</option>
-                            <template x-for="category in categories" :key="category.id">
-                                <option :value="category.id" x-text="category.name"></option>
-                            </template>
-                        </select>
-                        <button @click.prevent="showAddCategoryModal = true" class="bg-green-500 text-white p-2 rounded hover:bg-green-600 font-bold">+</button>
-                    </div>
-                    
-                    <input type="number" x-model="formData.product.stock" placeholder="Stock inicial" class="p-2 border rounded">
-                    <input type="number" step="0.01" x-model="formData.product.price" placeholder="Precio" class="p-2 border rounded">
-                    
-                    <div class="col-span-2 flex items-center gap-2">
-                        <select x-model="formData.product.supplier" class="p-2 border rounded w-full">
-                            <option value="">Selecciona un Proveedor</option>
-                            <template x-for="supplier in suppliers" :key="supplier.id">
-                                <option :value="supplier.id" x-text="supplier.name"></option>
-                            </template>
-                        </select>
-                        <button @click.prevent="showAddSupplierModal = true" class="bg-green-500 text-white p-2 rounded hover:bg-green-600 font-bold">+</button>
-                    </div>
-                </div>
-                <div class="flex justify-end mt-4">
-                    <button type="button" @click="showAddProductModal = false" class="text-gray-600 mr-4">Cancelar</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Añadir Marca (z-50) -->
-    <div x-show="showAddBrandModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
-        <div @click.away="showAddBrandModal = false" class="bg-white rounded-lg shadow-xl p-6 max-w-md">
-            <h3 class="text-xl font-bold mb-4">Añadir Nueva Marca</h3>
-            <form @submit.prevent="addBrand">
-                <input type="text" x-model="formData.brand.name" placeholder="Nombre de la marca" class="p-2 border rounded w-full">
-                <div class="flex justify-end mt-4">
-                    <button type="button" @click="showAddBrandModal = false" class="text-gray-600 mr-4">Cancelar</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Añadir Categoría (z-50) -->
-    <div x-show="showAddCategoryModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
-        <div @click.away="showAddCategoryModal = false" class="bg-white rounded-lg shadow-xl p-6 max-w-md">
-            <h3 class="text-xl font-bold mb-4">Añadir Nueva Categoría</h3>
-            <form @submit.prevent="addCategory">
-                <input type="text" x-model="formData.category.name" placeholder="Nombre de la categoría" class="p-2 border rounded w-full">
-                <div class="flex justify-end mt-4">
-                    <button type="button" @click="showAddCategoryModal = false" class="text-gray-600 mr-4">Cancelar</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Modal Añadir Proveedor (z-50) -->
-    <div x-show="showAddSupplierModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
-        <div @click.away="showAddSupplierModal = false" class="bg-white rounded-lg shadow-xl p-6 max-w-lg">
-            <h3 class="text-xl font-bold mb-4">Añadir Nuevo Proveedor</h3>
-            <form @submit.prevent="addSupplier">
-                 <div class="grid grid-cols-1 gap-4">
-                    <input type="text" x-model="formData.supplier.name" placeholder="Nombre del proveedor" class="p-2 border rounded">
-                    <input type="text" x-model="formData.supplier.ruc" placeholder="RUC" class="p-2 border rounded">
-                    <input type="text" x-model="formData.supplier.address" placeholder="Dirección" class="p-2 border rounded">
-                    <input type="text" x-model="formData.supplier.phone" placeholder="Teléfono" class="p-2 border rounded">
-                </div>
-                <div class="flex justify-end mt-4">
-                    <button type="button" @click="showAddSupplierModal = false" class="text-gray-600 mr-4">Cancelar</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Toast Notification (z-50) -->
-    <div x-show="toast.visible" x-transition class="fixed bottom-4 right-4 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50" style="display: none;">
-        <span x-text="toast.message"></span>
-    </div>
-</div>
-
-<div class="px-4 py-6">
+<div class="px-4 py-6" x-data="productManagement()">
     <div class="max-w-7xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Gestión de Productos</h1>
         <nav class="breadcrumb mb-6">
             <div class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></div>
             <div class="breadcrumb-item active">Gestión de productos</div>
         </nav>
+
+        <!-- Botón Añadir Producto -->
+        <div class="flex justify-between items-center mb-6">
+            <button
+                @click="showAddProductModal = true"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 inline-flex items-center gap-2"
+            >
+                <i class="fas fa-plus"></i> Añadir Producto
+            </button>
+        </div>
+
+        <!-- ===== MODALES ===== -->
+
+        <!-- Modal Añadir Producto (z-40) -->
+        <div x-show="showAddProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40" style="display: none;">
+            <div @click.away="handleCloseMainModal()" class="bg-white rounded-lg shadow-xl p-6 max-w-3xl">
+                <h3 class="text-xl font-bold mb-4">Añadir Nuevo Producto</h3>
+                <form @submit.prevent="addProduct">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" x-model="formData.product.code" placeholder="Código del producto" class="p-2 border rounded">
+                        <input type="text" x-model="formData.product.name" placeholder="Nombre del producto" class="p-2 border rounded">
+                        <textarea x-model="formData.product.description" placeholder="Descripción" class="p-2 border rounded col-span-2"></textarea>
+                        
+                        <div class="flex items-center gap-2">
+                            <select x-model="formData.product.brand" class="p-2 border rounded w-full">
+                                <option value="">Selecciona una Marca</option>
+                                <template x-for="brand in brands" :key="brand.id">
+                                    <option :value="brand.id" x-text="brand.name"></option>
+                                </template>
+                            </select>
+                            <button @click.prevent="showAddBrandModal = true" class="bg-green-500 text-white p-2 rounded hover:bg-green-600 font-bold">+</button>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <select x-model="formData.product.category" class="p-2 border rounded w-full">
+                                <option value="">Selecciona una Categoría</option>
+                                <template x-for="category in categories" :key="category.id">
+                                    <option :value="category.id" x-text="category.name"></option>
+                                </template>
+                            </select>
+                            <button @click.prevent="showAddCategoryModal = true" class="bg-green-500 text-white p-2 rounded hover:bg-green-600 font-bold">+</button>
+                        </div>
+                        
+                        <input type="number" x-model="formData.product.stock" placeholder="Stock inicial" class="p-2 border rounded">
+                        <input type="number" step="0.01" x-model="formData.product.price" placeholder="Precio" class="p-2 border rounded">
+                        
+                        <div class="col-span-2 flex items-center gap-2">
+                            <select x-model="formData.product.supplier" class="p-2 border rounded w-full">
+                                <option value="">Selecciona un Proveedor</option>
+                                <template x-for="supplier in suppliers" :key="supplier.id">
+                                    <option :value="supplier.id" x-text="supplier.name"></option>
+                                </template>
+                            </select>
+                            <button @click.prevent="showAddSupplierModal = true" class="bg-green-500 text-white p-2 rounded hover:bg-green-600 font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-4">
+                        <button type="button" @click="showAddProductModal = false" class="text-gray-600 mr-4">Cancelar</button>
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Añadir Marca (z-50) -->
+        <div x-show="showAddBrandModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+            <div @click.away="showAddBrandModal = false" class="bg-white rounded-lg shadow-xl p-6 max-w-md">
+                <h3 class="text-xl font-bold mb-4">Añadir Nueva Marca</h3>
+                <form @submit.prevent="addBrand">
+                    <input type="text" x-model="formData.brand.name" placeholder="Nombre de la marca" class="p-2 border rounded w-full">
+                    <div class="flex justify-end mt-4">
+                        <button type="button" @click="showAddBrandModal = false" class="text-gray-600 mr-4">Cancelar</button>
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Añadir Categoría (z-50) -->
+        <div x-show="showAddCategoryModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+            <div @click.away="showAddCategoryModal = false" class="bg-white rounded-lg shadow-xl p-6 max-w-md">
+                <h3 class="text-xl font-bold mb-4">Añadir Nueva Categoría</h3>
+                <form @submit.prevent="addCategory">
+                    <input type="text" x-model="formData.category.name" placeholder="Nombre de la categoría" class="p-2 border rounded w-full">
+                    <div class="flex justify-end mt-4">
+                        <button type="button" @click="showAddCategoryModal = false" class="text-gray-600 mr-4">Cancelar</button>
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Modal Añadir Proveedor (z-50) -->
+        <div x-show="showAddSupplierModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+            <div @click.away="showAddSupplierModal = false" class="bg-white rounded-lg shadow-xl p-6 max-w-lg">
+                <h3 class="text-xl font-bold mb-4">Añadir Nuevo Proveedor</h3>
+                <form @submit.prevent="addSupplier">
+                     <div class="grid grid-cols-1 gap-4">
+                        <input type="text" x-model="formData.supplier.name" placeholder="Nombre del proveedor" class="p-2 border rounded">
+                        <input type="text" x-model="formData.supplier.ruc" placeholder="RUC" class="p-2 border rounded">
+                        <input type="text" x-model="formData.supplier.address" placeholder="Dirección" class="p-2 border rounded">
+                        <input type="text" x-model="formData.supplier.phone" placeholder="Teléfono" class="p-2 border rounded">
+                    </div>
+                    <div class="flex justify-end mt-4">
+                        <button type="button" @click="showAddSupplierModal = false" class="text-gray-600 mr-4">Cancelar</button>
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Toast Notification (z-50) -->
+        <div x-show="toast.visible" x-transition class="fixed bottom-4 right-4 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50" style="display: none;">
+            <span x-text="toast.message"></span>
+        </div>
         
         <div class="card">
             <div class="card-header">
