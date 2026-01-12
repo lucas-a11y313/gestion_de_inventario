@@ -286,10 +286,24 @@ class productoController extends Controller
     }
 
     public function gestion()
-    {
-        $productos = Producto::where('estado',1)->latest()->get();
-        return view('producto.gestion', compact('productos'));
-    }
+{
+    $productos = Producto::where('estado',1)->latest()->get();
+    
+    // Cargar datos necesarios para el modal de añadir producto
+    $marcas = Marca::join('caracteristicas as c','marcas.caracteristica_id','=','c.id')
+        ->select('marcas.id as id','c.nombre as nombre')
+        ->where('c.estado',1)
+        ->get();
+    
+    $categorias = Categoria::join('caracteristicas as c','categorias.caracteristica_id','=','c.id')
+        ->select('categorias.id as id','c.nombre as nombre')
+        ->where('c.estado',1)
+        ->get();
+    
+    $ubicaciones = Ubicacion::all();
+    
+    return view('producto.gestion', compact('productos', 'marcas', 'categorias', 'ubicaciones'));
+}    
 
     public function ubicaciones()
     {
