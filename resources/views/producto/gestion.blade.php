@@ -28,52 +28,161 @@
         <!-- ===== MODALES ===== -->
 
         <!-- Modal Añadir Producto (z-40) -->
-        <div x-show="showAddProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40" style="display: none;">
-            <div @click.away="handleCloseMainModal()" class="bg-white rounded-lg shadow-xl p-6 max-w-3xl">
-                <h3 class="text-xl font-bold mb-4">Añadir Nuevo Producto</h3>
-                <form @submit.prevent="addProduct">
+        <div x-show="showAddProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 p-4" style="display: none;">
+            <div @click.away="handleCloseMainModal()" class="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[85vh] flex flex-col">
+                <!-- Header del Modal -->
+                <div class="px-6 py-4 border-b">
+                    <h3 class="text-xl font-bold">Añadir Nuevo Producto</h3>
+                </div>
+                
+                <!-- Body del Modal con Scroll -->
+                <div class="px-6 py-4 overflow-y-auto flex-1">
+                <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
                     <div class="grid grid-cols-2 gap-4">
-                        <input type="text" x-model="formData.product.code" placeholder="Código del producto" class="p-2 border rounded">
-                        <input type="text" x-model="formData.product.name" placeholder="Nombre del producto" class="p-2 border rounded">
-                        <textarea x-model="formData.product.description" placeholder="Descripción" class="p-2 border rounded col-span-2"></textarea>
-                        
-                        <div class="flex items-center gap-2">
-                            <select x-model="formData.product.brand" class="p-2 border rounded w-full">
-                                <option value="">Selecciona una Marca</option>
-                                <template x-for="brand in brands" :key="brand.id">
-                                    <option :value="brand.id" x-text="brand.name"></option>
-                                </template>
-                            </select>
-                            <button @click.prevent="showAddBrandModal = true" class="bg-green-500 text-white p-2 rounded hover:bg-green-600 font-bold">+</button>
+                        <!-- Código -->
+                        <div class="form-group">
+                            <label for="codigo" class="block text-sm font-medium text-gray-700">Código:</label>
+                            <input type="text" name="codigo" id="codigo" class="mt-1 p-2 border rounded w-full" value="{{ old('codigo') }}">
+                            @error('codigo')
+                                <small class="text-red-500 text-xs">{{ $message }}</small>
+                            @enderror
                         </div>
 
-                        <div class="flex items-center gap-2">
-                            <select x-model="formData.product.category" class="p-2 border rounded w-full">
-                                <option value="">Selecciona una Categoría</option>
-                                <template x-for="category in categories" :key="category.id">
-                                    <option :value="category.id" x-text="category.name"></option>
-                                </template>
-                            </select>
-                            <button @click.prevent="showAddCategoryModal = true" class="bg-green-500 text-white p-2 rounded hover:bg-green-600 font-bold">+</button>
+                        <!-- Nombre (OBLIGATORIO) -->
+                        <div class="form-group">
+                            <label for="nombre" class="block text-sm font-medium text-gray-700">
+                                Nombre: <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="nombre" id="nombre" class="mt-1 p-2 border rounded w-full" value="{{ old('nombre') }}" required>
+                            @error('nombre')
+                                <small class="text-red-500 text-xs">{{ $message }}</small>
+                            @enderror
                         </div>
-                        
-                        <input type="number" x-model="formData.product.stock" placeholder="Stock inicial" class="p-2 border rounded">
-                        <input type="number" step="0.01" x-model="formData.product.price" placeholder="Precio" class="p-2 border rounded">
-                        
-                        <div class="col-span-2 flex items-center gap-2">
-                            <select x-model="formData.product.supplier" class="p-2 border rounded w-full">
-                                <option value="">Selecciona un Proveedor</option>
-                                <template x-for="supplier in suppliers" :key="supplier.id">
-                                    <option :value="supplier.id" x-text="supplier.name"></option>
-                                </template>
+
+                        <!-- Descripción -->
+                        <div class="form-group">
+                            <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción:</label>
+                            <textarea name="descripcion" id="descripcion" rows="3" class="mt-1 p-2 border rounded w-full">{{ old('descripcion') }}</textarea>
+                            @error('descripcion')
+                                <small class="text-red-500 text-xs">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <!-- Fecha de vencimiento -->
+                        <div class="form-group">
+                            <label for="fecha_vencimiento" class="block text-sm font-medium text-gray-700">Fecha de vencimiento:</label>
+                            <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" class="mt-1 p-2 border rounded w-full" value="{{ old('fecha_vencimiento') }}">
+                            @error('fecha_vencimiento')
+                                <small class="text-red-500 text-xs">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <!-- Imagen -->
+                        <div class="form-group">
+                            <label for="img_path" class="block text-sm font-medium text-gray-700">Imagen:</label>
+                            <input type="file" name="img_path" id="img_path" class="mt-1 p-2 border rounded w-full" accept="image/*">
+                            @error('img_path')
+                                <small class="text-red-500 text-xs">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <!-- Tipo (OBLIGATORIO) -->
+                        <div class="form-group">
+                            <label for="tipo" class="block text-sm font-medium text-gray-700">
+                                Tipo: <span class="text-red-500">*</span>
+                            </label>
+                            <select name="tipo" id="tipo" class="mt-1 p-2 border rounded w-full" required>
+                                <option value="">Seleccione el tipo</option>
+                                <option value="BP" {{ old('tipo') == 'BP' ? 'selected' : '' }}>BP</option>
+                                <option value="Insumo" {{ old('tipo') == 'Insumo' ? 'selected' : '' }}>Insumo</option>
                             </select>
-                            <button @click.prevent="showAddSupplierModal = true" class="bg-green-500 text-white p-2 rounded hover:bg-green-600 font-bold">+</button>
+                            @error('tipo')
+                                <small class="text-red-500 text-xs">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <!-- Marca -->
+                        <div class="form-group">
+                            <label for="marca_id" class="block text-sm font-medium text-gray-700">Marca:</label>
+                            <div class="flex items-center gap-2">
+                                <select name="marca_id" id="marca_id" class="mt-1 p-2 border rounded w-full">
+                                    <option value="">Seleccione una marca</option>
+                                    @foreach ($marcas as $marca)
+                                        <option value="{{ $marca->id }}" {{ old('marca_id') == $marca->id ? 'selected' : '' }}>
+                                            {{ $marca->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <button type="button" @click.prevent="showAddBrandModal = true" class="bg-green-500 text-white p-2 rounded hover:bg-green-600 font-bold">+</button>
+                            </div>
+                            @error('marca_id')
+                                <small class="text-red-500 text-xs">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <!-- Categorías -->
+                        <div class="form-group">
+                            <label for="categorias" class="block text-sm font-medium text-gray-700">Categorías:</label>
+                            <div class="flex items-center gap-2">
+                                <select name="categorias[]" id="categorias" multiple class="mt-1 p-2 border rounded w-full" size="4">
+                                    @foreach ($categorias as $categoria)
+                                        <option value="{{ $categoria->id }}" {{ in_array($categoria->id, old('categorias', [])) ? 'selected' : '' }}>
+                                            {{ $categoria->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <button type="button" @click.prevent="showAddCategoryModal = true" class="bg-green-500 text-white p-2 rounded hover:bg-green-600 font-bold">+</button>
+                            </div>
+                            <small class="text-gray-500 text-xs">Mantén presionado Ctrl (Cmd en Mac) para seleccionar múltiples</small>
+                            @error('categorias')
+                                <small class="text-red-500 text-xs">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <!-- Sugerencia -->
+                        <div class="form-group">
+                            <label for="sugerencia" class="block text-sm font-medium text-gray-700">Sugerencia:</label>
+                            <textarea name="sugerencia" id="sugerencia" rows="4" class="mt-1 p-2 border rounded w-full" placeholder="Ej: Desechar, Donar, Uso en el laboratorio">{{ old('sugerencia') }}</textarea>
+                            @error('sugerencia')
+                                <small class="text-red-500 text-xs">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <!-- Ubicaciones -->
+                        <div class="form-group">
+                            <label for="ubicaciones" class="block text-sm font-medium text-gray-700">Ubicaciones:</label>
+                            <select name="ubicaciones[]" id="ubicaciones" multiple class="mt-1 p-2 border rounded w-full" size="4">
+                                @foreach ($ubicaciones as $ubicacion)
+                                    <option value="{{ $ubicacion->id }}" {{ in_array($ubicacion->id, old('ubicaciones', [])) ? 'selected' : '' }}>
+                                        {{ $ubicacion->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <small class="text-gray-500 text-xs">Mantén presionado Ctrl (Cmd en Mac) para seleccionar múltiples</small>
+                            @error('ubicaciones')
+                                <small class="text-red-500 text-xs">{{ $message }}</small>
+                            @enderror
                         </div>
                     </div>
-                    <div class="flex justify-end mt-4">
-                        <button type="button" @click="showAddProductModal = false" class="text-gray-600 mr-4">Cancelar</button>
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
+                </div>
+                
+                <!-- Footer del Modal (Fijo) -->
+                <div class="px-6 py-4 border-t bg-gray-50 flex justify-between items-center">
+                    <a href="{{ route('adquisiciones.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded inline-flex items-center gap-2 text-sm">
+                        <i class="fas fa-shopping-cart"></i>
+                        Ir a Adquisiciones
+                    </a>
+                    <div class="flex gap-2">
+                        <button type="button" @click="showAddProductModal = false" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded inline-flex items-center gap-2 text-sm">
+                            <i class="fas fa-save"></i>
+                            Guardar Producto
+                        </button>
                     </div>
+                </div>
                 </form>
             </div>
         </div>
@@ -106,25 +215,6 @@
             </div>
         </div>
         
-        <!-- Modal Añadir Proveedor (z-50) -->
-        <div x-show="showAddSupplierModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
-            <div @click.away="showAddSupplierModal = false" class="bg-white rounded-lg shadow-xl p-6 max-w-lg">
-                <h3 class="text-xl font-bold mb-4">Añadir Nuevo Proveedor</h3>
-                <form @submit.prevent="addSupplier">
-                     <div class="grid grid-cols-1 gap-4">
-                        <input type="text" x-model="formData.supplier.name" placeholder="Nombre del proveedor" class="p-2 border rounded">
-                        <input type="text" x-model="formData.supplier.ruc" placeholder="RUC" class="p-2 border rounded">
-                        <input type="text" x-model="formData.supplier.address" placeholder="Dirección" class="p-2 border rounded">
-                        <input type="text" x-model="formData.supplier.phone" placeholder="Teléfono" class="p-2 border rounded">
-                    </div>
-                    <div class="flex justify-end mt-4">
-                        <button type="button" @click="showAddSupplierModal = false" class="text-gray-600 mr-4">Cancelar</button>
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
         <!-- Toast Notification (z-50) -->
         <div x-show="toast.visible" x-transition class="fixed bottom-4 right-4 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50" style="display: none;">
             <span x-text="toast.message"></span>
@@ -282,22 +372,12 @@ function productManagement() {
         showAddProductModal: false,
         showAddBrandModal: false,
         showAddCategoryModal: false,
-        showAddSupplierModal: false,
-        toast: { message: '', type: 'success', visible: false },
+        toast: { message: '', type: 'success', visible: true },
 
-        // Data
-        brands: [ { id: 1, name: 'ABB' }, { id: 2, name: 'Siemens' } ],
-        categories: [ { id: 1, name: 'Transformadores' }, { id: 2, name: 'Medidores' } ],
-        suppliers: [ { id: 1, name: 'Atenas Energía', ruc: '80123456789' } ],
-        products: [
-            { id: 1, code: 'PROD-001', name: 'Transformador 100kVA', brand: 'ABB', category: 'Transformadores', stock: 5 },
-            { id: 2, code: 'PROD-002', name: 'Medidor kWh', brand: 'Siemens', category: 'Medidores', stock: 12 }
-        ],
+        // Data - Solo para los modales secundarios
         formData: {
-            product: { code: '', name: '', description: '', brand: '', category: '', stock: '', price: '', supplier: '' },
             brand: { name: '' },
-            category: { name: '' },
-            supplier: { name: '', ruc: '', address: '', phone: '' }
+            category: { name: '' }
         },
 
         // Methods
@@ -306,36 +386,30 @@ function productManagement() {
             setTimeout(() => this.toast.visible = false, 3000);
         },
         
-                        resetProductForm() {
-        
-                            this.formData.product = { code: '', name: '', description: '', brand: '', category: '', stock: '', price: '', supplier: '' };
-        
-                        },
-        
-                        handleCloseMainModal() {
-        
-                            if (!this.showAddBrandModal && !this.showAddCategoryModal && !this.showAddSupplierModal) {
-        
-                                this.showAddProductModal = false;
-        
-                                this.resetProductForm();
-        
-                            }
-        
-                        },
-        
-        
+        handleCloseMainModal() {
+            // Solo cerrar el modal principal si no hay modales secundarios abiertos
+            if (!this.showAddBrandModal && !this.showAddCategoryModal) {
+                this.showAddProductModal = false;
+            }
+        },
 
         addBrand() {
             if (this.formData.brand.name.trim()) {
+                // Aquí podrías hacer un POST AJAX para crear la marca
+                // Por ahora solo agregamos al select dinámicamente
                 const newBrand = {
-                    id: Math.max(...this.brands.map(b => b.id), 0) + 1,
+                    id: Date.now(), // ID temporal
                     name: this.formData.brand.name
                 };
-                this.brands.push(newBrand);
-                this.$nextTick(() => {
-                    this.formData.product.brand = newBrand.id;
-                });
+                
+                // Agregar la opción al select
+                const select = document.getElementById('marca_id');
+                const option = document.createElement('option');
+                option.value = newBrand.id;
+                option.text = newBrand.name;
+                option.selected = true;
+                select.add(option);
+                
                 this.formData.brand.name = '';
                 this.showAddBrandModal = false;
                 this.showToast('Marca agregada');
@@ -344,66 +418,45 @@ function productManagement() {
 
         addCategory() {
             if (this.formData.category.name.trim()) {
+                // Aquí podrías hacer un POST AJAX para crear la categoría
+                // Por ahora solo agregamos al select dinámicamente
                 const newCategory = {
-                    id: Math.max(...this.categories.map(c => c.id), 0) + 1,
+                    id: Date.now(), // ID temporal
                     name: this.formData.category.name
                 };
-                this.categories.push(newCategory);
-                this.$nextTick(() => {
-                    this.formData.product.category = newCategory.id;
-                });
+                
+                // Agregar la opción al select
+                const select = document.getElementById('categorias');
+                const option = document.createElement('option');
+                option.value = newCategory.id;
+                option.text = newCategory.name;
+                option.selected = true;
+                select.add(option);
+                
                 this.formData.category.name = '';
                 this.showAddCategoryModal = false;
                 this.showToast('Categoría agregada');
             }
-        },
-        
-        addSupplier() {
-            if (this.formData.supplier.name.trim() && this.formData.supplier.ruc.trim()) {
-                const newSupplier = {
-                    id: Math.max(...this.suppliers.map(s => s.id), 0) + 1,
-                    ...this.formData.supplier
-                };
-                this.suppliers.push(newSupplier);
-                this.$nextTick(() => {
-                    this.formData.product.supplier = newSupplier.id;
-                });
-                this.formData.supplier = { name: '', ruc: '', address: '', phone: '' };
-                this.showAddSupplierModal = false;
-                this.showToast('Proveedor agregado');
-            }
-        },
-
-        addProduct() {
-            const { product } = this.formData;
-            if (product.code && product.name && product.brand && product.category && product.stock) {
-                const newProduct = {
-                    id: Math.max(...this.products.map(p => p.id), 0) + 1,
-                    code: product.code,
-                    name: product.name,
-                    description: product.description,
-                    brand: this.brands.find(b => b.id == product.brand)?.name || '',
-                    category: this.categories.find(c => c.id == product.category)?.name || '',
-                    supplier: this.suppliers.find(s => s.id == product.supplier)?.name || '',
-                    stock: parseInt(product.stock),
-                    price: parseFloat(product.price)
-                };
-                this.products.push(newProduct);
-                this.showToast('Producto agregado');
-                this.showAddProductModal = false;
-                this.resetProductForm();
-            } else {
-                this.showToast('Completa los campos requeridos', 'error');
-            }
-        },
-
-        deleteProduct(id) {
-            this.products = this.products.filter(p => p.id !== id);
-            this.showToast('Producto eliminado');
         }
     }
 }
 </script>
+
+<!-- Script para reabrir el modal si hay errores de validación -->
+@if ($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Esperar a que Alpine.js esté listo
+            setTimeout(() => {
+                // Reabrir el modal de añadir producto
+                const element = document.querySelector('[x-data]');
+                if (element && element.__x) {
+                    element.__x.$data.showAddProductModal = true;
+                }
+            }, 100);
+        });
+    </script>
+@endif
 
 <script>
     console.log('Simple DataTables script loaded');
